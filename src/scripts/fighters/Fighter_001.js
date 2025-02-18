@@ -55,7 +55,7 @@ export class Fighter_001 extends FighterBaseClass {
 
     update(time) {
         this.x += (this.velocityX) * time.delta;
-        if (time.previous > this.animationTimer + 180) {
+        if (time.previous > this.animationTimer + 60) {
             this.animationTimer = time.previous;
             this.currentFrame = (this.currentFrame + 1) % this.frames;
         }
