@@ -1,23 +1,23 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
 
 const F_001 = {
-    idle_src        : "./src/assets/images/fighters/F001/idle/F001 idle 48x48.png",
-    block_src       : "./src/assets/images/fighters/F001/light attack/F001 light attack 48x48.png",
-    walk_f_src      : "./src/assets/images/fighters/F001/walk/F001 walk fwd 48x48.png",
-    walk_b_src      : "./src/assets/images/fighters/F001/walk/F001 walk bwd 48x48.png",
-    dash_src        : "./src/assets/images/fighters/F001/dash/F001 dash 48x48.png",
-    crouch_src      : "./src/assets/images/fighters/F001/crouch/F001 crouch 48x48.png",
+    idle_src        : "../src/assets/images/fighters/F001/idle/F001 idle 48x48.png",
+    block_src       : "../src/assets/images/fighters/F001/light attack/F001 light attack 48x48.png",
+    walk_f_src      : "../src/assets/images/fighters/F001/walk/F001 walk fwd 48x48.png",
+    walk_b_src      : "../src/assets/images/fighters/F001/walk/F001 walk bwd 48x48.png",
+    dash_src        : "../src/assets/images/fighters/F001/dash/F001 dash 48x48.png",
+    crouch_src      : "../src/assets/images/fighters/F001/crouch/F001 crouch 48x48.png",
     crouch_atk_src  : "",
-    light_atk_src   : "./src/assets/images/fighters/F001/light attack/F001 light attack 48x48.png",
-    heavy_atk_src   : "./src/assets/images/fighters/F001/heavy attack/F001 heavy attack 64x64.png",
-    sp_1_src        : "./src/assets/images/fighters/F001/special/F001 special 1 80x48.png",
-    sp_2_src        : "./src/assets/images/fighters/F001/light attack/F001 special 2 48x48.png",
-    jump_src        : "./src/assets/images/fighters/F001/jump/F001 jump 48x48.png",
-    jump_f_src      : "./src/assets/images/fighters/F001/jump/F001 jump 48x48.png",
-    jump_b_src      : "./src/assets/images/fighters/F001/jump/F001 jump bwd 48x48.png",
+    light_atk_src   : "../src/assets/images/fighters/F001/light attack/F001 light attack 48x48.png",
+    heavy_atk_src   : "../src/assets/images/fighters/F001/heavy attack/F001 heavy attack 64x64.png",
+    sp_1_src        : "../src/assets/images/fighters/F001/special/F001 special 1 80x48.png",
+    sp_2_src        : "../src/assets/images/fighters/F001/light attack/F001 special 2 48x48.png",
+    jump_src        : "../src/assets/images/fighters/F001/jump/F001 jump 48x48.png",
+    jump_f_src      : "../src/assets/images/fighters/F001/jump/F001 jump 48x48.png",
+    jump_b_src      : "../src/assets/images/fighters/F001/jump/F001 jump bwd 48x48.png",
     jump_atk_src    : "",
-    hurt_src        : "./src/assets/images/fighters/F001/hurt/F001 hurt 48x48.png",
-    death_src       : "./src/assets/images/fighters/F001/death/F001 death 64x64.png",
+    hurt_src        : "../src/assets/images/fighters/F001/hurt/F001 hurt 48x48.png",
+    death_src       : "../src/assets/images/fighters/F001/death/F001 death 64x64.png",
 }//end F_001 
 
 const sprites_001 = {
