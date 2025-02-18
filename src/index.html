@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2d Fighter</title>
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+        body {
+            display: flex;
+        }
+        body,
+        canvas {
+            background-color: black;
+        }
+        canvas {
+            width: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        
+        img {
+            display: none;
+        }
+    </style>
+    <script type="module" src="./index.js"></script>
+</head>
+<body>
+    <canvas></canvas>
+    <img src="../assets/2D-Pixel-Art-Character-Template/idle/Player Idle 48x48.png" alt="player" />
+    <img src="../assets/2D-Pixel-Art-Character-Template/idle/Player Idle 48x48.png" alt="player2" />
+    <img src="../assets/scenes/stage1.jpg" alt="stage" />
+</body>
+</html>

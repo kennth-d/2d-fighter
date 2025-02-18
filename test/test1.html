@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Testing</title>
+    <link rel="stylesheet" href="/tests/test1.css">
+    <script type="module" src="./test1.js"></script>
+</head>
+<body>
+    <div id="container">
+        <canvas id="screen"></canvas>
+        <div id="ui-overlay">
+            <div id="p1">
+                <progress class="health" max="100" value="100"></progress>
+                <progress class="energy" max="100" value="100"></progress>
+            </div>
+            <h2 id="clock">300</h2>
+            <div id="p2">
+                <progress class="health" max="100" value="50"></progress>
+                <progress class="energy" max="100" value="50"></progress>
+            </div>
+        </div>
+        <div id="inputLogger">
+            <h3>KeyDown</h3>
+            <p>None</p>
+        </div>
+    </div>
+</body>
+</html>
