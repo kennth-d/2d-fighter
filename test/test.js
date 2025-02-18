@@ -1,5 +1,5 @@
-import { Fighter_001 } from "./modules/Fighter_001.js";
-import { KeyboardInputComponent } from "./modules/input.js";
+import {Fighter_001} from "../src/scripts/fighters/Fighter_001.js";
+import {KeyboardInputComponent} from "../src/scripts/components/input/input.js";
 
 const GameViewport = {
     WIDTH: 384,

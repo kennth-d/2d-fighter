@@ -1,8 +1,3 @@
-import { Player } from "./entities/fighters/Player.js";
-import { Player2 } from "./entities/fighters/Player2.js";
-import { Stage } from "./entities/Stage.js";
-import { FPSCounter } from "./entities/FPSCounter.js";
-
 const GameViewport = {
     WIDTH: 384,
     HEIGHT: 216,
@@ -25,28 +20,17 @@ window.addEventListener('load', function () {
     ];
 
     //for managing game clock
-    let frameTime = {
+    const GameTime = {
         previous: 0,
-        secondsPassed: 0,
+        delta: 0,
     };
-    let previousTime = 0;
-    let secondsPassed = 0;
 
     function frame (time) {
         window.requestAnimationFrame(frame);
 
-        frameTime.secondsPassed = (time - frameTime.previous) / 1000;
-        frameTime.previous = time;
-
-        //bulk update entites
-        for (const entity of entities) {
-            entity.update(frameTime, ctx);
-        }//end for
-
-        //bulk draw entities
-        for (const entity of entities) {
-            entity.draw(ctx);
-        }// end for
+        //update time between frames
+        GameTime.delta = (time - GameTime.previous) / 1000;
+        GameTime.previous = time;
         
         
     }//end frame
