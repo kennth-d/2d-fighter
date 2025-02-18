@@ -7,7 +7,7 @@
 - 🎮 **2 Playable Characters** 
 - 🕹️ **Keyboard Input Handling**
 - 🤖 **AI opponent**
-- 🌐 **Runs Directly in the Browser (No Installation Needed)** 
+- 🌐 **Runs Directly in the Browser** 
 
 ## About the Assets
 - **Sprites**: character sprites were created by [Hayden Zegley](https://zegley.itch.io/2d-platformermetroidvania-asset-pack) licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  Some of the sprites were modified to fit the game.
