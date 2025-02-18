@@ -1,7 +1,7 @@
 # 2D Figher (WIP)
 
 ## 🕹️ About the Project
-**2D Fighting Game** is a group project developed as part of the **CIS 1512 Software Engineering** course at OCC. The game is built using **HTML, CSS, and vanilla JavaScript**, allowing players to clone the repository and play locally in their browser.
+**2D Fighter** is a group project developed as part of the **CIS 1512 Software Engineering** course at OCC. The game is built using **HTML, CSS, and vanilla JavaScript**, allowing players to clone the repository and play locally in their browser.
 
 ## 📌 Features
 - 🎮 **2 Playable Characters** 
