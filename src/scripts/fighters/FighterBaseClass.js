@@ -3,13 +3,11 @@
 export class FighterBaseClass {
     constructor(x, y) {
         this.debug = false;
-        this.active = false;
         this.health = 100;
         this.energy = 100;
-        this.x = x;
-        this.y = y;
-        this.velocityX = 0;
-        this.velocityY = 0;
+        this.direction = 1;
+        this.pos = {x: x, y: y}
+        this.velocity = {x: 0, y: 0};
         this.origin;
         this.inputComponent;
         this.animationTimer = 0;

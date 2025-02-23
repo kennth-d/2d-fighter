@@ -1,78 +1,55 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
-
-const F_001 = {
-    idle_src        : "../src/assets/images/fighters/F001/idle/F001 idle 48x48.png",
-    block_src       : "../src/assets/images/fighters/F001/light attack/F001 light attack 48x48.png",
-    walk_f_src      : "../src/assets/images/fighters/F001/walk/F001 walk fwd 48x48.png",
-    walk_b_src      : "../src/assets/images/fighters/F001/walk/F001 walk bwd 48x48.png",
-    dash_src        : "../src/assets/images/fighters/F001/dash/F001 dash 48x48.png",
-    crouch_src      : "../src/assets/images/fighters/F001/crouch/F001 crouch 48x48.png",
-    crouch_atk_src  : "",
-    light_atk_src   : "../src/assets/images/fighters/F001/light attack/F001 light attack 48x48.png",
-    heavy_atk_src   : "../src/assets/images/fighters/F001/heavy attack/F001 heavy attack 64x64.png",
-    sp_1_src        : "../src/assets/images/fighters/F001/special/F001 special 1 80x48.png",
-    sp_2_src        : "../src/assets/images/fighters/F001/light attack/F001 special 2 48x48.png",
-    jump_src        : "../src/assets/images/fighters/F001/jump/F001 jump 48x48.png",
-    jump_f_src      : "../src/assets/images/fighters/F001/jump/F001 jump 48x48.png",
-    jump_b_src      : "../src/assets/images/fighters/F001/jump/F001 jump bwd 48x48.png",
-    jump_atk_src    : "",
-    hurt_src        : "../src/assets/images/fighters/F001/hurt/F001 hurt 48x48.png",
-    death_src       : "../src/assets/images/fighters/F001/death/F001 death 64x64.png",
-}//end F_001 
-
-const sprites_001 = {
-    IDLE        : { src: F_001.idle_src, frames: 10, width: 48, height: 48 },
-    BLOCK       : { src: F_001.block_src, frames: 1, width: 48, height: 48 },
-    WALK_FWD    : { src: F_001.walk_f_src, frames: 8, width: 48, height: 48 },
-    WALK_BWD    : { src: F_001.walk_b_src, frames: 8, width: 48, height: 48 },
-    DASH        : { src: F_001.dash_src, frames: 9, width: 48, height: 48 },
-    CROUCH      : { src: F_001.crouch_src, frames: 10, width: 48, height: 48 },
-    CROUCH_ATK  : 4,
-    LIGHT_ATK   : { src: F_001.light_atk_src, frames: 10, width: 48, height: 48 },
-    HEAVY_ATK   : { src: F_001.heavy_atk_src, frames: 7, width: 64, height: 64 },
-    SP_1        : { src: F_001.sp_1_src, frames: 10, width: 80, height: 64 },
-    SP_2        : { src: F_001.sp_2_src, frames: 10, width: 48, height: 48 },
-    JUMP        : { src: F_001.jump_src, frames: 6, width: 48, height: 48 },
-    JUMP_FWD    : { src: F_001.jump_f_src, frames: 6, width: 48, height: 48 },
-    JUMP_BWD    : { src: F_001.jump_b_src, frames: 6, width: 48, height: 48 },
-    JUMP_ATK    : 12,
-    HURT        : { src: F_001.hurt_src, frames: 4, width: 48, height: 48 },
-    DEATH       : { src: F_001.death_src, frames: 10, width: 64, height: 64 },
-}//end sprites_001
+import { F_001SpriteData } from "../../assets/data/F001_SpriteData.js";
 
 //Fighter_001 class
 export class Fighter_001 extends FighterBaseClass {
-    constructor(x, y, inputComponent) {
+    constructor(x, y, inputComponent, stateManager, spriteManager) {
         super(x, y, inputComponent);
+        this.name = "Fighter_001";
         this.origin = {
             x: 0,
             y: 0
         }
-        this.image = new Image(sprites_001.LIGHT_ATK.width, sprites_001.LIGHT_ATK.height);
-        this.image.src = sprites_001.LIGHT_ATK.src;
-        this.frames = sprites_001.LIGHT_ATK.frames;
+        this.sprite = new Image(F_001SpriteData.WALK_FWD.width, F_001SpriteData.WALK_FWD.height);
+        this.sprite.src = F_001SpriteData.WALK_FWD.src;
+        this.frames = F_001SpriteData.WALK_FWD.frames;
+        this.stateManager = stateManager;
+        this.spriteManager = spriteManager;
+        this.inputComponent = inputComponent;
     }//end ctor
 
     update(time) {
-        this.x += (this.velocityX) * time.delta;
+
+        this.pos.x += (this.velocity.x) * time.delta;
+
+        //update the fighter state;
+        this.stateManager.activeState.update(this.stateManager, this.inputComponent);
+        //this.spriteManager.update()
+        if (this.stateManager.activeState.name != this.spriteManager.currentSprite.name) {
+            this.spriteManager.changeSprite(this.stateManager.activeState.name);
+        }
         if (time.previous > this.animationTimer + 60) {
+            this.spriteManager.nextFrame();
             this.animationTimer = time.previous;
-            this.currentFrame = (this.currentFrame + 1) % this.frames;
+            //this.currentFrame = (this.currentFrame + 1) % this.frames;
         }
     }//end update
 
     draw(ctx) {
-        //ctx.fillStyle = "grey";
-        //ctx.fillRect(this.x, this.y, 48, 48);
-        ctx.drawImage(this.image,
-            this.currentFrame * this.image.width,     //sX
-            0,                                        //sY
-            this.image.width,                         //sWidth
-            this.image.height,                        //sHeight
-            this.x,                                   //dX
-            this.y,                                   //dY
-            this.image.width,                         //dWidth
-            this.image.height,                        //dHeight
+        let sprite = this.spriteManager.currentSprite.img;
+        let width = sprite.width;
+        let height = sprite.height;
+        let currentFrame = this.spriteManager.currentFrame
+
+        ctx.drawImage(sprite,
+            currentFrame * width,  //sX
+            0,                     //sY
+            width,                 //sWidth
+            height,                //sHeight
+            this.pos.x,            //dX
+            this.pos.y,            //dY
+            width,                 //dWidth
+            height,                //dHeight
         );
         
         
@@ -82,8 +59,8 @@ export class Fighter_001 extends FighterBaseClass {
     }//end draw
 
     draw_debug(ctx) {
-        this.origin.x = this.x + ( this.image.width / 2 );
-        this.origin.y = this.y + (this.image.height-15);
+        this.origin.x = this.pos.x + ( this.spriteManager.currentSprite.width / 2 );
+        this.origin.y = this.pos.y + (this.spriteManager.currentSprite.height-15);
         ctx.lineWidth = 1;
         
 
@@ -100,6 +77,9 @@ export class Fighter_001 extends FighterBaseClass {
         ctx.moveTo(this.origin.x-5, this.origin.y);
         ctx.lineTo(this.origin.x+5, this.origin.y);
         ctx.stroke();
+        ctx.font = "20px serif";
+        ctx.fillStyle = "white";
+        ctx.fillText(this.stateManager.activeState.name, 169, 50);
     }//end debug
 }
 
