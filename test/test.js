@@ -11,6 +11,11 @@ window.onload = function () {
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
 
+    //disable pixel smoothing.
+    ctx.msImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+
     //create the player
     const player = new Fighter_001(GAME_VIEWPORT.WIDTH / 2 - 150, FLOOR, new KeyboardInputComponent(), new FighterStateManager(), new FighterSpriteManager(F_001SpriteData));
     player.stateManager.fighter = player;
