@@ -1,6 +1,10 @@
 // --- Base state class and Fighter states classes are defined here -- //
-export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK"];
 
+import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
+
+export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
+
+//--- State Infterface ---//
 export class State {
     constructor(name) {
         this.name = name;
@@ -20,67 +24,111 @@ export class State {
 //  -------------------------------  //
 //  ---- Fighter State Classes ----  //
 //  -------------------------------  //
-
-export class IdleState extends State {
-    constructor() {
-        super("IDLE");
+export class Idle extends State {
+    constructor(state="IDLE") {
+        super(state);
     }
-    enter(fighter) {
-        fighter.velocity.x = 0;
-        fighter.velocity.y = 0;
+    enter(manager) {
+        manager.fighter.velocity.x = 0;
+        manager.fighter.velocity.y = 0;
     }
     update(manager, inputComponent) {
+        manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
+        if (inputComponent.isKeyDown("KeyJ")) manager.transition("LIGHT_ATTACK");
+        if (inputComponent.isKeyDown("KeyK")) manager.transition("HEAVY_ATTACK");
         if (inputComponent.isKeyDown('KeyD')) manager.transition("WALK_FWD");
         if (inputComponent.isKeyDown("KeyA")) manager.transition("WALK_BWD");
         if (inputComponent.isKeyDown("KeyW")) manager.transition("JUMP");
-        if (inputComponent.isKeyDown("KeyJ")) manager.transition("LIGHT_ATTACK");
     }
-}//end IdleState
+}//end Idle
 
-export class WalkFwdState extends State {
+export class WalkFwd extends Idle {
     constructor() {
         super("WALK_FWD");
     }
-    enter(fighter) {
-        fighter.velocity.x = 150 * fighter.direction;
+    enter(manager) {
+        manager.fighter.velocity.x = WALK_VELOCITY;
     }
     update(manager, inputComponent) {
+        super.update(manager, inputComponent);
         if (inputComponent.isKeyUp("KeyD")) manager.transition("IDLE");
     }
     
 }//end WalkFwd
 
-export class WalkBwdState extends State {
+export class WalkBwd extends Idle {
     constructor() {
         super("WALK_BWD");
     }
-    enter(fighter) {
-        fighter.velocity.x = -150 * fighter.direction;
+    enter(manager) {
+        manager.fighter.velocity.x = -WALK_VELOCITY;
     }
     update(manager, inputComponent) {
-        if (inputComponent.isKeyUp("KeyA")) manager.transition("IDLE");
+        super.update(manager, inputComponent);
+        if (inputComponent.isKeyUp("KeyA")) manager.transition("IDLE");   
     }
 }//end WalkFwd
 
-export class JumpState extends State {
+export class Jump extends State {
+    constructor(state="JUMP") {
+        super(state);
+    }
+    enter(manager) {
+        manager.fighter.velocity.y = -JUMP_VELOCITY;
+    }
+    update(manager, inputComponent) {
+        if (inputComponent.isKeyDown("KeyD")) manager.transition("JUMP_FWD");
+        if (inputComponent.isKeyDown("KeyA")) manager.transition("JUMP_BWD");
+
+        manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
+        manager.fighter.velocity.y += (GRAVITY * TIME.delta);
+        if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
+    }
+}//end JumpState
+
+export class JumpForward extends Jump {
     constructor() {
-        super("JUMP");
-        this.frameTimer = 0;
+        super("JUMP_FWD");
+    }
+    enter(manager) {
+        manager.fighter.velocity.x = WALK_VELOCITY;
     }
     update(manager, inputComponent) {
-        this.frameTimer++;
-        if (this.frameTimer == 2) { this.frameTimer = 0; manager.transition("IDLE"); }
+        manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
+        manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
+        manager.fighter.velocity.y += (GRAVITY * TIME.delta);
+        if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
     }
-    
-}//end WalkFwd
+}//end JumpState
 
-export class LightAttackState extends State {
+export class JumpBack extends Jump {
+    constructor() {
+        super("JUMP_BWD");
+    }
+    enter(manager) {
+        manager.fighter.velocity.x = -WALK_VELOCITY;
+    }
+    update(manager, inputComponent) {
+        manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
+        manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
+        manager.fighter.velocity.y += (GRAVITY * TIME.delta);
+        if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
+    }
+}//end JumpState
+export class LightAttack extends Idle {
     constructor() {
         super("LIGHT_ATTACK");
-        this.combo = 0;
     }
-    update(manager) {
-        this.combo++;
-        if (this.combo == 2) { this.combo = 0; manager.transition("IDLE"); }
+    update(manager, inputComponent) {
+        super.update(manager, inputComponent);
     }
-}
+}//end Light Attack
+
+export class HeavyAttack extends Idle {
+    constructor() {
+        super("HEAVY_ATTACK");
+    }
+    update(manager, inputComponent) {
+        super.update(manager, inputComponent);
+    }
+}//end Light Attack

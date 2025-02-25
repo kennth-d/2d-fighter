@@ -1,5 +1,6 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
 import { F_001SpriteData } from "../../assets/data/F001_SpriteData.js";
+import { TIME } from "../utils/global.js";
 
 //Fighter_001 class
 export class Fighter_001 extends FighterBaseClass {
@@ -18,9 +19,10 @@ export class Fighter_001 extends FighterBaseClass {
         this.inputComponent = inputComponent;
     }//end ctor
 
-    update(time) {
+    update() {
 
-        this.pos.x += (this.velocity.x) * time.delta;
+        //this.pos.x += (this.velocity.x * time.delta);
+        //this.pos.y += (this.velocity.y) * time.delta;
 
         //update the fighter state;
         this.stateManager.activeState.update(this.stateManager, this.inputComponent);
@@ -28,9 +30,10 @@ export class Fighter_001 extends FighterBaseClass {
         if (this.stateManager.activeState.name != this.spriteManager.currentSprite.name) {
             this.spriteManager.changeSprite(this.stateManager.activeState.name);
         }
-        if (time.previous > this.animationTimer + 60) {
+        let delay = this.spriteManager.currentSprite.delay;
+        if (TIME.previous > this.animationTimer + 60 * delay) {
             this.spriteManager.nextFrame();
-            this.animationTimer = time.previous;
+            this.animationTimer = TIME.previous;
             //this.currentFrame = (this.currentFrame + 1) % this.frames;
         }
     }//end update
@@ -59,8 +62,10 @@ export class Fighter_001 extends FighterBaseClass {
     }//end draw
 
     draw_debug(ctx) {
-        this.origin.x = this.pos.x + ( this.spriteManager.currentSprite.width / 2 );
-        this.origin.y = this.pos.y + (this.spriteManager.currentSprite.height-15);
+        let offset = this.spriteManager.currentSprite.originOffset;
+        //let offset = (this.spriteManager.currentSprite.offset) ? this.spriteManager.currentSprite.offset : 0;
+        this.origin.x = this.pos.x + ((this.spriteManager.currentSprite.img.width - offset) / 2);
+        this.origin.y = this.pos.y + (this.spriteManager.currentSprite.img.height-8);
         ctx.lineWidth = 1;
         
 

@@ -67,12 +67,6 @@ img {
     width: 46%;
     float: right;
 }
-#inputLogger {
-    z-index: 3;
-    color: antiquewhite;
-    padding-left: 20px;
-    padding-top: 10px;
-}
 
 progress {
     -webkit-appearance: none;

@@ -4,6 +4,7 @@ export const F_001SpriteData = {
         width: 48,
         height: 48,
         frames: 10,
+        delay: 1.5,
     },
     BLOCK: {
         src: "../src/assets/images/fighters/F001/F001 light attack 48x48.png",
@@ -16,12 +17,14 @@ export const F_001SpriteData = {
         width: 48,
         height: 48,
         frames: 8,
+        delay: 1.05,
     },
     WALK_BWD: {
         src: "../src/assets/images/fighters/F001/F001 walk bwd 48x48.png",
         width: 48,
         height: 48,
         frames: 8,
+        delay: 1.05,
     },
     DASH: {
         src: "../src/assets/images/fighters/F001/F001 dash 48x48.png",
@@ -48,10 +51,12 @@ export const F_001SpriteData = {
         frames: 10
     },
     HEAVY_ATTACK: {
-        src: "../src/assets/images/fighters/F001/F001 heavy attack 64x64.png",
-        width: 64,
-        height: 64,
-        frames: 7
+        src: "../src/assets/images/fighters/F001/F001 heavy attack 64x48.png",
+        width: 65,
+        height: 48,
+        frames: 7,
+        originOffset: 18,
+        delay: 2,
     },
     SP_1: {
         src: "../src/assets/images/fighters/F001/F001 special 1 80x48.png",
@@ -69,19 +74,22 @@ export const F_001SpriteData = {
         src: "../src/assets/images/fighters/F001/F001 jump 48x48.png",
         width: 48,
         height: 48,
-        frames: 6
+        frames: 6,
+        delay: 2,
     },
     JUMP_FWD: {
         src: "../src/assets/images/fighters/F001/F001 jump 48x48.png",
         width: 48,
         height: 48,
-        frames: 6
+        frames: 6,
+        delay: 2,
     },
     JUMP_BWD: {
         src: "../src/assets/images/fighters/F001/F001 jump bwd 48x48.png",
         width: 48,
         height: 48,
-        frames: 6
+        frames: 6,
+        delay: 2,
     },
     // JUMP_ATTACK: {
     //     src: undefined,

@@ -3,17 +3,8 @@ import { KeyboardInputComponent } from "../src/scripts/components/KeyboardInputC
 import { FighterStateManager } from "../src/scripts/components/FighterStateManager.js";
 import { FighterSpriteManager } from "../src/scripts/components/SpriteManager.js";
 import { F_001SpriteData } from "../src/assets/data/F001_SpriteData.js";
+import { TIME, GAME_VIEWPORT, FLOOR } from "../src/scripts/utils/global.js";
 
-const GameViewport = {
-    WIDTH: 384,
-    HEIGHT: 216,
-}
-const FLOOR = GameViewport.HEIGHT - 100;
-
-const GameTime = {
-    delta: 0,
-    previous: 0,
-}
 
 window.onload = function () {
     //get our canvas and context
@@ -21,30 +12,30 @@ window.onload = function () {
     const ctx = canvas.getContext('2d');
 
     //create the player
-    const player = new Fighter_001(GameViewport.WIDTH / 2 - 150, FLOOR, new KeyboardInputComponent(), new FighterStateManager(), new FighterSpriteManager(F_001SpriteData));
+    const player = new Fighter_001(GAME_VIEWPORT.WIDTH / 2 - 150, FLOOR, new KeyboardInputComponent(), new FighterStateManager(), new FighterSpriteManager(F_001SpriteData));
     player.stateManager.fighter = player;
     player.debug = true;
     console.log(player);
 
     //set our canvas size
-    canvas.width = GameViewport.WIDTH;
-    canvas.height = GameViewport.HEIGHT;
+    canvas.width = GAME_VIEWPORT.WIDTH;
+    canvas.height = GAME_VIEWPORT.HEIGHT;
     
     
 
-    function frame (time) {
+    function frame (timeStamp) {
         window.requestAnimationFrame(frame);
 
         //update time
-        GameTime.delta = (time - GameTime.previous) / 1000;
-        GameTime.previous = time;
+        TIME.delta = (timeStamp - TIME.previous) / 1000;
+        TIME.previous = timeStamp;
 
         //clears the screen
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, GameViewport.WIDTH, GameViewport.HEIGHT);
+        ctx.fillRect(0, 0, GAME_VIEWPORT.WIDTH, GAME_VIEWPORT.HEIGHT);
 
         //update/draw player
-        player.update(GameTime);
+        player.update();
         player.draw(ctx);
     }//end frame
 
