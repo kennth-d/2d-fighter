@@ -19,5 +19,6 @@ export class FighterStateManager {
     transition(newState) {
         this.activeState = this.states[newState];
         this.activeState.enter(this);
+        
     }//end changeState
 }//end cls

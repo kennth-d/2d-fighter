@@ -1,5 +1,5 @@
 import { characterStates } from "../states/states.js";
-
+import { TIME } from "../utils/global.js";
 // --- class for managing the player sprites ---//
 // ---------------------------------------------//
 export class FighterSpriteManager {

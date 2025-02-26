@@ -1,32 +1,20 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
-import { F_001SpriteData } from "../../assets/data/F001_SpriteData.js";
 import { TIME } from "../utils/global.js";
 
 //Fighter_001 class
 export class Fighter_001 extends FighterBaseClass {
-    constructor(x, y, inputComponent, stateManager, spriteManager) {
-        super(x, y, inputComponent);
-        this.name = "Fighter_001";
-        this.origin = {
-            x: 0,
-            y: 0
-        }
-        this.sprite = new Image(F_001SpriteData.WALK_FWD.width, F_001SpriteData.WALK_FWD.height);
-        this.sprite.src = F_001SpriteData.WALK_FWD.src;
-        this.frames = F_001SpriteData.WALK_FWD.frames;
+    constructor(x, y, playerId, inputComponent, stateManager, spriteManager) {
+        super(x, y, playerId);
+        this.origin = {x: x, y: y};
         this.stateManager = stateManager;
         this.spriteManager = spriteManager;
-        this.inputComponent = inputComponent;
+        this.input = inputComponent;
     }//end ctor
 
     update() {
-
-        //this.pos.x += (this.velocity.x * time.delta);
-        //this.pos.y += (this.velocity.y) * time.delta;
-
         //update the fighter state;
-        this.stateManager.activeState.update(this.stateManager, this.inputComponent);
-        //this.spriteManager.update()
+        this.stateManager.activeState.update(this.stateManager, this.input);
+
         if (this.stateManager.activeState.name != this.spriteManager.currentSprite.name) {
             this.spriteManager.changeSprite(this.stateManager.activeState.name);
         }
@@ -34,7 +22,6 @@ export class Fighter_001 extends FighterBaseClass {
         if (TIME.previous > this.animationTimer + 60 * delay) {
             this.spriteManager.nextFrame();
             this.animationTimer = TIME.previous;
-            //this.currentFrame = (this.currentFrame + 1) % this.frames;
         }
     }//end update
 
@@ -63,7 +50,6 @@ export class Fighter_001 extends FighterBaseClass {
 
     draw_debug(ctx) {
         let offset = this.spriteManager.currentSprite.originOffset;
-        //let offset = (this.spriteManager.currentSprite.offset) ? this.spriteManager.currentSprite.offset : 0;
         this.origin.x = this.pos.x + ((this.spriteManager.currentSprite.img.width - offset) / 2);
         this.origin.y = this.pos.y + (this.spriteManager.currentSprite.img.height-8);
         ctx.lineWidth = 1;

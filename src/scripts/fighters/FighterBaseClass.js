@@ -1,7 +1,8 @@
 
 //class for maintaining the characters
 export class FighterBaseClass {
-    constructor(x, y) {
+    constructor(x, y, playerId) {
+        this.playerId= playerId;
         this.debug = false;
         this.health = 100;
         this.energy = 100;
@@ -9,9 +10,8 @@ export class FighterBaseClass {
         this.pos = {x: x, y: y}
         this.velocity = {x: 0, y: 0};
         this.origin;
-        this.inputComponent;
         this.animationTimer = 0;
-        this.currentFrame = 0;    
+        //this.currentFrame = 0;    
     }//end ctor
 
     update(ctx) {

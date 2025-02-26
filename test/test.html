@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testing</title>
     <link rel="stylesheet" type="text/css" href="../test/test.css">
-    <script type="module" src="../test/test.js"></script>
+    <script type="module" defer src="../test/test.js"></script>
 </head>
 <body>
-    <div id="container">
-        <canvas id="screen"></canvas>
+        <canvas id="screen" width="384px" height="216"></canvas>
         <div id="ui-overlay">
             <div id="p1">
                 <progress class="health" max="100" value="100"></progress>
@@ -20,7 +19,7 @@
                 <progress class="health" max="100" value="50"></progress>
                 <progress class="energy" max="100" value="50"></progress>
             </div>
-        </div>
+
     </div>
 </body>
 </html>

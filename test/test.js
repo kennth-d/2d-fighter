@@ -3,7 +3,7 @@ import { KeyboardInputComponent } from "../src/scripts/components/KeyboardInputC
 import { FighterStateManager } from "../src/scripts/components/FighterStateManager.js";
 import { FighterSpriteManager } from "../src/scripts/components/SpriteManager.js";
 import { F_001SpriteData } from "../src/assets/data/F001_SpriteData.js";
-import { TIME, GAME_VIEWPORT, FLOOR } from "../src/scripts/utils/global.js";
+import { TIME, PLAYER_ONE_START } from "../src/scripts/utils/global.js";
 
 
 window.onload = function () {
@@ -12,22 +12,16 @@ window.onload = function () {
     const ctx = canvas.getContext('2d');
 
     //disable pixel smoothing.
+    ctx.imageSmoothingEnabled = false;
     ctx.msImageSmoothingEnabled = false;
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;
-
     //create the player
-    const player = new Fighter_001(GAME_VIEWPORT.WIDTH / 2 - 150, FLOOR, new KeyboardInputComponent(), new FighterStateManager(), new FighterSpriteManager(F_001SpriteData));
+    const player = new Fighter_001(PLAYER_ONE_START.x, PLAYER_ONE_START.y, 1, new KeyboardInputComponent(), new FighterStateManager(), new FighterSpriteManager(F_001SpriteData));
     player.stateManager.fighter = player;
     player.debug = true;
     console.log(player);
-
-    //set our canvas size
-    canvas.width = GAME_VIEWPORT.WIDTH;
-    canvas.height = GAME_VIEWPORT.HEIGHT;
-    
-    
-
+        
     function frame (timeStamp) {
         window.requestAnimationFrame(frame);
 
@@ -37,7 +31,7 @@ window.onload = function () {
 
         //clears the screen
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, GAME_VIEWPORT.WIDTH, GAME_VIEWPORT.HEIGHT);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         //update/draw player
         player.update();

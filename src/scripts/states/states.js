@@ -1,13 +1,13 @@
 // --- Base state class and Fighter states classes are defined here -- //
 
 import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
-
+import { EnsureOnScreen } from "../utils/utilityFunctions.js";
 export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
 //--- State Infterface ---//
 export class State {
-    constructor(name) {
-        this.name = name;
+    constructor(state) {
+        this.name = state;
     }//end ctor
     enter() {
         console.log(`Entering: ${this.name} state.`);
@@ -32,41 +32,48 @@ export class Idle extends State {
         manager.fighter.velocity.x = 0;
         manager.fighter.velocity.y = 0;
     }
-    update(manager, inputComponent) {
+    update(manager, input) {
         manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
-        if (inputComponent.isKeyDown("KeyJ")) manager.transition("LIGHT_ATTACK");
-        if (inputComponent.isKeyDown("KeyK")) manager.transition("HEAVY_ATTACK");
-        if (inputComponent.isKeyDown('KeyD')) manager.transition("WALK_FWD");
-        if (inputComponent.isKeyDown("KeyA")) manager.transition("WALK_BWD");
-        if (inputComponent.isKeyDown("KeyW")) manager.transition("JUMP");
+        if (input.isKeyDown("KeyJ")) {
+            manager.transition("LIGHT_ATTACK"); 
+            return; }
+        if (input.isKeyDown("KeyK"))  {
+            manager.transition("HEAVY_ATTACK");
+            return;
+        };
+    
+        if (input.isKeyDown('KeyD')) manager.transition("WALK_FWD");
+        if (input.isKeyDown("KeyA")) manager.transition("WALK_BWD");
+        if (input.isKeyDown("KeyW")) manager.transition("JUMP");
     }
 }//end Idle
 
 export class WalkFwd extends Idle {
     constructor() {
         super("WALK_FWD");
-    }
+    }//end ctor
     enter(manager) {
-        manager.fighter.velocity.x = WALK_VELOCITY;
-    }
-    update(manager, inputComponent) {
-        super.update(manager, inputComponent);
-        if (inputComponent.isKeyUp("KeyD")) manager.transition("IDLE");
-    }
-    
+        manager.fighter.velocity.x = WALK_VELOCITY * manager.fighter.direction;
+    }//end enter
+    update(manager,input) {
+        EnsureOnScreen(manager.fighter);
+        if (input.isKeyUp("KeyD")) manager.transition("IDLE");
+        super.update(manager, input);
+    }//end update
 }//end WalkFwd
 
 export class WalkBwd extends Idle {
     constructor() {
         super("WALK_BWD");
-    }
+    }//end ctor
     enter(manager) {
-        manager.fighter.velocity.x = -WALK_VELOCITY;
-    }
-    update(manager, inputComponent) {
-        super.update(manager, inputComponent);
-        if (inputComponent.isKeyUp("KeyA")) manager.transition("IDLE");   
-    }
+        manager.fighter.velocity.x = -WALK_VELOCITY * manager.fighter.direction;
+    }//end enter
+    update(manager, input) {
+        EnsureOnScreen(manager.fighter);
+        if (input.isKeyUp("KeyA")) manager.transition("IDLE");    
+        super.update(manager, input);
+    }//end update
 }//end WalkFwd
 
 export class Jump extends State {
@@ -76,9 +83,9 @@ export class Jump extends State {
     enter(manager) {
         manager.fighter.velocity.y = -JUMP_VELOCITY;
     }
-    update(manager, inputComponent) {
-        if (inputComponent.isKeyDown("KeyD")) manager.transition("JUMP_FWD");
-        if (inputComponent.isKeyDown("KeyA")) manager.transition("JUMP_BWD");
+    update(manager, input) {
+        if (input.isKeyDown("KeyD")) manager.transition("JUMP_FWD");
+        if (input.isKeyDown("KeyA")) manager.transition("JUMP_BWD");
 
         manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
         manager.fighter.velocity.y += (GRAVITY * TIME.delta);
@@ -91,44 +98,62 @@ export class JumpForward extends Jump {
         super("JUMP_FWD");
     }
     enter(manager) {
-        manager.fighter.velocity.x = WALK_VELOCITY;
-    }
-    update(manager, inputComponent) {
+        manager.fighter.velocity.x = WALK_VELOCITY * manager.fighter.direction;
+    }//end enter
+    update(manager, input) {
         manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
         manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
         manager.fighter.velocity.y += (GRAVITY * TIME.delta);
+
+        EnsureOnScreen(manager.fighter);
         if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
-    }
+    }//end update
+}//end JumpState
+export class JumpBack extends Jump {
+    constructor(manager) {
+        super("JUMP_BWD");
+    }//end ctor
+    enter(manager) {
+        manager.fighter.velocity.x = -WALK_VELOCITY * manager.fighter.direction;
+    }//end enter
+    update(manager, input) {
+        manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
+        manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
+        manager.fighter.velocity.y += (GRAVITY * TIME.delta);
+
+        EnsureOnScreen(manager.fighter);
+        if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
+    }//end update
 }//end JumpState
 
-export class JumpBack extends Jump {
-    constructor() {
-        super("JUMP_BWD");
-    }
-    enter(manager) {
-        manager.fighter.velocity.x = -WALK_VELOCITY;
-    }
-    update(manager, inputComponent) {
-        manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
-        manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
-        manager.fighter.velocity.y += (GRAVITY * TIME.delta);
-        if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
-    }
-}//end JumpState
 export class LightAttack extends Idle {
     constructor() {
         super("LIGHT_ATTACK");
-    }
-    update(manager, inputComponent) {
-        super.update(manager, inputComponent);
-    }
+    }//end ctor
+    update(manager, input) {
+        let currentFrame = manager.fighter.spriteManager.currentFrame;
+        let lastFrame = manager.fighter.spriteManager.currentSprite.frames - 1;
+        console.log(`currentFrame: ${currentFrame}, lastFrame: ${lastFrame}`);
+        if (currentFrame != lastFrame) {
+            return;
+        } else {
+            manager.transition("IDLE");
+        }//end if-else
+    }//end update
 }//end Light Attack
 
 export class HeavyAttack extends Idle {
     constructor() {
         super("HEAVY_ATTACK");
     }
-    update(manager, inputComponent) {
-        super.update(manager, inputComponent);
+    update(manager, input) {
+        let currentFrame = manager.fighter.spriteManager.currentFrame;
+        let lastFrame = manager.fighter.spriteManager.currentSprite.frames - 1;
+        console.log(`currentFrame: ${currentFrame}, lastFrame: ${lastFrame}`);
+        if (currentFrame != lastFrame) {
+            return;
+        } else {
+            manager.transition("IDLE");
+        }
     }
-}//end Light Attack
+}//end Heavy Attack
