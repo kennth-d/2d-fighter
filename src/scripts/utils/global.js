@@ -29,12 +29,15 @@ export const TIME = {
     previous: 0,
 }
 
-export const PLAYER_ONE_START ={
+export const PLAYER_ONE_START = {
     x: (CANVAS_WIDTH / 2) - 98,
     y: FLOOR,
 }
 
-
+export const PLAYER_TWO_START = {
+    x: (CANVAS_WIDTH / 2) + 98,
+    y: FLOOR,
+}
 
 
 

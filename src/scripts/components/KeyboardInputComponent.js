@@ -1,8 +1,8 @@
-//inputLogger for debugging inputs
-
+import { CONTROL, CONTROLS_MAP } from "../utils/controls.js";
 //class for handling keyboard input.
 export class KeyboardInputComponent {
-    constructor() {
+    constructor(id) {
+        this.id = id;
         this.heldKeys = new Set();
         this.handleKeyDown = (event) => {
             this.heldKeys.add(event.code);
@@ -27,5 +27,29 @@ export class KeyboardInputComponent {
     isKeyUp(code) {
         return !this.heldKeys.has(code);
     }//end isKeyUp
+    isForward() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.FORWARD]);
+    }
+    isBackward() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.BACKWARD]);
+    }
+    isJump() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.JUMP]);
+    }
+    isCrouch() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.CROUCH]);
+    }
+    isLight() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.LIGHT_ATK]);
+    }
+    isHeavy() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.HEAVY_ATK]);
+    }
+    isSP_1() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.SPECIAL_1]);
+    }
+    isSP_2() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.SPECIAL_2]);
+    }
     
 }//end cls
