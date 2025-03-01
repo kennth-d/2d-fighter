@@ -1,5 +1,6 @@
 import { characterStates } from "../states/states.js";
-import { TIME } from "../utils/global.js";
+import { CANVAS_WIDTH, TIME } from "../utils/global.js";
+import { getDirection } from "../utils/utilityFunctions.js";
 // --- class for managing the player sprites ---//
 // ---------------------------------------------//
 export class FighterSpriteManager {
@@ -13,6 +14,9 @@ export class FighterSpriteManager {
         this.currentSprite = this.sprites.IDLE;
     }
     update(fighter) {
+        //update direction
+        fighter.direction = getDirection(fighter, fighter.opponent);
+
         //update sprite
         if (fighter.stateManager.activeState.name != this.currentSprite.name) {
             this.changeSprite(fighter.stateManager.activeState.name);
@@ -26,25 +30,26 @@ export class FighterSpriteManager {
         }//end if
     }//end update
     drawSprite(ctx, fighter) {
+
         let width = this.currentSprite.img.width;
         let height = this.currentSprite.img.height;
         
-        this.currentSprite.img.style.border="20px solid white";
         ctx.scale(fighter.direction, 1);
+
+        //mirroring the image with scale flips the canvas origin to the opposite side.
+        //thus needs to be accounted for by adding width to dX only if it is mirrored.
+        let dX = (fighter.direction < 0) ? (fighter.pos.x + width) * fighter.direction : fighter.pos.x * fighter.direction;
         ctx.drawImage(this.currentSprite.img,
             this.currentFrame * this.currentSprite.img.width,  //sX
             0,                                                 //sY
-            width,                      //sWidth
-            height,                     //sHeight
-            // fighter.pos.x * fighter.direction,                 //dX
-            // fighter.pos.y,
-            fighter.pos.x * fighter.direction,                 //dX
+            width,                                             //sWidth
+            height,                                            //sHeight
+            dX,       //dX
             fighter.pos.y,                                     //dY
-            width,                      //dWidth
-            height,                     //dHeight
+            width,                                             //dWidth
+            height,                                            //dHeight
         );
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-
         
         if (fighter.debug) {
             this.draw_debug(ctx, fighter);
@@ -52,12 +57,21 @@ export class FighterSpriteManager {
     }//end draw
 
     draw_debug(ctx, fighter) {  
-
-        let offset = this.currentSprite.originOffset;
-        fighter.origin.x =  fighter.pos.x + ( fighter.direction * (this.currentSprite.img.width - offset) / 2);
-        fighter.origin.y = fighter.pos.y + (this.currentSprite.img.height - 8);
         ctx.lineWidth = 1;
 
+        //draw x, y
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.moveTo(fighter.pos.x, fighter.pos.y-5);
+        ctx.lineTo(fighter.pos.x, fighter.pos.y+5);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(fighter.pos.x-5, fighter.pos.y);
+        ctx.lineTo(fighter.pos.x+5, fighter.pos.y);
+        ctx.stroke();
+
+        //draw origin points
         //draw vertical
         ctx.beginPath();
         ctx.strokeStyle = "red";
@@ -70,10 +84,15 @@ export class FighterSpriteManager {
         ctx.moveTo(fighter.origin.x-5, fighter.origin.y);
         ctx.lineTo(fighter.origin.x+5, fighter.origin.y);
         ctx.stroke();
-        ctx.font = "20px serif";
+
+        //draw active state 
+        ctx.font = "10px serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
         ctx.fillStyle = "white";
 
-        ctx.fillText(fighter.stateManager.activeState.name, 169, 50);
+        let x = CANVAS_WIDTH/2 + -(50 * fighter.direction); //where to draw text
+        ctx.fillText(fighter.stateManager.activeState.name, x, 25);
     }//end draw_debug
 
     changeSprite(state) {
