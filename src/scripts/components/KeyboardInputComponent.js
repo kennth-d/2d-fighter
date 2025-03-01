@@ -1,4 +1,5 @@
 import { CONTROL, CONTROLS_MAP } from "../utils/controls.js";
+import { OpponentDirection } from "../utils/global.js";
 //class for handling keyboard input.
 export class KeyboardInputComponent {
     constructor(id) {
@@ -18,8 +19,8 @@ export class KeyboardInputComponent {
         window.addEventListener("keyup", this.handleKeyUp);
     }//end registerListeners
     removeListeners() {
-        window.removeEventListener("keydown", handleKeyDown);
-        window.removeEventListener("keydown", handleKeyUp);
+        window.removeEventListener("keydown", this.handleKeyDown);
+        window.removeEventListener("keydown", this.handleKeyUp);
     }//end removeListeners
     isKeyDown(code) {
         return this.heldKeys.has(code);
@@ -27,11 +28,17 @@ export class KeyboardInputComponent {
     isKeyUp(code) {
         return !this.heldKeys.has(code);
     }//end isKeyUp
-    isForward() {
-        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.FORWARD]);
+    isLeft() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.LEFT]);
     }
-    isBackward() {
-        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.BACKWARD]);
+    isRight() {
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.RIGHT]);
+    }
+    isForward(fighter) {
+        return (fighter.direction === OpponentDirection.RIGHT) ? this.isRight() : this.isLeft();
+    }
+    isBackward(fighter) {
+        return (fighter.direction === OpponentDirection.LEFT) ? this.isRight() : this.isLeft();
     }
     isJump() {
         return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.JUMP]);
