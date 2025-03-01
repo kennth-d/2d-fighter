@@ -13,8 +13,6 @@ export const LEFT_BOUNDARY = 0;
 export const RIGHT_BOUNDARY = CANVAS_WIDTH;
 export const FLOOR = CANVAS_HEIGHT - 100;
 
-export const FIGHTER_WIDTH = 16;
-
 //game settings
 export const SETTINGS = {
     rounds: 3,  
@@ -35,10 +33,13 @@ export const PLAYER_ONE_START = {
 }
 
 export const PLAYER_TWO_START = {
-    x: (CANVAS_WIDTH / 2) + 98,
+    x: (CANVAS_WIDTH / 2) + 48,
     y: FLOOR,
 }
 
-
+export const OpponentDirection = {
+    RIGHT: 1,
+    LEFT: -1,
+}
 
 
