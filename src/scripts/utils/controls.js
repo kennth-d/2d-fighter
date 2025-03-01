@@ -1,6 +1,6 @@
 export const CONTROL = {
-    BACKWARD: "backward",
-    FORWARD: "forward",
+    LEFT: "left",
+    RIGHT: "right",
     JUMP: "up",
     CROUCH: "down",
     LIGHT_ATK: "light_atk",
@@ -13,8 +13,8 @@ export const CONTROL = {
 export const CONTROLS_MAP = [
     {
         keyboard: {
-            [CONTROL.BACKWARD]: "KeyA",
-            [CONTROL.FORWARD]: "KeyD",
+            [CONTROL.LEFT]: "KeyA",
+            [CONTROL.RIGHT]: "KeyD",
             [CONTROL.JUMP]: "KeyW",
             [CONTROL.CROUCH]: "KeyS",
             [CONTROL.LIGHT_ATK]: "KeyH",
@@ -25,8 +25,8 @@ export const CONTROLS_MAP = [
     },
     {
         keyboard: {
-            [CONTROL.BACKWARD]: "ArrowLeft",
-            [CONTROL.FORWARD]: "ArrowRight",
+            [CONTROL.LEFT]: "ArrowLeft",
+            [CONTROL.RIGHT]: "ArrowRight",
             [CONTROL.JUMP]: "ArrowUp",
             [CONTROL.CROUCH]: "ArrowDown",
             [CONTROL.LIGHT_ATK]: "KeyY",
