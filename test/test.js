@@ -24,10 +24,13 @@ window.onload = function () {
 
     const player2 = new Fighter_001(PLAYER_TWO_START.x, PLAYER_TWO_START.y, 1, new KeyboardInputComponent(), new FighterStateManager(), new FighterSpriteManager(F_002SpriteData));
     player2.stateManager.fighter = player2;
-    
+
     player.debug = true;
     player2.debug = true;
 
+    player.opponent = player2;
+    player2.opponent = player;
+    
     window.addEventListener("keypress", (e) => {
         if (e.code === "Space") {
             console.log(player);
@@ -41,17 +44,19 @@ window.onload = function () {
         //update time
         TIME.delta = (timeStamp - TIME.previous) / 1000;
         TIME.previous = timeStamp;
-
+        
         //clears the screen
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
 
-        //update/draw player
+        //update players
         player.update();
         player2.update();
 
-        player.draw(ctx);
+        //draw players
         player2.draw(ctx);
+        player.draw(ctx);
     }//end frame
 
     window.requestAnimationFrame(frame);
