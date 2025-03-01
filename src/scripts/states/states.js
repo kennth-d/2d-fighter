@@ -1,7 +1,7 @@
 // --- Base state class and Fighter states classes are defined here -- //
 
 import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
-import { EnsureOnScreen } from "../utils/utilityFunctions.js";
+import { EnsureOnScreen, getDirection } from "../utils/utilityFunctions.js";
 export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
 //--- State Infterface ---//
@@ -34,17 +34,18 @@ export class Idle extends State {
     }
     update(manager, input) {
         manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
-        if (input.isKeyDown("KeyJ")) {
+        
+        if (input.isLight()) {
             manager.transition("LIGHT_ATTACK"); 
             return; }
-        if (input.isKeyDown("KeyK"))  {
+        if (input.isHeavy())  {
             manager.transition("HEAVY_ATTACK");
             return;
         };
     
-        if (input.isKeyDown('KeyD')) manager.transition("WALK_FWD");
-        if (input.isKeyDown("KeyA")) manager.transition("WALK_BWD");
-        if (input.isKeyDown("KeyW")) manager.transition("JUMP");
+        if (input.isForward(manager.fighter)) manager.transition("WALK_FWD");
+        if (input.isBackward(manager.fighter)) manager.transition("WALK_BWD");
+        if (input.isJump()) manager.transition("JUMP");
     }
 }//end Idle
 
@@ -57,7 +58,7 @@ export class WalkFwd extends Idle {
     }//end enter
     update(manager,input) {
         EnsureOnScreen(manager.fighter);
-        if (input.isKeyUp("KeyD")) manager.transition("IDLE");
+        if (!input.isForward(manager.fighter)) manager.transition("IDLE");
         super.update(manager, input);
     }//end update
 }//end WalkFwd
@@ -71,7 +72,7 @@ export class WalkBwd extends Idle {
     }//end enter
     update(manager, input) {
         EnsureOnScreen(manager.fighter);
-        if (input.isKeyUp("KeyA")) manager.transition("IDLE");    
+        if (!input.isBackward(manager.fighter)) manager.transition("IDLE");
         super.update(manager, input);
     }//end update
 }//end WalkFwd
@@ -84,8 +85,8 @@ export class Jump extends State {
         manager.fighter.velocity.y = -JUMP_VELOCITY;
     }
     update(manager, input) {
-        if (input.isKeyDown("KeyD")) manager.transition("JUMP_FWD");
-        if (input.isKeyDown("KeyA")) manager.transition("JUMP_BWD");
+        if (input.isForward(manager.fighter)) manager.transition("JUMP_FWD");
+        if (input.isBackward(manager.fighter)) manager.transition("JUMP_BWD");
 
         manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
         manager.fighter.velocity.y += (GRAVITY * TIME.delta);
@@ -133,7 +134,6 @@ export class LightAttack extends Idle {
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
         let lastFrame = manager.fighter.spriteManager.currentSprite.frames - 1;
-        console.log(`currentFrame: ${currentFrame}, lastFrame: ${lastFrame}`);
         if (currentFrame != lastFrame) {
             return;
         } else {
@@ -149,7 +149,6 @@ export class HeavyAttack extends Idle {
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
         let lastFrame = manager.fighter.spriteManager.currentSprite.frames - 1;
-        console.log(`currentFrame: ${currentFrame}, lastFrame: ${lastFrame}`);
         if (currentFrame != lastFrame) {
             return;
         } else {
