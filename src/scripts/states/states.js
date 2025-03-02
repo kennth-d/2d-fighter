@@ -1,7 +1,7 @@
 // --- Base state class and Fighter states classes are defined here -- //
 
 import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
-import { EnsureOnScreen, getDirection } from "../utils/utilityFunctions.js";
+import { EnsureOnScreen } from "../utils/utilityFunctions.js";
 export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
 //--- State Infterface ---//

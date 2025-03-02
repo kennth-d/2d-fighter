@@ -4,6 +4,7 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 10,
+        originOffset: {x: 0, y: 8},
         delay: 1.5,
     },
     BLOCK: {
@@ -11,12 +12,14 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 1,
+        originOffset: {x: 0, y: 8},
     },
     WALK_FWD: {
         src: "../src/assets/images/fighters/F002/F002 walk fwd 48x48.png",
         width: 48,
         height: 48,
         frames: 8,
+        originOffset: {x: 0, y: 8},
         delay: 1.05,
     },
     WALK_BWD: {
@@ -24,6 +27,7 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 8,
+        originOffset: {x: 0, y: 8},
         delay: 1.05,
     },
     DASH: {
@@ -31,12 +35,14 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 9,
+        originOffset: {x: 0, y: 8},
     },
     CROUCH: {
         src: "../src/assets/images/fighters/F002/F002 crouch 48x48.png",
         width: 48,
         height: 48,
         frames: 10,
+        originOffset: {x: 0, y: 8},
     },
     // CROUCH_ATTACK: {
     //     src: undefined,
@@ -48,14 +54,15 @@ export const F_002SpriteData = {
         src: "../src/assets/images/fighters/F002/F002 light attack 48x48.png",
         width: 48,
         height: 48,
-        frames: 10
+        frames: 10,
+        originOffset: {x: 0, y: 8},
     },
     HEAVY_ATTACK: {
         src: "../src/assets/images/fighters/F002/F002 heavy attack 64x48.png",
         width: 65,
         height: 48,
         frames: 7,
-        originOffset: 18,
+        originOffset: {x: 18, y: 8},
         delay: 2,
     },
     SP_1: {
@@ -76,6 +83,7 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 6,
+        originOffset: {x: 0, y: 8},
         delay: 2,
     },
     JUMP_FWD: {
@@ -83,6 +91,7 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 6,
+        originOffset: {x: 0, y: 8},
         delay: 2,
     },
     JUMP_BWD: {
@@ -90,25 +99,29 @@ export const F_002SpriteData = {
         width: 48,
         height: 48,
         frames: 6,
+        originOffset: {x: 0, y: 8},
         delay: 2,
     },
     JUMP_ATTACK: {
         src: "../src/assets/images/fighters/F002/F002 jump attack 48x48.png",
         width: 48,
         height: 48,
+        originOffset: {x: 0, y: 8},
         frames: 6
     },
     HURT: {
         src: "../src/assets/images/fighters/F002/F002 hurt 48x48.png",
         width: 48,
         height: 48,
-        frames: 4
+        frames: 4,
+        originOffset: {x: 0, y: 8},
     },
     KNOCKBACK: {
         src: "../src/assets/images/fighters/F002/F002 knockback 48x48.png",
         width: 48,
         height: 48,
-        frames: 7
+        frames: 7,
+        originOffset: {x: 0, y: 8},
     },
     DEATH: {
         src: "../src/assets/images/fighters/F002/F002 death 64x64.png",

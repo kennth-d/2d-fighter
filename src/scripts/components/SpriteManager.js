@@ -1,6 +1,5 @@
 import { characterStates } from "../states/states.js";
-import { CANVAS_WIDTH, TIME } from "../utils/global.js";
-import { getDirection } from "../utils/utilityFunctions.js";
+import { CANVAS_WIDTH, DEFAULT_PUSHBOX, TIME } from "../utils/global.js";
 // --- class for managing the player sprites ---//
 // ---------------------------------------------//
 export class FighterSpriteManager {
@@ -14,9 +13,6 @@ export class FighterSpriteManager {
         this.currentSprite = this.sprites.IDLE;
     }
     update(fighter) {
-        //update direction
-        fighter.direction = getDirection(fighter, fighter.opponent);
-
         //update sprite
         if (fighter.stateManager.activeState.name != this.currentSprite.name) {
             this.changeSprite(fighter.stateManager.activeState.name);
@@ -38,13 +34,14 @@ export class FighterSpriteManager {
 
         //mirroring the image with scale flips the canvas origin to the opposite side.
         //thus needs to be accounted for by adding width to dX only if it is mirrored.
-        let dX = (fighter.direction < 0) ? (fighter.pos.x + width) * fighter.direction : fighter.pos.x * fighter.direction;
+        let offsetX = this.currentSprite.originOffset.x;
+        let dX = (fighter.direction < 0) ? (fighter.pos.x + width - offsetX) * fighter.direction : fighter.pos.x;
         ctx.drawImage(this.currentSprite.img,
             this.currentFrame * this.currentSprite.img.width,  //sX
             0,                                                 //sY
             width,                                             //sWidth
             height,                                            //sHeight
-            dX,       //dX
+            dX,                                                //dX
             fighter.pos.y,                                     //dY
             width,                                             //dWidth
             height,                                            //dHeight
@@ -62,27 +59,41 @@ export class FighterSpriteManager {
         //draw x, y
         ctx.beginPath();
         ctx.strokeStyle = "white";
-        ctx.moveTo(fighter.pos.x, fighter.pos.y-5);
-        ctx.lineTo(fighter.pos.x, fighter.pos.y+5);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(fighter.pos.x-5, fighter.pos.y);
-        ctx.lineTo(fighter.pos.x+5, fighter.pos.y);
+        //vertical line 
+        ctx.moveTo(Math.floor(fighter.pos.x) + 0.5, Math.floor(fighter.pos.y-5) + 0.5);
+        ctx.lineTo(Math.floor(fighter.pos.x) + 0.5, Math.floor(fighter.pos.y+5) + 0.5);
+        //horizontal line
+        ctx.moveTo(Math.floor(fighter.pos.x-5) + 0.5, Math.floor(fighter.pos.y) + 0.5);
+        ctx.lineTo(Math.floor(fighter.pos.x+5) + 0.5, Math.floor(fighter.pos.y) + 0.5);
         ctx.stroke();
 
         //draw origin points
-        //draw vertical
         ctx.beginPath();
+        //vertical line 
         ctx.strokeStyle = "red";
-        ctx.moveTo(fighter.origin.x, fighter.origin.y-5);
-        ctx.lineTo(fighter.origin.x, fighter.origin.y+5);
+        ctx.moveTo(Math.floor(fighter.origin.x) + 0.5, Math.floor(fighter.origin.y-5) + 0.5);
+        ctx.lineTo(Math.floor(fighter.origin.x) + 0.5, Math.floor(fighter.origin.y+5) + 0.5);
+        //horizontal line
+        ctx.moveTo(Math.floor(fighter.origin.x-5) + 0.5, Math.floor(fighter.origin.y) + 0.5);
+        ctx.lineTo(Math.floor(fighter.origin.x+5) + 0.5, Math.floor(fighter.origin.y) + 0.5);
         ctx.stroke();
 
-        //draw horizontal
+        //draw pushBox
         ctx.beginPath();
-        ctx.moveTo(fighter.origin.x-5, fighter.origin.y);
-        ctx.lineTo(fighter.origin.x+5, fighter.origin.y);
+        ctx.strokeStyle = "#55FF55";
+        ctx.fillStyle = "#55FF5555";
+        ctx.fillRect(
+            Math.floor(fighter.pushBox.x) + 0.5,
+            Math.floor(fighter.pushBox.y) + 0.5,
+            fighter.pushBox.width,
+            fighter.pushBox.height,
+        );
+        ctx.rect(
+            Math.floor(fighter.pushBox.x) + 0.5,
+            Math.floor(fighter.pushBox.y) + 0.5,
+            fighter.pushBox.width,
+            fighter.pushBox.height,
+        );
         ctx.stroke();
 
         //draw active state 
@@ -111,6 +122,7 @@ export class FighterSpriteManager {
                 frames: spriteData[state].frames,
                 originOffset: (spriteData[state].originOffset != undefined) ? spriteData[state].originOffset : 0,
                 delay: (spriteData[state].delay != undefined) ? spriteData[state].delay : 1,
+                pushBox: (spriteData[state].pushBox != undefined) ? spriteData[state].pushBox : DEFAULT_PUSHBOX,
             }
             this.sprites[state].img.src = spriteData[state].src;
         })//end for

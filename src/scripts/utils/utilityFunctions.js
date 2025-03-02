@@ -12,11 +12,10 @@ export function EnsureOnScreen(fighter) {
     }//end if-else if
 }//end isAtLeftBoundary
 
-export function getDirection(player, opponent) {
-    if (player.origin.x >= opponent.origin.x) {
-        return OpponentDirection.LEFT;
-    } else {
-        return OpponentDirection.RIGHT;
+export function correctDirection(player, opponent) {
+    if (player.origin.x > opponent.origin.x) {
+        player.direction = OpponentDirection.LEFT;
+    } else if (player.origin.x < opponent.origin.x) {
+        player.direction = OpponentDirection.RIGHT;
     }//end if-else
 }// end getDirection
-

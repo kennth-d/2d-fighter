@@ -37,9 +37,12 @@ export const PLAYER_TWO_START = {
     y: FLOOR,
 }
 
+export const DEFAULT_PUSHBOX = {
+    width: 11, 
+    height: 30
+};
+
 export const OpponentDirection = {
     RIGHT: 1,
     LEFT: -1,
 }
-
-

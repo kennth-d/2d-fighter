@@ -10,6 +10,7 @@ export class FighterBaseClass {
         this.pos = {x: x, y: y};
         this.origin = {x: 0, y: 0};
         this.velocity = {x: 0, y: 0};
+        this.pushBox = {x: 0, y: 0, width: 0, height: 0};
         
         //this.currentFrame = 0;    
     }//end ctor
