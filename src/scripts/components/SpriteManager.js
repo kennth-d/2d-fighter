@@ -80,6 +80,16 @@ export class FighterSpriteManager {
 
         //draw pushBox
         ctx.beginPath();
+        //vertical line 
+        ctx.strokeStyle = "blue";
+        ctx.moveTo(Math.floor(fighter.pushBox.x) + 0.5, Math.floor(fighter.pushBox.y-5) + 0.5);
+        ctx.lineTo(Math.floor(fighter.pushBox.x) + 0.5, Math.floor(fighter.pushBox.y+5) + 0.5);
+        //horizontal line
+        ctx.moveTo(Math.floor(fighter.pushBox.x-5) + 0.5, Math.floor(fighter.pushBox.y) + 0.5);
+        ctx.lineTo(Math.floor(fighter.pushBox.x+5) + 0.5, Math.floor(fighter.pushBox.y) + 0.5);
+        ctx.stroke();
+
+        ctx.beginPath();
         ctx.strokeStyle = "#55FF55";
         ctx.fillStyle = "#55FF5555";
         ctx.fillRect(
@@ -102,7 +112,8 @@ export class FighterSpriteManager {
         ctx.textBaseline = "middle";
         ctx.fillStyle = "white";
 
-        let x = CANVAS_WIDTH/2 + -(50 * fighter.direction); //where to draw text
+        let x = (fighter.playerId  < 1) ? -50 : 50; //where to draw text
+        x += CANVAS_WIDTH/2;
         ctx.fillText(fighter.stateManager.activeState.name, x, 25);
     }//end draw_debug
 
