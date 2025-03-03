@@ -1,6 +1,6 @@
 # Main Tasks
 - [ ] Finish Character states (special_1, special_2, jump_atk, crouch, block)
-- [ ] Add collision/hit boxes and detection
+- [ ] hit boxes and detection
 - [ ] Create how-to screen
 - [ ] Create settings screen
 - [ ] Create round end screen
