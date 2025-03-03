@@ -1,7 +1,7 @@
 // --- Base state class and Fighter states classes are defined here -- //
 
 import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
-export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
+export const characterStates = ["IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
 //--- State Infterface ---//
 export class State {
@@ -41,12 +41,26 @@ export class Idle extends State {
             manager.transition("HEAVY_ATTACK");
             return;
         };
-    
+        
+        if (input.isCrouch(manager.fighter)) manager.transition("CROUCH");
         if (input.isForward(manager.fighter)) manager.transition("WALK_FWD");
         if (input.isBackward(manager.fighter)) manager.transition("WALK_BWD");
         if (input.isJump()) manager.transition("JUMP");
     }
 }//end Idle
+
+export class Crouch extends Idle {
+    constructor() {
+        super("CROUCH");
+    }//end ctor
+    enter(manager) {
+        super.enter(manager);
+    }//end enter
+    update(manager, input) {
+        if (!input.isCrouch(manager.fighter)) manager.transition("IDLE");
+        super.update(manager, input);
+    }//end update
+}
 
 export class WalkFwd extends Idle {
     constructor() {
