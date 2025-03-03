@@ -1,9 +1,10 @@
-import { Idle, WalkFwd, WalkBwd, Jump, LightAttack, HeavyAttack, JumpForward, JumpBack } from "../states/states.js";
+import { Idle, Crouch, WalkFwd, WalkBwd, Jump, LightAttack, HeavyAttack, JumpForward, JumpBack } from "../states/states.js";
 
 export class FighterStateManager {
     constructor() {
         this.states = {
             IDLE: new Idle(),
+            CROUCH: new Crouch(),
             WALK_FWD: new WalkFwd(),
             WALK_BWD: new WalkBwd(),
             JUMP: new Jump(),
