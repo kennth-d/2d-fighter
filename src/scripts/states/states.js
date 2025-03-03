@@ -1,7 +1,6 @@
 // --- Base state class and Fighter states classes are defined here -- //
 
 import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
-import { EnsureOnScreen } from "../utils/utilityFunctions.js";
 export const characterStates = ["IDLE", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
 //--- State Infterface ---//
@@ -57,7 +56,6 @@ export class WalkFwd extends Idle {
         manager.fighter.velocity.x = WALK_VELOCITY * manager.fighter.direction;
     }//end enter
     update(manager,input) {
-        EnsureOnScreen(manager.fighter);
         if (!input.isForward(manager.fighter)) manager.transition("IDLE");
         super.update(manager, input);
     }//end update
@@ -71,7 +69,6 @@ export class WalkBwd extends Idle {
         manager.fighter.velocity.x = -WALK_VELOCITY * manager.fighter.direction;
     }//end enter
     update(manager, input) {
-        EnsureOnScreen(manager.fighter);
         if (!input.isBackward(manager.fighter)) manager.transition("IDLE");
         super.update(manager, input);
     }//end update
@@ -106,7 +103,6 @@ export class JumpForward extends Jump {
         manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
         manager.fighter.velocity.y += (GRAVITY * TIME.delta);
 
-        EnsureOnScreen(manager.fighter);
         if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
     }//end update
 }//end JumpState
@@ -122,7 +118,6 @@ export class JumpBack extends Jump {
         manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
         manager.fighter.velocity.y += (GRAVITY * TIME.delta);
 
-        EnsureOnScreen(manager.fighter);
         if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
     }//end update
 }//end JumpState
