@@ -1,3 +1,16 @@
+//** All data for F001 sprites is in this file.
+// default image size is 48x48.
+// format:
+// STATE: {
+//          src: the image source
+//          width: frame width
+//          height: frame height
+//          frames: total number of frames in the image
+//          originOffset: {x:(thisWidth - 48), y:(thisHeight - 40)}
+//          delay: (n) slows the animation down by n.
+//          pushBox: {width, height}  Default values: {15, 30}
+// */
+
 export const F_001SpriteData = {
     IDLE: {
         src :"../src/assets/images/fighters/F001/F001 idle 48x48.png",
@@ -43,6 +56,7 @@ export const F_001SpriteData = {
         height: 48,
         frames: 10,
         originOffset: {x: 0, y: 8},
+        pushBox: {width: 20, height: 20}
     },
     // CROUCH_ATTACK: {
     //     src: undefined,
