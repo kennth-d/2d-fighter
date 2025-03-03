@@ -38,7 +38,7 @@ export const PLAYER_TWO_START = {
 }
 
 export const DEFAULT_PUSHBOX = {
-    width: 11, 
+    width: 15, 
     height: 30
 };
 

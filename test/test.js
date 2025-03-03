@@ -36,6 +36,11 @@ window.onload = function () {
             console.log(player);
             console.log(player2);
         }
+        if (e.code === "KeyV") {
+            console.log(e.code);
+            player.debug = Boolean(Math.abs(player.debug - 1));
+            player2.debug = Boolean(Math.abs(player2.debug - 1));
+        }
     });
     
     function frame (timeStamp) {
