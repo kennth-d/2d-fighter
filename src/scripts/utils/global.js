@@ -3,6 +3,9 @@ export const CANVAS = document.querySelector("canvas");
 export const CANVAS_WIDTH = CANVAS.width;
 export const CANVAS_HEIGHT = CANVAS.height;
 
+// device pixel ratio
+export const DPR = window.devicePixelRatio || 1;
+
 //Physics
 export const JUMP_VELOCITY = 350;
 export const WALK_VELOCITY = 150;
@@ -27,16 +30,19 @@ export const TIME = {
     previous: 0,
 }
 
+//left side start
 export const PLAYER_ONE_START = {
     x: (CANVAS_WIDTH / 2) - 98,
     y: FLOOR,
 }
 
+//right side start
 export const PLAYER_TWO_START = {
     x: (CANVAS_WIDTH / 2) + 48,
     y: FLOOR,
 }
 
+//pushbox defaults
 export const DEFAULT_PUSHBOX = {
     width: 15, 
     height: 30
