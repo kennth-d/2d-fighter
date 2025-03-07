@@ -53,7 +53,8 @@ export class FighterSpriteManager {
         }//end if
     }//end draw
 
-    draw_debug(ctx, fighter) {  
+    draw_debug(ctx, fighter) {
+        ctx.save();
         ctx.lineWidth = 1;
 
         //draw x, y
@@ -114,7 +115,9 @@ export class FighterSpriteManager {
 
         let x = (fighter.playerId  < 1) ? -50 : 50; //where to draw text
         x += CANVAS_WIDTH/2;
-        ctx.fillText(fighter.stateManager.activeState.name, x, 25);
+        ctx.fillText(fighter.stateManager.activeState.name, x, 50);
+        ctx.restore();
+
     }//end draw_debug
 
     changeSprite(state) {
