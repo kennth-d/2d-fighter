@@ -1,7 +1,7 @@
 import { Idle, Crouch, WalkFwd, WalkBwd, Jump, LightAttack, HeavyAttack, JumpForward, JumpBack } from "../states/states.js";
 
 export class FighterStateManager {
-    constructor() {
+    constructor(fighter) {
         this.states = {
             IDLE: new Idle(),
             CROUCH: new Crouch(),
@@ -15,7 +15,7 @@ export class FighterStateManager {
 
         }//end states
         this.activeState = this.states.IDLE;
-        this.fighter;
+        this.fighter = fighter;
     }//end ctor
     transition(newState) {
         this.activeState = this.states[newState];
