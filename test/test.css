@@ -19,6 +19,7 @@ body {
     image-rendering: crisp-edges;
     width: 100%;
     z-index: 1;
+
 }
 img {
     display: none;
