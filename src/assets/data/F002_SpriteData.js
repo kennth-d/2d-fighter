@@ -11,8 +11,7 @@
 //          pushBox: {width, height}  Default values: {15, 30}
 // */
 
-
-export const F_002SpriteData = {
+export const F002_SpriteData = {
     IDLE: {
         src :"../src/assets/images/fighters/F002/F002 idle 48x48.png",
         width: 48,
@@ -77,7 +76,7 @@ export const F_002SpriteData = {
         width: 65,
         height: 48,
         frames: 7,
-        originOffset: {x: 18, y: 8},
+        originOffset: {x: 17, y: 8},
         delay: 2,
     },
     SP_1: {

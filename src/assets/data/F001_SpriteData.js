@@ -11,7 +11,7 @@
 //          pushBox: {width, height}  Default values: {15, 30}
 // */
 
-export const F_001SpriteData = {
+export const F001_SpriteData = {
     IDLE: {
         src :"../src/assets/images/fighters/F001/F001 idle 48x48.png",
         width: 48,
