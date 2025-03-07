@@ -1,14 +1,17 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
 import { correctDirection } from "../utils/utils.js";
 import { resolveCollision } from "../utils/collision.js";
+import { FighterStateManager } from "../components/FighterStateManager.js";
+import { FighterSpriteManager } from "../components/SpriteManager.js"
+import {F001_SpriteData} from "../../assets/data/F001_SpriteData.js";
 //Fighter_001 class
 export class Fighter_001 extends FighterBaseClass {
-    constructor(x, y, playerId, inputComponent, stateManager, spriteManager) {
+    constructor(x, y, playerId, inputComponent) {
         super(x, y, playerId);
 
         this.opponent = undefined;
-        this.stateManager = stateManager;
-        this.spriteManager = spriteManager;
+        this.stateManager = new FighterStateManager(this);
+        this.spriteManager = new FighterSpriteManager(F001_SpriteData);
         this.input = inputComponent;
         this.input.id = playerId;
     }//end ctor
