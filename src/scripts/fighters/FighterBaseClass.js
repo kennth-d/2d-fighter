@@ -15,7 +15,7 @@ export class FighterBaseClass {
         //this.currentFrame = 0;    
     }//end ctor
 
-    update(ctx) {
+    update() {
         throw new Error("update method must be implemented.");
     }//end update
     draw(ctx) {
