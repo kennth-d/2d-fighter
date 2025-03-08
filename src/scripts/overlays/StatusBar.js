@@ -1,4 +1,4 @@
-import {CANVAS_WIDTH, DPR, SETTINGS } from "../utils/global.js";
+import {CANVAS_WIDTH, DPR, SETTINGS, TIME } from "../utils/global.js";
 import { STATUS } from "../../assets/data/StatusBarData.js"
 
 export class StatusBar {
@@ -6,7 +6,7 @@ export class StatusBar {
     constructor(fighters) {
         this.fighters = fighters
         this.timer = SETTINGS.roundTime;
-        this.delayTimer = 0;
+        this.timeTimer = 0;
         this.rounds = new Array(SETTINGS.rounds);
         this.health;
         this.energy;
@@ -22,25 +22,25 @@ export class StatusBar {
             overlay: new Image(STATUS.HEALTH.WIDTH, STATUS.HEALTH.HEIGHT),
             dx: 45,
             dy: 5,
-        },
+        };
         this.energy = {
             background: new Image(STATUS.ENERGY.WIDTH, STATUS.ENERGY.HEIGHT),
             overlay: new Image(STATUS.ENERGY.WIDTH, STATUS.ENERGY.HEIGHT),
             dx: 45,
             dy: 24,
-        }
+        };
         this.clock = {
             background: new Image(STATUS.CLOCK.WIDTH, STATUS.CLOCK.HEIGHT),
             dx: CANVAS_WIDTH/2 - STATUS.CLOCK.WIDTH/2,
             dy: 5,
-        }
+        };
         this.round = {
             background: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             win: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             lose: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             dx: CANVAS_WIDTH/2 - (this.rounds.length * STATUS.ROUND.WIDTH)/2,
             dy: 30,
-        }
+        };
 
         //bind the health and stamina images to their source.
         this.health.background.src = STATUS.HEALTH.BACKGROUND;
@@ -61,8 +61,15 @@ export class StatusBar {
         console.log(this);
     }//end setup
     update() {
-        return;
-    }
+        this.updateTime();
+    }//end updateTime
+    updateTime() {
+        if (TIME.previous > this.timeTimer + 1000) {
+            if (this.timer > 0) this.timer -= 1;
+            this.timeTimer = TIME.previous;
+        }
+        if (this.timer === 0) this.reset();
+    }//end updateTime
     draw(ctx) {
         //draw health
         this.drawElement(ctx, this.health, 1);
@@ -131,7 +138,7 @@ export class StatusBar {
             width, height
         )//end draw overlay
 
-        //draw overlay
+        //time
         ctx.scale(DPR, DPR);
         ctx.font = "200 14px RobotoFlex-Regular";
         ctx.texAlign = "center";
@@ -139,7 +146,8 @@ export class StatusBar {
         ctx.fillStyle = "white";
         let textDx = CANVAS_WIDTH/2 - 49.5
         let textDy = this.clock.dy + 13;   // +10 needed to center text.
-        ctx.fillText(this.timer, textDx, textDy);
+        let stringTime = String(this.timer).padStart(3, "00");
+        ctx.fillText(stringTime, textDx, textDy);
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
@@ -187,7 +195,7 @@ export class StatusBar {
         this.timer = duration;
     }//end setTimer
     reset() {
-        this.timer = StatusBar.DEFAULT_TIMER;
-        this.rounds = []
-    }
+        this.timer = SETTINGS.roundTime;
+        this.rounds = new Array(SETTINGS.rounds);
+    }//end reset
 }//end cls StatusBar
