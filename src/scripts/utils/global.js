@@ -14,7 +14,7 @@ export const GRAVITY = 1100;
 //Screen Boundaries
 export const LEFT_BOUNDARY = 0;
 export const RIGHT_BOUNDARY = CANVAS_WIDTH;
-export const FLOOR = CANVAS_HEIGHT - 100;
+export const FLOOR = CANVAS_HEIGHT - 78;
 
 //game settings
 export const SETTINGS = {
