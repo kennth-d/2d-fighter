@@ -1,4 +1,4 @@
-//All data for StatusBar sprites is in this file.
+//Sprites related to player status.
 export const STATUS = {
     HEALTH: {
         BACKGROUND: "../src/assets/images/status/health-bar-bg 128 x 16.png",
