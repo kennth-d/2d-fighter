@@ -115,12 +115,6 @@ export const F001_SpriteData = {
         originOffset: {x: 0, y: 8},
         delay: 2,
     },
-    // JUMP_ATTACK: {
-    //     src: undefined,
-    //     width: undefined,
-    //     height: undefined,
-    //     frames: undefined
-    // },
     HURT: {
         src: "../src/assets/images/fighters/F001/F001 hurt 48x48.png",
         width: 48,
