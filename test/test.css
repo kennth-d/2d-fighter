@@ -5,81 +5,20 @@
 html,
 body {
     height: 100%;
-    overflow: hidden;
 }
 body {
     display: flex;
 }
-#screen, #ui-overlay {
+canvas{
     position: absolute;
-}
-#screen {
     object-fit: contain;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    width: 100%;
-    z-index: 1;
-
+    width:100%;
+    height: auto;
+    right: 0;
+    bottom: 0;
 }
 img {
     display: none;
 }
-/** UI Overlay styling**/
-#ui-overlay {
-    width: 100%;
-    height: 10%;
-    z-index: 2;
-}
-#p1 {
-    width: 46%;
-    float: left;
-    justify-items: right;
-}
-#clock {
-    margin-left: 1%;
-    margin-right: 1%;
-    width: 6%;
-    float: left;
-    color: white;
-    background-color: darkslategrey;
-    text-align: center;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-#p2 {
-    width: 46%;
-    float: right;
-}
-/** Health and Energy Bars **/
-progress {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-bottom:5px;
-}
-::-moz-progress-bar {
-    background-color: #2e2e2e;
-}
-::-webkit-progress-bar {
-    background-color: #2e2e2e;
-}
-.health::-moz-progress-value {
-    background-color: green;
-}
-.health::-webkit-progress-value {
-    background-color: green;
-}
-.energy::-moz-progress-value {
-    background-color: goldenrod;
-}
-.energy::-webkit-progress-value {
-    background-color: goldenrod;
-}
-.health {
-    display: grid;
-    width: 80%;
-}
-.energy {
-    width: 40%;
-    display: grid;
-}
-
