@@ -115,7 +115,7 @@ export class FighterSpriteManager {
 
         let x = (fighter.playerId  < 1) ? -50 : 50; //where to draw text
         x += CANVAS_WIDTH/2;
-        ctx.fillText(fighter.stateManager.activeState.name, x, 50);
+        ctx.fillText(fighter.stateManager.activeState.name, x, 75);
         ctx.restore();
 
     }//end draw_debug
