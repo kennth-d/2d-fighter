@@ -10,9 +10,9 @@
 - 🌐 **Runs Directly in the Browser** 
 
 ## About the Assets
-- **Sprites**: character sprites were created by [Hayden Zegley](https://zegley.itch.io/2d-platformermetroidvania-asset-pack) licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  Some of the sprites were modified to fit the game.
-- **VFX**: (WIP)
-- **Background**: (WIP)
+- **Sprites**: Aughtor: [Hayden Zegley](https://zegley.itch.io/2d-platformermetroidvania-asset-pack) licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- **DECALS**:  Author: [sinestesia](https://opengameart.org/users/sinestesia) licensed under [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+- **Background**: Author: [ansimuz](https://opengameart.org/users/ansimuz) licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 - **SFX**: (WIP)
 - **BGM**: (WIP)
 
