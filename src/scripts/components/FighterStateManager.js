@@ -12,7 +12,6 @@ export class FighterStateManager {
             JUMP_BWD: new JumpBack(),
             LIGHT_ATTACK: new LightAttack(),
             HEAVY_ATTACK: new HeavyAttack(),
-
         }//end states
         this.activeState = this.states.IDLE;
         this.fighter = fighter;
