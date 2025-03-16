@@ -1,8 +1,16 @@
 // --- Global values for the game --- //
-export const CANVAS = document.querySelector("canvas");
+export const CANVAS = document.querySelector("canvas#low-res-screen");
 export const CANVAS_WIDTH = CANVAS.width;
 export const CANVAS_HEIGHT = CANVAS.height;
 
+export const MENU_SCREEN_SIZE = {
+    WIDTH: 1280,
+    HEIGHT: 720,
+}
+export const MENU_CENTER = {
+    X: MENU_SCREEN_SIZE.WIDTH/2,
+    Y: MENU_SCREEN_SIZE.HEIGHT/2
+}
 // device pixel ratio
 export const DPR = window.devicePixelRatio || 1;
 
@@ -14,20 +22,21 @@ export const GRAVITY = 1100;
 //Screen Boundaries
 export const LEFT_BOUNDARY = 0;
 export const RIGHT_BOUNDARY = CANVAS_WIDTH;
-export const FLOOR = CANVAS_HEIGHT - 78;
+export const FLOOR = CANVAS_HEIGHT - 50;
 
 //game settings
-export const SETTINGS = {
+export const DEFAULT_SETTINGS = {
     rounds: 3,  
     roundTime: 100,
     volume: 50,
-    music: true
+    music: "ON",
 }
 
 //tracks time between each frame.
 export const TIME = {
     delta: 0,
     previous: 0,
+    FPS: 0,
 }
 
 //left side start
