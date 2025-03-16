@@ -1,10 +1,13 @@
-import { OpponentDirection } from "./global.js";
+import { TIME } from "./global.js";
+//returns a 2D context 
+export function getContext2D(selector) {
+    const canvas = document.querySelector(selector);
+    const ctx = canvas.getContext('2d');
+    return ctx;
+}//end getContext
 
-//changes fighters direction when they cross over the opponent.
-export function correctDirection(fighter, opponent) {
-    if (fighter.origin.x > opponent.pushBox.x + opponent.pushBox.width) {
-        fighter.direction = OpponentDirection.LEFT;
-    } else if (fighter.origin.x < opponent.pushBox.x) {
-        fighter.direction = OpponentDirection.RIGHT;
-    }//end if-else
-}// end getDirection
+export function updateTime(timestamp) {
+    TIME.delta = (timestamp - TIME.previous) / 1000;
+    TIME.previous = timestamp;
+    TIME.FPS = Math.trunc(1 / TIME.delta);
+}
