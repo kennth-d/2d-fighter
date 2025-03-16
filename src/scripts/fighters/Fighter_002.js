@@ -1,5 +1,5 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
-import { correctDirection } from "../utils/utils.js";
+import { correctDirection } from "../utils/correctDirection.js";
 import { resolveCollision } from "../utils/collision.js";
 import { FighterStateManager } from "../components/FighterStateManager.js";
 import { FighterSpriteManager } from "../components/SpriteManager.js";
