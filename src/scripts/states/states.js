@@ -1,5 +1,6 @@
 // --- Base state class and Fighter states classes are defined here -- //
-
+import { ATTACK_TYPE } from "../utils/battle.js";
+import { ensureOnFLoor } from "../utils/collision.js";
 import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
 export const characterStates = ["IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
@@ -30,6 +31,7 @@ export class Idle extends State {
     enter(manager) {
         manager.fighter.velocity.x = 0;
         manager.fighter.velocity.y = 0;
+        ensureOnFLoor(manager.fighter);
     }
     update(manager, input) {
         manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
@@ -101,6 +103,7 @@ export class Jump extends State {
 
         manager.fighter.pos.y += (manager.fighter.velocity.y * TIME.delta);
         manager.fighter.velocity.y += (GRAVITY * TIME.delta);
+
         if (manager.fighter.pos.y > FLOOR) manager.transition("IDLE");
     }
 }//end JumpState
@@ -136,14 +139,18 @@ export class JumpBack extends Jump {
     }//end update
 }//end JumpState
 
+
 export class LightAttack extends Idle {
     constructor() {
         super("LIGHT_ATTACK");
+        this.attack = ATTACK_TYPE.LIGHT;
     }//end ctor
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
-        let lastFrame = manager.fighter.spriteManager.currentSprite.frames - 1;
-        if (currentFrame != lastFrame) {
+        let lastFrame = manager.fighter.spriteManager.currentSprite.frames-1;
+        let lastActiveFrame = lastFrame - 1;
+
+        if (currentFrame != lastActiveFrame) {
             return;
         } else {
             manager.transition("IDLE");
@@ -154,10 +161,11 @@ export class LightAttack extends Idle {
 export class HeavyAttack extends Idle {
     constructor() {
         super("HEAVY_ATTACK");
+        this.attack = ATTACK_TYPE.HEAVY;
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
-        let lastFrame = manager.fighter.spriteManager.currentSprite.frames - 1;
+        let lastFrame = manager.fighter.spriteManager.currentSprite.frames-1;
         if (currentFrame != lastFrame) {
             return;
         } else {
