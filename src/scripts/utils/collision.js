@@ -1,4 +1,4 @@
-import { LEFT_BOUNDARY, RIGHT_BOUNDARY } from "./global.js";
+import { LEFT_BOUNDARY, RIGHT_BOUNDARY, FLOOR } from "./global.js";
 
 //returns true if the 1st rectangle overlaps the 2nd false otherwise.
 export function isColliding(fighter) {
@@ -49,3 +49,12 @@ export function ensureOnScreen(fighter) {
        fighter.pos.x -= xOverlap;
     }//end if-else if
 }//end isAtLeftBoundary
+
+export function ensureOnFLoor(fighter) {
+    let posY = fighter.pos.y;
+    if (posY > FLOOR) {
+        let yOverlap = posY - FLOOR;
+        fighter.pos.y = fighter.pos.y - yOverlap;
+    }
+}
+
