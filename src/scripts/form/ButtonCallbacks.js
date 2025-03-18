@@ -2,17 +2,17 @@ import * as scenes from "../scenes/scenes.js";
 
 export const BUTTON_CALLBACKS = {
     "PLAY": (game) => {
-        game.scenes[game.numScenes] = new scenes.CharacterSelectScene(game);
+        game.scenes.push(new scenes.CharacterSelectScene(game));
         game.numScenes += 1;
         game.scene = game.scenes[game.numScenes - 1];
     },
     "SETTINGS": (game) => {
-        game.scenes[game.numScenes] = new scenes.SettingsScene(game);
+        game.scenes.push(new scenes.SettingsScene(game));
         game.numScenes += 1;
         game.scene = game.scenes[game.numScenes - 1]
     },
     "HOW": (game) => {
-        game.scenes[game.numScenes] = new scenes.HowToScene(game);
+        game.scenes.push(new scenes.HowToScene(game));
         game.numScenes += 1;
         game.scene = game.scenes[game.numScenes - 1];
     },
@@ -34,6 +34,20 @@ export const BUTTON_CALLBACKS = {
         game.gameSettings.volume = scene.rangeSettings[1].getValue();
         
         game.numScenes -=1;
-        game.scene= game.scenes[game.numScenes - 1];
+        game.scene = game.scenes[game.numScenes - 1];
+    },
+    "BATTLE": (game) => {
+        let selectedFighters = game.scene.selectedCharacters;
+        if (selectedFighters.length < 2) {
+            alert ("PLease select two characters.");
+            return;
+        }//end if
+        game.fighters[0] = selectedFighters[0].id;
+        game.fighters[1] = selectedFighters[1].id; 
+        
+        game.scenes.pop();
+        game.ctxHigh.clearRect(0, 0, game.ctxHigh.canvas.width, game.ctxHigh.canvas.height);
+        game.scenes.push(new scenes.BattleScene(game));
+        game.scene = game.scenes[game.numScenes-1];
     }
 }
