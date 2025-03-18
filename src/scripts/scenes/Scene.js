@@ -5,15 +5,21 @@ export class Scene {
         this.mousePos = {x: 0, y: 0};
     }
     update() {
-        for (const button of this.buttons) {
-            let state = BUTTON_STATES[Number(isInside(button.rect, this.mousePos))];
-            button.update(state);
-        }//end for
+        throw new Error("update method not implemented.");
     }
     draw() {
         throw new Error("draw method not implemented.");
     }
     handleClickEvent() {
+        return;
+    }
+    handleMouseUp() {
+        return;
+    }
+    handleMouseDown() {
+        return;
+    }
+    handleMouseMove() {
         return;
     }
 }//end scene
