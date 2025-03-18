@@ -1,20 +1,19 @@
-import {CANVAS_WIDTH, DPR, DEFAULT_SETTINGS, TIME } from "../utils/global.js";
+import {CANVAS_WIDTH, DPR, TIME } from "../utils/global.js";
 import { STATUS } from "../../assets/data/StatusBarData.js"
 import { MAX_ENERGY, MAX_HEALTH } from "../utils/battle.js";
 
 export class StatusBar {
 
-    constructor(fighters) {
+    constructor(fighters, rounds, duration) {
         //player health/energy
         this.fighters = fighters;
         this.healthBars = [{hp: MAX_HEALTH, timer: 0}, {hp: MAX_HEALTH, timer: 0}];
         this.energyBars = [{ep: MAX_ENERGY, timer: 0}, {ep: MAX_ENERGY, timer: 0}];
 
         //round clock and counter
-        this.timer = DEFAULT_SETTINGS.roundTime;
+        this.timer = duration;
         this.timeTimer = 0;
-        this.rounds = new Array(DEFAULT_SETTINGS.rounds);
-        this.rounds[0] = 1;
+        this.rounds = new Array(rounds);
 
         //Store image data
         this.health;
