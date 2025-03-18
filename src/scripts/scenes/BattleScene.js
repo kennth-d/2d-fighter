@@ -10,16 +10,15 @@ export class BattleScene extends Scene {
         this.fighters = this.getFighterEntities(this.game.fighters[0], this.game.fighters[1]);
         this.stage = new Stage();
         this.overlays = [
-            this.getStatusBar(this.fighters, game.gameSettings.rounds, game.gameSettings.roundDuration),
+            this.getStatusBar(this),
         ];
 
         if (game.debug) {
-            console.log("DEBBUGIN");
             game.setupDebug();
         }//end if
     }
-    getStatusBar(fighters, rounds, duration) {
-        return new StatusBar(fighters, rounds, duration);
+    getStatusBar(scene) {
+        return new StatusBar(scene);
     }//end getStatusBar
     getFighterEntities(p1, p2) {
         const fighterEntities = [
