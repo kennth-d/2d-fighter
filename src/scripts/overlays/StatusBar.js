@@ -4,16 +4,18 @@ import { MAX_ENERGY, MAX_HEALTH } from "../utils/battle.js";
 
 export class StatusBar {
 
-    constructor(fighters, rounds, duration) {
+    constructor(scene) {
+        this.scene = scene;
+
         //player health/energy
-        this.fighters = fighters;
+        this.fighters = scene.fighters;
         this.healthBars = [{hp: MAX_HEALTH, timer: 0}, {hp: MAX_HEALTH, timer: 0}];
         this.energyBars = [{ep: MAX_ENERGY, timer: 0}, {ep: MAX_ENERGY, timer: 0}];
 
         //round clock and counter
-        this.timer = duration;
+        this.timer = this.scene.game.gameSettings.roundDuration;
         this.timeTimer = 0;
-        this.rounds = new Array(rounds);
+        this.rounds = new Array(this.scene.game.gameSettings.rounds);
 
         //Store image data
         this.health;
@@ -188,9 +190,9 @@ export class StatusBar {
         this.energyBars = [{ep: MAX_ENERGY, timer: 0}, {ep: MAX_ENERGY, timer: 0}];
 
         //reset clock timer
-        this.timer = SETTINGS.roundTime;
+        this.timer = this.scene.game.gameSettings.roundDuration;
         this.timeTimer = 0;
-        this.rounds = new Array(SETTINGS.rounds);
+        this.rounds = new Array(this.scene.game.gameSettings.rounds);
     }//end reset
 
     setup() {
@@ -234,8 +236,5 @@ export class StatusBar {
         this.round.background.src = STATUS.ROUND.BACKGROUND;
         this.round.win.src = STATUS.ROUND.WIN;
         this.round.lose.src = STATUS.ROUND.LOSE;
-
-        
-        console.log(this);
     }//end setup
 }//end cls StatusBar
