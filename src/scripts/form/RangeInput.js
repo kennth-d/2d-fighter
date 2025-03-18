@@ -5,7 +5,7 @@ import { drawLabel } from "./drawLabel.js";
 export class RangeInput {
     constructor(x, y, width, height, min, max, initialValue, label, id) {
         this.slider = {x, y, width, height};
-        this.rect = {x:this.slider.x-5, y: this.slider.y-10, width:this.slider.width+10, height: this.slider.height+10};
+        this.rect = {x:this.slider.x-5, y: this.slider.y-20, width:this.slider.width+10, height: this.slider.height+20};
         this.min = min;
         this.max = max;
         this.label = label;
