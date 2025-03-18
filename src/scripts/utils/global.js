@@ -16,7 +16,8 @@ export const DPR = window.devicePixelRatio || 1;
 
 //Physics
 export const JUMP_VELOCITY = 350;
-export const WALK_VELOCITY = 150;
+export const WALK_VELOCITY_FWD = 125;
+export const WALK_VELOCITY_BWD = 75;
 export const GRAVITY = 1100;
 
 //Screen Boundaries

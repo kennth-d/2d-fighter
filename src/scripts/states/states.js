@@ -1,7 +1,7 @@
 // --- Base state class and Fighter states classes are defined here -- //
 import { ATTACK_TYPE } from "../utils/battle.js";
 import { ensureOnFLoor } from "../utils/collision.js";
-import { TIME, GRAVITY, FLOOR, WALK_VELOCITY, JUMP_VELOCITY } from "../utils/global.js"; 
+import { TIME, GRAVITY, FLOOR, WALK_VELOCITY_FWD, WALK_VELOCITY_BWD, JUMP_VELOCITY } from "../utils/global.js"; 
 export const characterStates = ["IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD"];
 
 //--- State Infterface ---//
@@ -69,7 +69,7 @@ export class WalkFwd extends Idle {
         super("WALK_FWD");
     }//end ctor
     enter(manager) {
-        manager.fighter.velocity.x = WALK_VELOCITY * manager.fighter.direction;
+        manager.fighter.velocity.x = WALK_VELOCITY_FWD * manager.fighter.direction;
     }//end enter
     update(manager,input) {
         if (!input.isForward(manager.fighter)) manager.transition("IDLE");
@@ -82,7 +82,7 @@ export class WalkBwd extends Idle {
         super("WALK_BWD");
     }//end ctor
     enter(manager) {
-        manager.fighter.velocity.x = -WALK_VELOCITY * manager.fighter.direction;
+        manager.fighter.velocity.x = -WALK_VELOCITY_BWD * manager.fighter.direction;
     }//end enter
     update(manager, input) {
         if (!input.isBackward(manager.fighter)) manager.transition("IDLE");
@@ -113,7 +113,7 @@ export class JumpForward extends Jump {
         super("JUMP_FWD");
     }
     enter(manager) {
-        manager.fighter.velocity.x = WALK_VELOCITY * manager.fighter.direction;
+        manager.fighter.velocity.x = WALK_VELOCITY_FWD * manager.fighter.direction;
     }//end enter
     update(manager, input) {
         manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
@@ -128,7 +128,7 @@ export class JumpBack extends Jump {
         super("JUMP_BWD");
     }//end ctor
     enter(manager) {
-        manager.fighter.velocity.x = -WALK_VELOCITY * manager.fighter.direction;
+        manager.fighter.velocity.x = -WALK_VELOCITY_BWD * manager.fighter.direction;
     }//end enter
     update(manager, input) {
         manager.fighter.pos.x += (manager.fighter.velocity.x * TIME.delta);
