@@ -1,5 +1,5 @@
 import { Button } from "../form/Button.js";
-import { BUTTON_HEIGHT, BUTTON_PADDING, BUTTON_WIDTH, BUTTONS } from "../../assets/data/buttonsData.js";
+import { BUTTON_WIDTH, BUTTONS } from "../../assets/data/buttonsData.js";
 import { MenuScene } from "./scenes.js";
 import { CharacterChoice } from "../form/CharacterChoice.js";
 import { getClickedObject } from "../utils/getClickedObject.js";
@@ -29,7 +29,6 @@ export class CharacterSelectScene extends MenuScene {
         } else if (clicked) {
             this.addSelectedCharacter(clicked);
         }//end if-else
-        console.log(this.selectedCharacters);
         super.handleClickEvent();
     }//end handleClickEvent
     draw() {
