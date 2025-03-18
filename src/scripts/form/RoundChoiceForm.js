@@ -30,7 +30,7 @@ export class RoundChoiceForm {
     }
     draw(ctx) {
         
-        drawLabel(ctx, "NUMBER_OF_ROUNDS", this.pos.x - 225, this.pos.y + 7);
+        drawLabel(ctx, "NUMBER_OF_ROUNDS", this.pos.x - 225, this.pos.y + 10);
 
         for (const choice of this.choices) {
             choice.draw(ctx);
