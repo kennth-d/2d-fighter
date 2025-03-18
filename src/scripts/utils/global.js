@@ -27,7 +27,7 @@ export const FLOOR = CANVAS_HEIGHT - 50;
 //game settings
 export const DEFAULT_SETTINGS = {
     rounds: 3,  
-    roundTime: 100,
+    roundDuration: 200,
     volume: 50,
     music: "ON",
 }
