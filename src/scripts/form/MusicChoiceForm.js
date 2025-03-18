@@ -31,7 +31,7 @@ export class MusicChoiceForm {
     }
     draw(ctx) {
         
-        drawLabel(ctx, "MUSIC", this.pos.x - 108, this.pos.y + 7);
+        drawLabel(ctx, "MUSIC", this.pos.x - 108, this.pos.y + 10);
 
         for (const choice of this.choices) {
             choice.draw(ctx);
