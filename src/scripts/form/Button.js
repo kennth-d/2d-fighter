@@ -1,6 +1,6 @@
 import { BUTTON_HEIGHT, BUTTON_WIDTH } from "../../assets/data/buttonsData.js";
 
-export const BUTTON_STATES = {
+export const HoverStatus = {
     0: "BASE",
     1: "HOVER",
 }
