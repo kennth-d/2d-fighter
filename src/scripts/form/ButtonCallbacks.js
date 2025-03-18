@@ -24,12 +24,16 @@ export const BUTTON_CALLBACKS = {
     "CONFIRM": (game) => {
         let scene = game.scenes.pop();
 
-        //update game settings
-        for (let setting of scene.settings) {
+        //update number of rounds and music on/off
+        for (let setting of scene.settingsChoices) {
             game.gameSettings[setting.id] = setting.getSelection();
         }
+
+        //update roundDuration and volume.
+        game.gameSettings.roundDuration = scene.rangeSettings[0].getValue();
+        game.gameSettings.volume = scene.rangeSettings[1].getValue();
+        
         game.numScenes -=1;
         game.scene= game.scenes[game.numScenes - 1];
-        
     }
 }
