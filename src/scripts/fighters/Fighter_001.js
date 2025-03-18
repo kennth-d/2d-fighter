@@ -3,7 +3,7 @@ import { correctDirection } from "../utils/correctDirection.js";
 import { resolveCollision } from "../utils/collision.js";
 import { FighterStateManager } from "../components/FighterStateManager.js";
 import { FighterSpriteManager } from "../components/SpriteManager.js"
-import {F001_SpriteData} from "../../assets/data/F001_SpriteData.js";
+import { F001_SpriteData } from "../../assets/data/F001_SpriteData.js";
 //Fighter_001 class
 export class Fighter_001 extends FighterBaseClass {
     constructor(x, y, playerId, inputComponent) {
