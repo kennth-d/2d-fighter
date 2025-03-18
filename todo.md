@@ -6,4 +6,3 @@
 - Finish Character states (special_1, special_2, block)
 - Finish character select screen
 - Finish Game manager class
-- Finish settings screen
