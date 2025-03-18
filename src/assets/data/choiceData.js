@@ -54,6 +54,6 @@ export const DIFFICULTY_CHOICES = {
 }//end DIFFICULTY_CHOICES
 
 export const CHARACTER_CHOICES = {
-    F001: { x: 517,  y: 0, width: 18, height: 29 },
-    F002: { x: 517, y: 29, width: 18, height: 29 },
+    F001: { x: 0,  y: 0, width: 124, height: 200 },
+    F002: { x: 124, y: 0, width: 124, height: 200 },
 };//end CHARACTER_CHOICES
