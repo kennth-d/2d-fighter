@@ -2,28 +2,29 @@ import { getContext2D } from "../utils/utils.js";
 import * as scenes from "../scenes/scenes.js";
 import { logEntities, toggleDebug } from "../utils/debug.js";
 import { updateTime } from "../utils/utils.js";
-import { getMousePos } from "../utils/mouseHandler.js";
 import { DEFAULT_SETTINGS } from "../utils/global.js";
 
 export class GameManager {
     constructor(debug=false) {
         this.gameSettings = DEFAULT_SETTINGS;
+        this.fighters = [];
+        this.debug=debug;
+
+        //low-res screen for battle scenes
         this.ctx = getContext2D('#low-res-screen');
         this.ctx.imageSmoothingEnabled = false;
 
+        //high-res screen for menu scenes
         this.ctxHigh = getContext2D("#high-res-screen");
         this.ctxHigh.imageSmoothingEnabled = false;
 
         this.scenes = [new scenes.MainMenuScene(this)];
-        //this.scenes = [new BattleScene(this)];
+
         this.numScenes = 1;
         this.scene = this.scenes[this.numScenes - 1];
 
        this.addListeners();
 
-        if (debug){
-            this.setupDebug();
-        }//end if
     }//end ctor
 
     //Main Loop of the game.
@@ -57,8 +58,6 @@ export class GameManager {
         }, false)
     }//end addListeners
     setupDebug() {
-        //assertion: this.scene must be a BattleScene
-        if (this.scene.constructor.name != "BattleScene") return;
         window.addEventListener("keypress", (e) => {
             if (e.code === "Space") {
                 logEntities(this.scene.fighters);
