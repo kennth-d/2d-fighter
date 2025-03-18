@@ -12,6 +12,7 @@ export class GameManager {
         this.ctx.imageSmoothingEnabled = false;
 
         this.ctxHigh = getContext2D("#high-res-screen");
+        this.ctxHigh.imageSmoothingEnabled = false;
 
         this.scenes = [new scenes.MainMenuScene(this)];
         //this.scenes = [new BattleScene(this)];
@@ -20,9 +21,9 @@ export class GameManager {
 
        this.addListeners();
 
-        // if (debug){
-        //     this.setupDebug();
-        // }//end if
+        if (debug){
+            this.setupDebug();
+        }//end if
     }//end ctor
 
     //Main Loop of the game.
@@ -40,25 +41,24 @@ export class GameManager {
     }//end start
     addListeners() {
         this.ctxHigh.canvas.addEventListener("mousemove", (event) => {
-            //precondition: this.scene is not undefined.
-            if (this.scene.name === "BattleScene") return;
-
-            let mPos = getMousePos(this.ctxHigh.canvas, event);
-            this.scene.mousePos.x = mPos.x;
-            this.scene.mousePos.y = mPos.y;
+            this.scene.handleMouseMove(event);
         }, false);
                 
         this.ctxHigh.canvas.addEventListener("click", () => {
-            //precoondition: this.scene is not undefined.
-            if (this.scene.name === "BattleScene") return;
-
-            this.scene.handleClickEvent();
-            
-            // let clickedBtn = getClickedObject(this.scene.buttons, this.scene.mousePos);
-            // if (clickedBtn) BUTTON_CALLBACKS[clickedBtn.id](this);
+            //precondition: this.scene is not undefined.
+            this.scene.handleClickEvent();    
         }, false);
+        
+        this.ctxHigh.canvas.addEventListener("mousedown", () => {
+            this.scene.handleMouseDown();
+        }, false);
+        this.ctxHigh.canvas.addEventListener("mouseup", () => {
+            this.scene.handleMouseUp();
+        }, false)
     }//end addListeners
     setupDebug() {
+        //assertion: this.scene must be a BattleScene
+        if (this.scene.constructor.name != "BattleScene") return;
         window.addEventListener("keypress", (e) => {
             if (e.code === "Space") {
                 logEntities(this.scene.fighters);
