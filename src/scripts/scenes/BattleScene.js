@@ -1,7 +1,7 @@
 import {createFighter} from "../fighters/fighters.js";
 import { Stage } from "../stage/Stage.js";
 import { StatusBar } from "../overlays/StatusBar.js";
-import { Scene } from "./Scene.js";
+import { Scene, PauseScene } from "./scenes.js";
 
 export class BattleScene extends Scene {
 
@@ -17,6 +17,11 @@ export class BattleScene extends Scene {
             game.setupDebug();
         }//end if
     }
+    handlePauseEvent() {
+        let scene = new PauseScene(game);
+        this.game.scenes.push(scene);
+        this.game.numScenes++;
+    }//end handlePauseEvent
     getStatusBar(scene) {
         return new StatusBar(scene);
     }//end getStatusBar

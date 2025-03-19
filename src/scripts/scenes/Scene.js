@@ -22,4 +22,7 @@ export class Scene {
     handleMouseMove() {
         return;
     }
+    handlePauseEvent() {
+        return;
+    }
 }//end scene

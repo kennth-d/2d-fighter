@@ -55,7 +55,13 @@ export class GameManager {
         }, false);
         this.ctxHigh.canvas.addEventListener("mouseup", () => {
             this.scene.handleMouseUp();
-        }, false)
+        }, false);
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                this.scene.handlePauseEvent();
+                console.log(event.key);
+            }
+        });
     }//end addListeners
     setupDebug() {
         window.addEventListener("keypress", (e) => {
