@@ -59,7 +59,6 @@ export class GameManager {
         window.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
                 this.scene.handlePauseEvent();
-                console.log(event.key);
             }
         });
     }//end addListeners
