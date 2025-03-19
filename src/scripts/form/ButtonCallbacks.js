@@ -36,6 +36,9 @@ export const BUTTON_CALLBACKS = {
         game.numScenes -=1;
         game.scene = game.scenes[game.numScenes - 1];
     },
+    "MAIN": (game) => {
+        console.log("Not implemented yet!");
+    },
     "BATTLE": (game) => {
         let selectedFighters = game.scene.selectedCharacters;
         if (selectedFighters.length < 2) {
