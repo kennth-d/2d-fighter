@@ -51,7 +51,7 @@ export class CharacterSelectScene extends MenuScene {
         let text = "Character Select";
         let metrics = ctx.measureText(text);
         let dx = ctx.canvas.width/2 - metrics.width/2;
-        let dy = ctx.canvas.height/2 - 200;
+        let dy = 100;
         ctx.fillText(text, dx, dy);
     }//end draw
     drawLegend(ctx) {
@@ -80,10 +80,10 @@ export class CharacterSelectScene extends MenuScene {
     }
     setButtons() {
         this.buttons[0].rect.x = this.game.ctxHigh.canvas.width - BUTTON_WIDTH - 50;
-        this.buttons[0].rect.y = 130;
+        this.buttons[0].rect.y = 25;
 
         this.buttons[1].rect.x = this.game.ctxHigh.canvas.width/2 - BUTTON_WIDTH/2;
-        this.buttons[1].rect.y = this.game.ctxHigh.canvas.height - 100;
+        this.buttons[1].rect.y = this.game.ctxHigh.canvas.height/2 + 100;
     }
     setCharRects() {
         let center = { x: this.game.ctxHigh.canvas.width/2, y: this.game.ctxHigh.canvas.height/2 };
@@ -93,7 +93,7 @@ export class CharacterSelectScene extends MenuScene {
         for (let i = 0; i < this.characterChoices.length; i++) {
             this.characterChoices[i].rect = {
                 x: center.x - imgWidth/2,
-                y: center.y-100, 
+                y: center.y-200, 
                 width: imgWidth, 
                 height: imgHeight
             };
