@@ -32,7 +32,7 @@ export class StatusBar {
     }//end updateTime
 
     updateTime() {
-        if (TIME.previous > this.timeTimer + 1000) {
+        if (TIME.previous > this.timeTimer + 1000/TIME.FPS * 60) {
             if (this.timer > 0) this.timer -= 1;
             this.timeTimer = TIME.previous;
         }
