@@ -16,7 +16,14 @@ export const BUTTON_CALLBACKS = {
         game.numScenes += 1;
         game.scene = game.scenes[game.numScenes - 1];
     },
-    "RETURN": (game) => {
+    "RETURN": (game) => {      
+        game.ctxHigh.clearRect(0, 0, game.ctxHigh.canvas.width, game.ctxHigh.canvas.height);
+        game.scenes.pop();
+        game.numScenes -= 1;
+        game.scene = game.scenes[game.numScenes - 1]
+    },
+    "RESUME": (game) => {
+        game.ctxHigh.clearRect(0, 0, game.ctxHigh.canvas.width, game.ctxHigh.canvas.height);
         game.scenes.pop();
         game.numScenes -= 1;
         game.scene = game.scenes[game.numScenes - 1]
@@ -37,7 +44,9 @@ export const BUTTON_CALLBACKS = {
         game.scene = game.scenes[game.numScenes - 1];
     },
     "MAIN": (game) => {
-        console.log("Not implemented yet!");
+        game.scenes = game.scenes.slice(0, 1);
+        game.numScenes = 1;
+        game.scene = game.scenes[game.numScenes-1];
     },
     "BATTLE": (game) => {
         let selectedFighters = game.scene.selectedCharacters;
