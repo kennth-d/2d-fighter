@@ -16,11 +16,12 @@ export class BattleScene extends Scene {
         if (game.debug) {
             game.setupDebug();
         }//end if
-    }
+    }//end ctor
     handlePauseEvent() {
-        let scene = new PauseScene(game);
+        let scene = new PauseScene(this.game);
         this.game.scenes.push(scene);
         this.game.numScenes++;
+        this.game.scene = this.game.scenes[this.game.numScenes-1];
     }//end handlePauseEvent
     getStatusBar(scene) {
         return new StatusBar(scene);
