@@ -12,8 +12,8 @@ export class Stage {
     }
     draw(ctx) {
         this.drawFrame(ctx, "background", 0, 0);
-        this.drawFrame(ctx, "middle", 0, 0);
-        this.drawFrame(ctx, "foreground", 0, 12);
+        this.drawFrame(ctx, "middle", 0, 15);
+        this.drawFrame(ctx, "foreground", 0, -15);
     }
     drawFrame(ctx, key, dx, dy) {
         const {x, y, width, height} = this.frames[key];
