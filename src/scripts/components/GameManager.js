@@ -4,6 +4,7 @@ import { logEntities, toggleDebug } from "../utils/debug.js";
 import { updateTime } from "../utils/utils.js";
 import { DEFAULT_SETTINGS } from "../utils/global.js";
 import { TIME } from "../utils/global.js";
+
 export class GameManager {
     constructor(debug=false) {
         this.gameSettings = DEFAULT_SETTINGS;
@@ -13,7 +14,6 @@ export class GameManager {
         //low-res screen for battle scenes
         this.ctx = getContext2D('#low-res-screen');
         this.ctx.imageSmoothingEnabled = false;
-
         //high-res screen for menu scenes
         this.ctxHigh = getContext2D("#high-res-screen");
         this.ctxHigh.imageSmoothingEnabled = false;
