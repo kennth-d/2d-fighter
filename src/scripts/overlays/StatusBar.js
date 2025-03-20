@@ -1,4 +1,4 @@
-import {CANVAS_WIDTH, DPR, TIME } from "../utils/global.js";
+import {CANVAS_WIDTH, TIME } from "../utils/global.js";
 import { STATUS } from "../../assets/data/StatusBarData.js"
 import { MAX_ENERGY, MAX_HEALTH } from "../utils/battle.js";
 
@@ -203,25 +203,25 @@ export class StatusBar {
             background: new Image(STATUS.HEALTH.WIDTH, STATUS.HEALTH.HEIGHT),
             overlay: new Image(STATUS.HEALTH.WIDTH, STATUS.HEALTH.HEIGHT),
             dx: 45,
-            dy: 35,
+            dy: 5,
         };
         this.energy = {
             background: new Image(STATUS.ENERGY.WIDTH, STATUS.ENERGY.HEIGHT),
             overlay: new Image(STATUS.ENERGY.WIDTH, STATUS.ENERGY.HEIGHT),
             dx: 45,
-            dy: 55,
+            dy: 23,
         };
         this.clock = {
             background: new Image(STATUS.CLOCK.WIDTH, STATUS.CLOCK.HEIGHT),
             dx: CANVAS_WIDTH/2 - STATUS.CLOCK.WIDTH/2,
-            dy: 35,
+            dy: 5,
         };
         this.round = {
             background: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             win: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             lose: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             dx: CANVAS_WIDTH/2 - (this.rounds.length * STATUS.ROUND.WIDTH)/2,
-            dy: 60,
+            dy: 30,
         };
 
         //bind the health and stamina images to their source.
