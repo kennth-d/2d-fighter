@@ -11,7 +11,7 @@ export class HowToScene extends MenuScene {
         
         //set button position
         this.buttons[0].rect.x = this.game.ctxHigh.canvas.width - BUTTON_WIDTH - 50;
-        this.buttons[0].rect.y = 130;
+        this.buttons[0].rect.y = 25;
     }//end ctor
     draw() {
         this.drawBackground(this.game.ctxHigh);
@@ -29,7 +29,7 @@ export class HowToScene extends MenuScene {
             HOW_TO_BACKGROUND.width,
             HOW_TO_BACKGROUND.height,
             0,
-            0,
+            -155,
             HOW_TO_BACKGROUND.width,
             HOW_TO_BACKGROUND.height,
         )//end drawbg
