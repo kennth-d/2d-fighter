@@ -14,12 +14,12 @@ export class SettingsScene extends MenuScene {
         super(game)
         this.buttons = this.getButtons();
         this.settingsChoices = [
-            new RoundChoiceForm(497, 250),
-            new MusicChoiceForm(586, 475),
+            new RoundChoiceForm(497, 150),
+            new MusicChoiceForm(586, 375),
         ];
         this.rangeSettings = [
-            new RangeInput(540, 350, 200, 20, 100, 300, game.gameSettings.roundDuration, "ROUND_LENGTH"),
-            new RangeInput(540, 425, 200, 20, 0, 100, game.gameSettings.volume, "VOLUME"),
+            new RangeInput(540, 250, 200, 20, 100, 300, game.gameSettings.roundDuration, "ROUND_LENGTH"),
+            new RangeInput(540, 325, 200, 20, 0, 100, game.gameSettings.volume, "VOLUME"),
         ];
         this.mouseDown = 0;
     }//end ctor
@@ -78,11 +78,11 @@ export class SettingsScene extends MenuScene {
     getButtons() {
         let returnBtn = new Button(BUTTONS.RETURN, "RETURN");
         returnBtn.setRectProperty("x", this.game.ctxHigh.canvas.width/2 + BUTTON_PADDING);
-        returnBtn.setRectProperty("y",  580);
+        returnBtn.setRectProperty("y",  480);
 
         let confirmBtn = new Button(BUTTONS.CONFIRM, "CONFIRM");
         confirmBtn.setRectProperty("x", this.game.ctxHigh.canvas.width/2 - BUTTON_WIDTH - BUTTON_PADDING);
-        confirmBtn.setRectProperty("y",  580);
+        confirmBtn.setRectProperty("y",  480);
         return [returnBtn, confirmBtn];
     }//end getButtons
     drawbg(ctx) {
@@ -94,7 +94,7 @@ export class SettingsScene extends MenuScene {
         let text = "Settings";
         let metrics = ctx.measureText(text);
         let dx = ctx.canvas.width/2 - metrics.width/2;
-        let dy = ctx.canvas.height/2 - 200;
+        let dy = 100;
         ctx.fillText(text, dx, dy);
     }//end draw
 }//end SettingsScene
