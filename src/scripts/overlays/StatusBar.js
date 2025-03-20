@@ -32,9 +32,11 @@ export class StatusBar {
     }//end updateTime
 
     updateTime() {
-        if (TIME.previous > this.timeTimer + 1000/TIME.FPS * 60) {
+        this.timeTimer += TIME.delta;
+        if (this.timeTimer >= 1) {
+
             if (this.timer > 0) this.timer -= 1;
-            this.timeTimer = TIME.previous;
+            this.timeTimer = 0;
         }
         if (this.timer === 0) this.reset();
     }//end updateTime
@@ -124,7 +126,6 @@ export class StatusBar {
         )//end draw overlay
 
         //time
-        ctx.scale(DPR, DPR);
         ctx.font = "200 14px RobotoFlex-Regular";
         ctx.texAlign = "center";
         ctx.baseline = "middle";
@@ -132,8 +133,9 @@ export class StatusBar {
 
         let stringTime = String(this.timer).padStart(3, "00");
         let textMetrics = ctx.measureText(stringTime);
-        let textDx = CANVAS_WIDTH/2 - textMetrics.width * 2.35; //2.35 to account for scaling
-        let textDy = this.clock.dy + 7;   // +7 needed to center text.
+        
+        let textDx = CANVAS_WIDTH/2 - textMetrics.width/2;
+        let textDy = this.clock.dy + 17;
         
         ctx.fillText(stringTime, textDx, textDy);
 
