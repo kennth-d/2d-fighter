@@ -3,7 +3,7 @@ import * as scenes from "../scenes/scenes.js";
 import { logEntities, toggleDebug } from "../utils/debug.js";
 import { updateTime } from "../utils/utils.js";
 import { DEFAULT_SETTINGS } from "../utils/global.js";
-
+import { TIME } from "../utils/global.js";
 export class GameManager {
     constructor(debug=false) {
         this.gameSettings = DEFAULT_SETTINGS;
