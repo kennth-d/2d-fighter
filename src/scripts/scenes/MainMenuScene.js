@@ -22,7 +22,7 @@ export class MainMenuScene extends MenuScene {
             MAIN_MENU_BACKGROUND.width,
             MAIN_MENU_BACKGROUND.width,
             0,
-            0,
+            -50,
             ctx.canvas.width,
             ctx.canvas.width,
         )//end drawbg
