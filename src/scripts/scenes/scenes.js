@@ -8,4 +8,13 @@ import { HowToScene } from "./HowToScene.js";
 import { PauseScene } from "./PauseScene.js";
 import { BattleScene } from "./BattleScene.js";
 
-export { Scene, MenuScene, MainMenuScene, CharacterSelectScene, SettingsScene, HowToScene, BattleScene, PauseScene };
+export { 
+    Scene, 
+    MenuScene, 
+    MainMenuScene,
+    CharacterSelectScene, 
+    SettingsScene,
+    HowToScene,
+    BattleScene,
+    PauseScene,
+};
