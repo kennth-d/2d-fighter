@@ -46,7 +46,7 @@ export function ensureOnScreen(fighter) {
         fighter.pos.x = fighter.pos.x + xOverlap;
     } else if (xPos + playerWidth >= RIGHT_BOUNDARY) {
         let xOverlap = xPos + playerWidth - RIGHT_BOUNDARY;
-       fighter.pos.x -= xOverlap;
+       fighter.pos.x = fighter.pos.x - xOverlap;
     }//end if-else if
 }//end isAtLeftBoundary
 
