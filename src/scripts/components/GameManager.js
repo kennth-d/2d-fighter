@@ -61,6 +61,10 @@ export class GameManager {
                 event.preventDefault();
                 this.scene.handlePauseEvent();
             }
+            if (event.code == "AltLeft") {
+                event.preventDefault();
+                return;
+            }//end if
         });
     }//end addListeners
     setupDebug() {
