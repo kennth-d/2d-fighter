@@ -1,5 +1,7 @@
 import { characterStates } from "../states/states.js";
-import { CANVAS_WIDTH, DEFAULT_PUSHBOX, TIME } from "../utils/global.js";
+import { CANVAS_WIDTH, TIME } from "../utils/global.js";
+import { drawDebugBox } from "../utils/debug.js";
+
 // --- class for managing the player sprites ---//
 // ---------------------------------------------//
 export class FighterSpriteManager {
@@ -26,23 +28,21 @@ export class FighterSpriteManager {
         }//end if
     }//end update
     drawSprite(ctx, fighter) {
-
+        //ctx.restore();
         let width = this.currentSprite.img.width;
         let height = this.currentSprite.img.height;
         
         ctx.scale(fighter.direction, 1);
-
-        //mirroring the image with scale flips the canvas origin to the opposite side.
-        //thus needs to be accounted for by adding width to dX only if it is mirrored.
+        
         let offsetX = this.currentSprite.originOffset.x;
-        let dX = (fighter.direction < 0) ? (fighter.pos.x + width - offsetX) * fighter.direction : fighter.pos.x;
+        let offsetY = this.currentSprite.originOffset.y;
         ctx.drawImage(this.currentSprite.img,
             this.currentFrame * this.currentSprite.img.width,  //sX
             0,                                                 //sY
             width,                                             //sWidth
             height,                                            //sHeight
-            dX,                                                //dX
-            fighter.pos.y,                                     //dY
+            fighter.pos.x * fighter.direction - offsetX,                                                //dX
+            fighter.pos.y - offsetY,                                     //dY
             width,                                             //dWidth
             height,                                            //dHeight
         );
@@ -59,7 +59,7 @@ export class FighterSpriteManager {
 
         //draw x, y
         ctx.beginPath();
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "red";
         //vertical line 
         ctx.moveTo(Math.floor(fighter.pos.x) + 0.5, Math.floor(fighter.pos.y-5) + 0.5);
         ctx.lineTo(Math.floor(fighter.pos.x) + 0.5, Math.floor(fighter.pos.y+5) + 0.5);
@@ -68,44 +68,35 @@ export class FighterSpriteManager {
         ctx.lineTo(Math.floor(fighter.pos.x+5) + 0.5, Math.floor(fighter.pos.y) + 0.5);
         ctx.stroke();
 
-        //draw origin points
-        ctx.beginPath();
-        //vertical line 
-        ctx.strokeStyle = "red";
-        ctx.moveTo(Math.floor(fighter.origin.x) + 0.5, Math.floor(fighter.origin.y-5) + 0.5);
-        ctx.lineTo(Math.floor(fighter.origin.x) + 0.5, Math.floor(fighter.origin.y+5) + 0.5);
-        //horizontal line
-        ctx.moveTo(Math.floor(fighter.origin.x-5) + 0.5, Math.floor(fighter.origin.y) + 0.5);
-        ctx.lineTo(Math.floor(fighter.origin.x+5) + 0.5, Math.floor(fighter.origin.y) + 0.5);
-        ctx.stroke();
+        //pushBox [x, y, width, height]
+        const [boxX, boxY, boxWidth, boxHeight] = fighter.boxes.push;  
 
         //draw pushBox
-        ctx.beginPath();
-        //vertical line 
-        ctx.strokeStyle = "blue";
-        ctx.moveTo(Math.floor(fighter.pushBox.x) + 0.5, Math.floor(fighter.pushBox.y-5) + 0.5);
-        ctx.lineTo(Math.floor(fighter.pushBox.x) + 0.5, Math.floor(fighter.pushBox.y+5) + 0.5);
-        //horizontal line
-        ctx.moveTo(Math.floor(fighter.pushBox.x-5) + 0.5, Math.floor(fighter.pushBox.y) + 0.5);
-        ctx.lineTo(Math.floor(fighter.pushBox.x+5) + 0.5, Math.floor(fighter.pushBox.y) + 0.5);
-        ctx.stroke();
+        drawDebugBox(
+            ctx,
+            [fighter.pos.x - boxX * fighter.direction, fighter.pos.y - boxY, boxWidth * fighter.direction, boxHeight],
+            "#55FF55",
+            );
 
-        ctx.beginPath();
-        ctx.strokeStyle = "#55FF55";
-        ctx.fillStyle = "#55FF5555";
-        ctx.fillRect(
-            Math.floor(fighter.pushBox.x) + 0.5,
-            Math.floor(fighter.pushBox.y) + 0.5,
-            fighter.pushBox.width,
-            fighter.pushBox.height,
-        );
-        ctx.rect(
-            Math.floor(fighter.pushBox.x) + 0.5,
-            Math.floor(fighter.pushBox.y) + 0.5,
-            fighter.pushBox.width,
-            fighter.pushBox.height,
-        );
-        ctx.stroke();
+        //draw hurtBox
+        for (const box of fighter.boxes.hurt) {
+            const [x, y, width, height] = box;
+            drawDebugBox(
+                ctx,
+                [fighter.pos.x - x * fighter.direction, fighter.pos.y - y, width * fighter.direction, height],
+                "#7777FF"
+            ); //end drawDebug
+        }//end for loop
+        
+        //draw hitBox
+        if (fighter.boxes.hit) {
+            const [x, y, width, height] = fighter.boxes.hit;
+            drawDebugBox(
+                ctx,
+                [fighter.pos.x - x * fighter.direction, fighter.pos.y - y, width * fighter.direction, height],
+                "#FF0000"
+            ); //end drawDebug
+        }//end if
 
         //draw active state 
         ctx.font = "10px serif";
@@ -115,9 +106,8 @@ export class FighterSpriteManager {
 
         let x = (fighter.playerId  < 1) ? -50 : 50; //where to draw text
         x += CANVAS_WIDTH/2;
-        ctx.fillText(fighter.stateManager.activeState.name, x, 75);
+        ctx.fillText(fighter.stateManager.activeState.name, x, 50);
         ctx.restore();
-
     }//end draw_debug
 
     changeSprite(state) {
@@ -136,7 +126,6 @@ export class FighterSpriteManager {
                 frames: spriteData[state].frames,
                 originOffset: (spriteData[state].originOffset != undefined) ? spriteData[state].originOffset : 0,
                 delay: (spriteData[state].delay != undefined) ? spriteData[state].delay : 1,
-                pushBox: (spriteData[state].pushBox != undefined) ? spriteData[state].pushBox : DEFAULT_PUSHBOX,
             }
             this.sprites[state].img.src = spriteData[state].src;
         })//end for
