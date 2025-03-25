@@ -2,6 +2,7 @@ import {createFighter} from "../fighters/fighters.js";
 import { Stage } from "../stage/Stage.js";
 import { StatusBar } from "../overlays/StatusBar.js";
 import { Scene, PauseScene } from "./scenes.js";
+import * as collisionManager from "../utils/collision.js"
 
 export class BattleScene extends Scene {
 
@@ -41,6 +42,9 @@ export class BattleScene extends Scene {
         this.updateFighters();
         this.stage.update();
         this.updateOverlays();
+
+        //resovle collision
+        collisionManager.resolvePlayerCollision(this.fighters);
     }//end update
     draw() {
         this.stage.draw(this.game.ctx);
