@@ -1,14 +1,16 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
 import { correctDirection } from "../utils/correctDirection.js";
-import { resolveCollision } from "../utils/collision.js";
 import { FighterStateManager } from "../components/FighterStateManager.js";
 import { FighterSpriteManager } from "../components/SpriteManager.js";
 import { F002_SpriteData } from "../../assets/data/F002_SpriteData.js";
+import { getBoxes } from "../utils/getBoxes.js";
+import { ensureOnScreen } from "../utils/collision.js";
+
 //Fighter_001 class
 export class Fighter_002 extends FighterBaseClass {
     constructor(x, y, playerId, inputComponent) {
         super(x, y, playerId);
-
+        this.name = "F002";
         this.opponent = undefined;
         this.stateManager = new FighterStateManager(this);
         this.spriteManager = new FighterSpriteManager(F002_SpriteData);
@@ -24,11 +26,11 @@ export class Fighter_002 extends FighterBaseClass {
         //update origin points
         this.updateOrigin();
         
-        //update pushBox
-        this.updatePushbox();
+        //update boxes
+        this.updateBoxes();
 
-        //check and resolve collisions
-        resolveCollision(this);
+        //ensure player cannot move off screen.
+        ensureOnScreen(this);
 
         //update the fighter state
         this.stateManager.activeState.update(this.stateManager, this.input);
@@ -44,16 +46,17 @@ export class Fighter_002 extends FighterBaseClass {
     updateOrigin() {
         let offsetX = this.spriteManager.currentSprite.originOffset.x;
         let offsetY = this.spriteManager.currentSprite.originOffset.y;
-        this.origin.x =  this.pos.x + ((this.spriteManager.currentSprite.img.width - offsetX) / 2);
-        this.origin.y = this.pos.y + (this.spriteManager.currentSprite.img.height - offsetY);
+
+        this.origin.x = this.pos.x + offsetX;
+        this.origin.y = this.pos.y + offsetY;
     }
-    updatePushbox() {
-        let spriteWidth = this.spriteManager.currentSprite.pushBox.width;
-        let spriteHeight = this.spriteManager.currentSprite.pushBox.height;
-        this.pushBox.x = this.origin.x - (spriteWidth/2);
-        this.pushBox.y = this.origin.y - spriteHeight;
-        this.pushBox.width = spriteWidth;
-        this.pushBox.height = spriteHeight;
-    }
+    updateBoxes() {
+        let currentFrame = this.spriteManager.currentFrame;
+        let state = this.spriteManager.currentSprite.name;
+
+        this.boxes.push = getBoxes(this.name, state, "push", currentFrame);
+        this.boxes.hurt = getBoxes(this.name, state, "hurt", currentFrame);
+        this.boxes.hit = getBoxes(this.name, state, "hit", currentFrame);
+    }//end updateBoxes
 }//end Fighter_001
 
