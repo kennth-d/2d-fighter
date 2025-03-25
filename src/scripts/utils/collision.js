@@ -1,60 +1,83 @@
-import { LEFT_BOUNDARY, RIGHT_BOUNDARY, FLOOR } from "./global.js";
+import { LEFT_BOUNDARY, RIGHT_BOUNDARY, FLOOR} from "./global.js";
 
-//returns true if the 1st rectangle overlaps the 2nd false otherwise.
-export function isColliding(fighter) {
-    //x, y width, height
-    let [x1, y1, w1, h1] = Object.values(fighter.pushBox);
-    let [x2, y2, w2, h2] = Object.values(fighter.opponent.pushBox);
-           //       (check x-axis)         |    |        (check y-axis)          |
-    return ((x1 + w1 >= x2 && x1 <= x2 + w2) && (y1 + h1 >= y2) && (y1 <= y2 + h2))
-}//end isColliding
+/** Checks if two rectangles overlap.
+ * @param {{x, y, width, height}} boxA an object containing x, y, width, height properties
+ * @param {{x, y, width, height}} boxB an object containing x, y, width, height prooperties
+ * @returns {boolean} true the boxes overlap, false otherwise.
+ **/
+export function rectsOverlap(boxA, boxB) {
+    return boxA.x < boxB.x + boxB.width &&
+           boxA.x + boxA.width > boxB.x &&
+           boxA.y < boxB.y + boxB.height &&
+           boxA.y + boxA.height > boxB.y;
+}//end rectsOverlap
 
-//handles players colliding with eachother.
-//and handles players colliding with the border of the screen.
-export function resolveCollision(fighter) {
-    let opponent = fighter.opponent;
-    
-    if (isColliding(fighter)) {
-        // resolve left side of collision
-        if (fighter.pos.x <= opponent.pos.x) {
-            let playerOverlap = fighter.pushBox.x + fighter.pushBox.width - opponent.pushBox.x;
-            let leftBoundaryOverlap = LEFT_BOUNDARY - fighter.pushBox.x;
+/** Pushes players away from eachother to prevent overlap.
+*   @param {Fighter[]} players an array of Fighter objects.
+**/
+export function resolvePlayerCollision(players) {
+        //players 1
+        const boxA = {
+            x:      players[0].pos.x - players[0].boxes.push[0],
+            y:      players[0].pos.y - players[0].boxes.push[3],
+            width:  players[0].boxes.push[2],
+            height: players[0].boxes.push[3],
+        };
+        //players 2
+        const boxB = {
+            x:      players[1].pos.x - players[1].boxes.push[0],
+            y:      players[1].pos.y - players[1].boxes.push[3],
+            width:  players[1].boxes.push[2],
+            height: players[1].boxes.push[3],
+        };
 
-            //take the max value so that player cannot be pushed out of bounds.
-            fighter.pos.x = Math.max((fighter.pos.x - playerOverlap), (fighter.pos.x + leftBoundaryOverlap));
-        }//end if
+        if (!rectsOverlap(boxA, boxB)) return;
 
-        //resolve right side of collision
-        if (fighter.pos.x >= opponent.pos.x) {
-            let playerOverlap = opponent.pushBox.x + opponent.pushBox.width - fighter.pushBox.x;
-            let rightBoundaryOverlap = fighter.pushBox.x + fighter.pushBox.width - RIGHT_BOUNDARY;
+        let xOverlap = Math.min(
+            (boxA.x + boxA.width) - boxB.x,
+            (boxB.x + boxB.width) - boxA.x,
+        );
 
-            //take the min value so that player cannot be pushed out of bounds.
-            fighter.pos.x = Math.min((fighter.pos.x + playerOverlap), (fighter.pos.x - rightBoundaryOverlap));
-        }//end if
-    }//end if
-    ensureOnScreen(fighter);
-}//end resolveCollision
+        let pushAmount = xOverlap/2
 
-//ensure players are unable to move offscreen.
+        let boxAnewX = players[0].pos.x - pushAmount * players[0].direction;
+        let boxAminX = LEFT_BOUNDARY;
+        let boxAmaxX = RIGHT_BOUNDARY - boxA.width/2;
+
+        let boxBnewX = players[1].pos.x - pushAmount * players[1].direction;
+        let boxBminX = LEFT_BOUNDARY;
+        let boxBmaxX = RIGHT_BOUNDARY - boxB.width/2;
+
+        players[0].pos.x = Math.max(boxAminX, Math.min(boxAmaxX, boxAnewX));
+        players[1].pos.x = Math.max(boxBminX, Math.min(boxBmaxX, boxBnewX));
+        ensureOnScreen(players[0]);
+        ensureOnScreen(players[1]);
+}//end resolvePlayerCollision
+
+/** Prevents Fighters from being able to move offscreen on the x-axis.
+ * @param {Fighter} fighter a Fighter object. 
+ **/
 export function ensureOnScreen(fighter) {
-    let playerWidth = fighter.pushBox.width;
-    let xPos = fighter.pushBox.x;
+    let playerWidth = fighter.boxes.push[2];
+    let xPos = fighter.pos.x - fighter.boxes.push[0];
     
     if (xPos <= LEFT_BOUNDARY) {
         let xOverlap = LEFT_BOUNDARY - xPos;
         fighter.pos.x = fighter.pos.x + xOverlap;
     } else if (xPos + playerWidth >= RIGHT_BOUNDARY) {
         let xOverlap = xPos + playerWidth - RIGHT_BOUNDARY;
-       fighter.pos.x = fighter.pos.x - xOverlap;
+        fighter.pos.x = fighter.pos.x - xOverlap;
     }//end if-else if
-}//end isAtLeftBoundary
+}//end ensureOnScreen
 
+/** Prevents Fighters from being able to move offscreen on the y-axis.
+ * @param {Fighter} fighter a Fighter object. 
+ **/
 export function ensureOnFLoor(fighter) {
     let posY = fighter.pos.y;
     if (posY > FLOOR) {
         let yOverlap = posY - FLOOR;
         fighter.pos.y = fighter.pos.y - yOverlap;
-    }
-}
+    }//end if
+}//end ensureOnFloor
 
