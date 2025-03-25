@@ -11,19 +11,18 @@ export const MENU_CENTER = {
     X: MENU_SCREEN_SIZE.WIDTH/2,
     Y: MENU_SCREEN_SIZE.HEIGHT/2
 }
-// device pixel ratio
-export const DPR = window.devicePixelRatio || 1;
 
 //Physics
 export const JUMP_VELOCITY = 350;
 export const WALK_VELOCITY_FWD = 125;
 export const WALK_VELOCITY_BWD = 75;
+export const FLOAT_VELOCITY = 75;
 export const GRAVITY = 1100;
 
 //Screen Boundaries
 export const LEFT_BOUNDARY = 0;
 export const RIGHT_BOUNDARY = CANVAS_WIDTH;
-export const FLOOR = CANVAS_HEIGHT - 75;
+export const FLOOR = CANVAS_HEIGHT - 40;
 
 //game settings
 export const DEFAULT_SETTINGS = {
@@ -42,13 +41,13 @@ export const TIME = {
 
 //left side start
 export const PLAYER_ONE_START = {
-    x: (CANVAS_WIDTH / 2) - 98,
+    x: (CANVAS_WIDTH / 2) - 24,
     y: FLOOR,
 }
 
 //right side start
 export const PLAYER_TWO_START = {
-    x: (CANVAS_WIDTH / 2) + 48,
+    x: (CANVAS_WIDTH / 2) + 24,
     y: FLOOR,
 }
 
