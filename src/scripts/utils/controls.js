@@ -5,11 +5,14 @@ export const CONTROL = {
     CROUCH: "down",
     LIGHT_ATK: "light_atk",
     HEAVY_ATK: "heavy_atk",
-    SPECIAL_1: "sp_1",
-    SPECIAL_2: "sp_2",
+    SP_1: "sp_1",
+    SP_2: "sp_2",
 };
 
-//playerID maps to a specific index in CONTROLS_MAP.
+/** Maps keyboard inputs to a player index.
+ *  CONTROLS_MAP[0] = player 1,
+ *  CONTROLS_MAP[1] = player 2.
+ **/
 export const CONTROLS_MAP = [
     {
         keyboard: {
@@ -19,8 +22,8 @@ export const CONTROLS_MAP = [
             [CONTROL.CROUCH]: "KeyS",
             [CONTROL.LIGHT_ATK]: "KeyH",
             [CONTROL.HEAVY_ATK]: "KeyJ",
-            [CONTROL.SPECIAL_1]: "KeyK",
-            [CONTROL.SPECIAL_2]: "KeyL",
+            [CONTROL.SP_1]: "KeyK",
+            [CONTROL.SP_2]: "KeyL",
         }
     },
     {
@@ -31,8 +34,8 @@ export const CONTROLS_MAP = [
             [CONTROL.CROUCH]: "ArrowDown",
             [CONTROL.LIGHT_ATK]: "KeyY",
             [CONTROL.HEAVY_ATK]: "KeyU",
-            [CONTROL.SPECIAL_1]: "KeyI",
-            [CONTROL.SPECIAL_2]: "KeyO",  
+            [CONTROL.SP_1]: "KeyI",
+            [CONTROL.SP_2]: "KeyO",  
         }
-    }
+    },
 ]
