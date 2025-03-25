@@ -2,17 +2,15 @@ import { OpponentDirection } from "../utils/global.js";
 //class for maintaining the characters
 export class FighterBaseClass {
     constructor(x, y, playerId) {
-        this.playerId= playerId;
+        this.playerId = playerId;
         this.direction = (!playerId) ? OpponentDirection.RIGHT : OpponentDirection.LEFT;
         this.debug = false;
         this.health = 100;
         this.energy = 100;
         this.pos = {x: x, y: y};
-        this.origin = {x: 0, y: 0};
+        this.origin = {x: this.pos.x, y: this.pos.y};
         this.velocity = {x: 0, y: 0};
-        this.pushBox = {x: 0, y: 0, width: 0, height: 0};
-        
-        //this.currentFrame = 0;    
+        this.boxes = {push:[], hurt:[], hit:[]};  
     }//end ctor
 
     update() {
