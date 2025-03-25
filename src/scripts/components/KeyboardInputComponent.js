@@ -53,10 +53,10 @@ export class KeyboardInputComponent {
         return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.HEAVY_ATK]);
     }
     isSP_1() {
-        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.SPECIAL_1]);
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.SP_1]);
     }
     isSP_2() {
-        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.SPECIAL_2]);
+        return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.SP_2]);
     }
     
 }//end cls
