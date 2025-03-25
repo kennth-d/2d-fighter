@@ -1,6 +1,5 @@
 import { KeyboardInputComponent } from "../components/KeyboardInputComponent.js";
 import { PLAYER_ONE_START, PLAYER_TWO_START } from "../utils/global.js";
-import { FighterBaseClass } from "./FighterBaseClass.js";
 import { Fighter_001 } from "./Fighter_001.js";
 import { Fighter_002 } from "./Fighter_002.js";
 
@@ -19,6 +18,5 @@ export function createFighter(playerId, fighterId, controllerId) {
     const Fighter = FighterConstructors[fighterId];
     let startPos = figherStartPositions[playerId];
     let inputComponent = fighterControllers[controllerId];
-
     return new Fighter(startPos.x, startPos.y, playerId, new inputComponent());
 }
