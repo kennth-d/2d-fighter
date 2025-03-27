@@ -1,5 +1,5 @@
 import { CONTROL, CONTROLS_MAP } from "../utils/controls.js";
-import { OpponentDirection } from "../utils/global.js";
+import { OPPONENT_DIRECTION } from "../utils/const.js";
 //class for handling keyboard input.
 export class KeyboardInputComponent {
     constructor(id) {
@@ -35,10 +35,10 @@ export class KeyboardInputComponent {
         return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.RIGHT]);
     }
     isForward(fighter) {
-        return (fighter.direction === OpponentDirection.RIGHT) ? this.isRight() : this.isLeft();
+        return (fighter.direction === OPPONENT_DIRECTION.RIGHT) ? this.isRight() : this.isLeft();
     }
     isBackward(fighter) {
-        return (fighter.direction === OpponentDirection.LEFT) ? this.isRight() : this.isLeft();
+        return (fighter.direction === OPPONENT_DIRECTION.LEFT) ? this.isRight() : this.isLeft();
     }
     isJump() {
         return this.isKeyDown(CONTROLS_MAP[this.id].keyboard[CONTROL.JUMP]);
