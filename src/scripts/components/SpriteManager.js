@@ -1,5 +1,5 @@
 import { characterStates } from "../states/states.js";
-import { CANVAS_WIDTH, TIME } from "../utils/global.js";
+import { CANVAS_WIDTH, TIME } from "../utils/const.js";
 import { drawDebugBox } from "../utils/debug.js";
 
 // --- class for managing the player sprites ---//
@@ -15,9 +15,11 @@ export class FighterSpriteManager {
         this.currentSprite = this.sprites.IDLE;
     }
     update(fighter) {
-        //update sprite
-        if (fighter.stateManager.activeState.name != this.currentSprite.name) {
-            this.changeSprite(fighter.stateManager.activeState.name);
+
+        //check if sprite needs changing
+        let activeStateName = fighter.stateManager.activeState.getName();
+        if (activeStateName != this.currentSprite.name) {
+            this.changeSprite(activeStateName);
         }
 
         //update frame
@@ -41,8 +43,8 @@ export class FighterSpriteManager {
             0,                                                 //sY
             width,                                             //sWidth
             height,                                            //sHeight
-            fighter.pos.x * fighter.direction - offsetX,                                                //dX
-            fighter.pos.y - offsetY,                                     //dY
+            fighter.pos.x * fighter.direction - offsetX,       //dX
+            fighter.pos.y - offsetY,                           //dY
             width,                                             //dWidth
             height,                                            //dHeight
         );
@@ -97,7 +99,7 @@ export class FighterSpriteManager {
                 "#FF0000"
             ); //end drawDebug
         }//end if
-
+        
         //draw active state 
         ctx.font = "10px serif";
         ctx.textAlign = "center";
@@ -109,15 +111,24 @@ export class FighterSpriteManager {
         ctx.fillText(fighter.stateManager.activeState.name, x, 50);
         ctx.restore();
     }//end draw_debug
-
     changeSprite(state) {
         this.currentSprite = this.sprites[state];
         this.currentFrame = 0;
     }//end changeSprite
-    
     nextFrame() {
         this.currentFrame = (this.currentFrame + 1) % this.currentSprite.frames;
     }// end nextFrame
+    getCurrentSpriteFrameCount() {
+        return this.currentSprite.frames;
+    }//end getSpriteFameCount
+    setCurrentFrame(number) {
+        if (number > this.getCurrentSpriteFrameCount-1) throw new Error("Error: number exceeds current sprite frame count");
+        if (number < 0) throw new Error("Error: number must be greater than or equal to zero.");
+        this.currentFrame = number;
+    }//end setCurrentFrame
+    setFrameZero() {
+        this.currentFrame = 0;
+    }//end setFrameZero
     initializeSprites(spriteData) {
         characterStates.forEach(state => {
             this.sprites[state] = {
@@ -129,5 +140,5 @@ export class FighterSpriteManager {
             }
             this.sprites[state].img.src = spriteData[state].src;
         })//end for
-    }
+    }//end initializeSprites
 }
