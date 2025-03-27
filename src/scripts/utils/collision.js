@@ -1,4 +1,4 @@
-import { LEFT_BOUNDARY, RIGHT_BOUNDARY, FLOOR} from "./global.js";
+import { BOUNDARIES } from "./const.js";
 
 /** Checks if two rectangles overlap.
  * @param {{x, y, width, height}} boxA an object containing x, y, width, height properties
@@ -11,22 +11,21 @@ export function rectsOverlap(boxA, boxB) {
            boxA.y < boxB.y + boxB.height &&
            boxA.y + boxA.height > boxB.y;
 }//end rectsOverlap
-
 /** Pushes players away from eachother to prevent overlap.
 *   @param {Fighter[]} players an array of Fighter objects.
 **/
 export function resolvePlayerCollision(players) {
         //players 1
         const boxA = {
-            x:      players[0].pos.x - players[0].boxes.push[0],
-            y:      players[0].pos.y - players[0].boxes.push[3],
+            x:      players[0].pos.x + players[0].boxes.push[0],
+            y:      players[0].pos.y + players[0].boxes.push[3],
             width:  players[0].boxes.push[2],
             height: players[0].boxes.push[3],
         };
         //players 2
         const boxB = {
-            x:      players[1].pos.x - players[1].boxes.push[0],
-            y:      players[1].pos.y - players[1].boxes.push[3],
+            x:      players[1].pos.x + players[1].boxes.push[0],
+            y:      players[1].pos.y + players[1].boxes.push[3],
             width:  players[1].boxes.push[2],
             height: players[1].boxes.push[3],
         };
@@ -41,12 +40,12 @@ export function resolvePlayerCollision(players) {
         let pushAmount = xOverlap/2
 
         let boxAnewX = players[0].pos.x - pushAmount * players[0].direction;
-        let boxAminX = LEFT_BOUNDARY;
-        let boxAmaxX = RIGHT_BOUNDARY - boxA.width/2;
+        let boxAminX = BOUNDARIES.LEFT;
+        let boxAmaxX = BOUNDARIES.RIGHT - boxA.width/2;
 
         let boxBnewX = players[1].pos.x - pushAmount * players[1].direction;
-        let boxBminX = LEFT_BOUNDARY;
-        let boxBmaxX = RIGHT_BOUNDARY - boxB.width/2;
+        let boxBminX = BOUNDARIES.LEFT;
+        let boxBmaxX = BOUNDARIES.RIGHT - boxB.width/2;
 
         players[0].pos.x = Math.max(boxAminX, Math.min(boxAmaxX, boxAnewX));
         players[1].pos.x = Math.max(boxBminX, Math.min(boxBmaxX, boxBnewX));
@@ -61,11 +60,11 @@ export function ensureOnScreen(fighter) {
     let playerWidth = fighter.boxes.push[2];
     let xPos = fighter.pos.x - fighter.boxes.push[0];
     
-    if (xPos <= LEFT_BOUNDARY) {
-        let xOverlap = LEFT_BOUNDARY - xPos;
+    if (xPos <= BOUNDARIES.LEFT) {
+        let xOverlap = BOUNDARIES.LEFT - xPos;
         fighter.pos.x = fighter.pos.x + xOverlap;
-    } else if (xPos + playerWidth >= RIGHT_BOUNDARY) {
-        let xOverlap = xPos + playerWidth - RIGHT_BOUNDARY;
+    } else if (xPos + playerWidth >= BOUNDARIES.RIGHT) {
+        let xOverlap = xPos + playerWidth - BOUNDARIES.RIGHT;
         fighter.pos.x = fighter.pos.x - xOverlap;
     }//end if-else if
 }//end ensureOnScreen
@@ -75,8 +74,8 @@ export function ensureOnScreen(fighter) {
  **/
 export function ensureOnFLoor(fighter) {
     let posY = fighter.pos.y;
-    if (posY > FLOOR) {
-        let yOverlap = posY - FLOOR;
+    if (posY > BOUNDARIES.FLOOR) {
+        let yOverlap = posY - BOUNDARIES.FLOOR;
         fighter.pos.y = fighter.pos.y - yOverlap;
     }//end if
 }//end ensureOnFloor
