@@ -43,8 +43,16 @@ export class BattleScene extends Scene {
         this.stage.update();
         this.updateOverlays();
 
+
         //resovle collision
+        collisionManager.ensureOnFLoor(this.fighters[0]);
+        collisionManager.ensureOnFLoor(this.fighters[1]);
+
         collisionManager.resolvePlayerCollision(this.fighters);
+        
+        collisionManager.ensureOnScreen(this.fighters[0]);
+        collisionManager.ensureOnScreen(this.fighters[1]);
+        
     }//end update
     draw() {
         this.stage.draw(this.game.ctx);
