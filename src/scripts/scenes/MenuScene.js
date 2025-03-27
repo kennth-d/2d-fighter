@@ -24,7 +24,8 @@ export class MenuScene extends Scene {
             button.draw(ctx);
         }//end for
     }//end drawButtons
-    handleClickEvent() {
+    handleClickEvent(event) {
+        if (event.which === 3) return;
         let clickedBtn = getClickedObject(this.buttons, this.mousePos);
         if (clickedBtn) BUTTON_CALLBACKS[clickedBtn.id](this.game);
     }
