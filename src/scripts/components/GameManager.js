@@ -1,9 +1,7 @@
 import { getContext2D } from "../utils/utils.js";
 import * as scenes from "../scenes/scenes.js";
 import { logEntities, toggleDebug } from "../utils/debug.js";
-import { updateTime } from "../utils/utils.js";
-import { DEFAULT_SETTINGS } from "../utils/global.js";
-import { TIME } from "../utils/global.js";
+import { TIME, DEFAULT_SETTINGS, MENU } from "../utils/const.js";
 
 export class GameManager {
     constructor(debug=false) {
@@ -15,7 +13,7 @@ export class GameManager {
         this.ctx = getContext2D('#low-res-screen');
         this.ctx.imageSmoothingEnabled = false;
         //high-res screen for menu scenes
-        this.ctxHigh = getContext2D("#high-res-screen");
+        this.ctxHigh = MENU.canvasElement.getContext("2d");
         this.ctxHigh.imageSmoothingEnabled = false;
 
         this.scenes = [new scenes.MainMenuScene(this)];
@@ -31,7 +29,7 @@ export class GameManager {
     frame(timestamp) {
         window.requestAnimationFrame(this.frame.bind(this));
 
-        updateTime(timestamp);
+        TIME.update(timestamp);
 
         this.scene.update();
         this.scene.draw();
@@ -43,13 +41,15 @@ export class GameManager {
     addListeners() {
         this.ctxHigh.canvas.addEventListener("mousemove", (event) => {
             this.scene.handleMouseMove(event);
-        }, false);
-                
-        this.ctxHigh.canvas.addEventListener("click", () => {
+        }, false);    
+        this.ctxHigh.canvas.addEventListener("click", (event) => {
             //precondition: this.scene is not undefined.
-            this.scene.handleClickEvent();    
+            this.scene.handleClickEvent(event);    
         }, false);
-        
+        this.ctxHigh.canvas.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            this.scene.handleClickEvent(event);
+        }, false);
         this.ctxHigh.canvas.addEventListener("mousedown", () => {
             this.scene.handleMouseDown();
         }, false);
@@ -71,12 +71,11 @@ export class GameManager {
         window.addEventListener("keypress", (e) => {
             if (e.code === "Space") {
                 logEntities(this.scene.fighters);
-                console.log(`${TIME.FPS} fps`);
+                console.log(`${TIME.fps} fps`);
             }//end if
             if (e.code === "KeyV") {
                 toggleDebug(this.scene.fighters);
             }//end if
         });
     }//end setupDebug
-
 }//end GameManager
