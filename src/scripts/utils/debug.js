@@ -26,7 +26,6 @@ export function drawDebugBox(ctx, box, color) {
     if (!Array.isArray(box)) return;
 
     const [x = 0, y = 0, width = 0, height = 0] = box;
-
     ctx.beginPath();
     ctx.strokeStyle = color + "AA";
     ctx.fillStyle = color + "44";
