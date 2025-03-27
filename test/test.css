@@ -9,24 +9,14 @@ body {
     background-color: black;
     overflow: hidden;
 }
-/* canvas{
-    position: absolute;
-    object-fit: contain;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    width:100%;
-    height: auto;
-    right: 0;
-    bottom: 0;
-} */
- canvas {
+canvas {
     position: absolute;
     object-fit:contain;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     width: 100%;
- }
+}
 img {
     display: none;
 }
