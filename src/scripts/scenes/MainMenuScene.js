@@ -1,5 +1,5 @@
 import { MAIN_MENU_BACKGROUND } from "../../assets/data/MainMenuImgData.js";
-import { MENU_CENTER } from "../utils/global.js";
+import { MENU } from "../utils/const.js";
 import { BUTTON_PADDING, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTONS } from "../../assets/data/buttonsData.js";
 import { Button } from "../form/Button.js";
 import { MenuScene } from "./MenuScene.js";
@@ -40,8 +40,8 @@ export class MainMenuScene extends MenuScene {
         ];
 
         for (let i = 0; i < buttonList.length; i++) {
-            let dX = MENU_CENTER.X - BUTTON_WIDTH/2;
-            let dY = MENU_CENTER.Y - BUTTON_HEIGHT + (BUTTON_HEIGHT * i) + (BUTTON_PADDING * i);
+            let dX = MENU.centerX - BUTTON_WIDTH/2;
+            let dY = MENU.centerY - BUTTON_HEIGHT + (BUTTON_HEIGHT * i) + (BUTTON_PADDING * i);
             buttonList[i].rect.x = dX;
             buttonList[i].rect.y = dY;
         }

@@ -1,5 +1,5 @@
 import { SETTINGS_CHOICES, CHOICE_PADDING, SETTINGS_CHOICE_WIDTH } from "../../assets/data/choiceData.js";
-import { DEFAULT_SETTINGS } from "../utils/global.js";
+import { DEFAULT_SETTINGS } from "../utils/const.js";
 import { drawLabel } from "./drawLabel.js";
 import { SettingsChoice } from "./SettingsChoice.js";
 

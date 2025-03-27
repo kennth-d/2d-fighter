@@ -1,6 +1,6 @@
-import {CANVAS_WIDTH, TIME } from "../utils/global.js";
+import {CANVAS_WIDTH, TIME } from "../utils/const.js";
 import { STATUS } from "../../assets/data/StatusBarData.js"
-import { MAX_ENERGY, MAX_HEALTH } from "../utils/battle.js";
+import { MAX_ENERGY, MAX_HEALTH } from "../utils/const.js";
 
 export class StatusBar {
 
