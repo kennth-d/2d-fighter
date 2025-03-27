@@ -15,21 +15,28 @@ export class CharacterSelectScene extends MenuScene {
         //set button position
         this.setButtons();
         
-
-        //set character positions
+        //set character image positions
         this.setCharRects();
-
     }
-    handleClickEvent() {
+    handleClickEvent(event) {
         let clicked = getClickedObject(this.characterChoices, this.mousePos);
         let idx = this.selectedCharacters.indexOf(clicked);
+
+        //handle left mouse click
+        if (event.which === 1) {
+            if (clicked && this.selectedCharacters.length < 2) {
+                this.addSelectedCharacter(clicked);
+            }
+        }//end handle left mouse click
+
+        //handle right mouse click
+        if (event.which === 3) {
+            if (clicked) {
+                this.removeSelectedCharacter(idx);
+            }
+        }//end handle right mouse click   
         
-        if (clicked && idx > -1) {
-            this.removeSelectedCharacter(clicked, idx);
-        } else if (clicked) {
-            this.addSelectedCharacter(clicked);
-        }//end if-else
-        super.handleClickEvent();
+        super.handleClickEvent(event); //handle button clicks
     }//end handleClickEvent
     draw() {
         this.drawbg(this.game.ctxHigh);
@@ -39,7 +46,11 @@ export class CharacterSelectScene extends MenuScene {
     }//end draw
     drawCharacterChoices(ctx) {
         for (let i = 0; i < this.characterChoices.length; i++) {
-            this.characterChoices[i].draw(ctx, this.selectedCharacters.indexOf(this.characterChoices[i]));
+            this.characterChoices[i].draw(ctx);
+            let selection = this.selectedCharacters.at(i);
+            if (selection) {
+                selection.drawOutline(ctx, i);
+            }//end if
         };
     }//end drawCharacterChoices
     drawbg(ctx) {
@@ -59,6 +70,8 @@ export class CharacterSelectScene extends MenuScene {
         let dx = 100;
         let dy1 = 200;
         let dy2 = 250;
+        let dy3 = 300;
+        let dy4 = 350;
 
         //draw txt info
         ctx.font = "bold 24px Helvetica";
@@ -67,13 +80,15 @@ export class CharacterSelectScene extends MenuScene {
 
         ctx.fillText("Player 1", dx, dy1);
         ctx.fillText("Player 2", dx, dy2);
+        ctx.fillText("Select: LMB", dx, dy3);
+        ctx.fillText("Deselect: RMB", dx, dy4);
 
         //draw player one square
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "#55FF55";
         ctx.fillRect(dx + textMetric.width, dy1-20, 25,25);
 
         //draw player two square
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "#FF0000";
         ctx.fillRect(dx + textMetric.width, dy2-20, 25, 25);
 
         ctx.restore();
@@ -102,14 +117,10 @@ export class CharacterSelectScene extends MenuScene {
         this.characterChoices[1].rect.x += 100;
     }//end setCharRects
     addSelectedCharacter(char) {
-        if (this.selectedCharacters.length === 2) return;
-
         this.selectedCharacters.push(char);
-        char.select();
     }
-    removeSelectedCharacter(char, idx) {
+    removeSelectedCharacter(idx) {
         if (idx === 0) this.selectedCharacters.shift();
         if (idx === 1) this.selectedCharacters.pop();
-        char.select();
     }
 }
