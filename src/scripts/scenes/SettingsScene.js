@@ -1,13 +1,10 @@
-import { Button, HoverStatus } from "../form/Button.js";
+import { Button } from "../form/Button.js";
 import { BUTTON_PADDING, BUTTON_WIDTH, BUTTONS } from "../../assets/data/buttonsData.js";
-import { isInside } from "../utils/mouseHandler.js";
 import { RoundChoiceForm } from "../form/RoundChoiceForm.js";
-import { BUTTON_CALLBACKS } from "../form/ButtonCallbacks.js";
 import { getClickedObject } from "../utils/getClickedObject.js";
 import { MenuScene } from "./scenes.js";
 import { MusicChoiceForm } from "../form/MusicChoiceForm.js";
 import { RangeInput } from "../form/RangeInput.js";
-import { DEFAULT_SETTINGS } from "../utils/global.js";
 
 export class SettingsScene extends MenuScene {
     constructor(game) {
@@ -23,7 +20,8 @@ export class SettingsScene extends MenuScene {
         ];
         this.mouseDown = 0;
     }//end ctor
-    handleClickEvent() {
+    handleClickEvent(event) {
+        if (event.which === 3) return;
         //handle choices
         for (let i = 0; i < this.settingsChoices.length; i++) {
             let clicked = getClickedObject(this.settingsChoices[i].getChoices(), this.mousePos);
@@ -33,7 +31,7 @@ export class SettingsScene extends MenuScene {
         }//end for
 
         //handle buttons
-        super.handleClickEvent();
+        super.handleClickEvent(event);
     }//end handleClickEvent
     handleMouseMove(event) {
         super.handleMouseMove(event);
