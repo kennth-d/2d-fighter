@@ -1,9 +1,9 @@
 // Box data format: [x, y, width, height]
 // Boxes are positioned relative to player position.
-// X: pixels left of posX
-// y: pixels above posY 
+// X: pixels left of posX,
+// y: pixels above posY ,
 // width: pixel width, 
-// height: pixel height
+// height: pixel height,
 
 // pushbox: 1 box per frame
 // hitbox: 1 box per active frame
