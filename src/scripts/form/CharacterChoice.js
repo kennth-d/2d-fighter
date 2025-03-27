@@ -6,24 +6,15 @@ export class CharacterChoice {
         this.img = document.querySelector('img[alt="character-choices"]');
         this.imgRect = CHARACTER_CHOICES[id];
         this.rect = {};
-        this.isSelected = 0;
     }//end ctor
     select() {
-        this.isSelected = Math.abs(this.isSelected - 1);
+        this.selectedelected = Math.abs(this.selectedelected - 1);
     }//end select
     getCharacter() {
         return this.id;
     }//end getCharacter
-    isSelected() {
-        return Boolean(this.isSelected);
-    }//end isSelected
-    draw(ctx, playerIdx) {
+    draw(ctx) {
         this.drawCharacter(ctx);
-
-        if (this.isSelected && playerIdx >= 0) {
-             this.drawOutline(ctx, playerIdx);
-        }//end if
-
         this.drawLabel(ctx);
     }//end draw
     drawCharacter(ctx) {
@@ -51,23 +42,34 @@ export class CharacterChoice {
     drawOutline(ctx, playerIdx) {
         ctx.save();
 
-        let dx = this.rect.x -2;
-        let dy = this.rect.y - 2;
+        let dx = this.rect.x - 5;
+        let dy = this.rect.y - 5;
+        let width = this.imgRect.width + 5;
+        let height = this.imgRect.height + 5;
+
         ctx.lineWidth = 2;
-        ctx.strokeStyle = (playerIdx < 1) ? "green" : "red";
+        ctx.strokeStyle = (playerIdx < 1) ? "#55FF55" : "#FF0000"; // green : red
+        
+        //p1, green
+        if (playerIdx < 1) {
+            dx -= 2;
+            dy -= 2;
+            width += 3;
+            height += 3;
+        }
 
         ctx.beginPath();
         //move to top left
         ctx.moveTo(dx, dy);
 
         //draw to top right
-        ctx.lineTo(dx + this.imgRect.width + 5, dy);
+        ctx.lineTo(dx + width, dy);
 
         //draw to bottom right
-        ctx.lineTo(dx + this.imgRect.width + 5, dy + this.imgRect.height + 5);
+        ctx.lineTo(dx + width, dy + height);
 
         //draw to bottom left
-        ctx.lineTo(dx, dy + this.imgRect.height + 2 );
+        ctx.lineTo(dx, dy + height);
 
         //close the rect
         ctx.closePath();
