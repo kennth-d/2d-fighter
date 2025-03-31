@@ -45,13 +45,13 @@ export class StatusBar {
         //health
         for (const index in this.healthBars) {
             if (this.healthBars[index].hp <= this.fighters[index].health) continue;
-            this.healthBars[index].hp = Math.max(0, this.healthBars[index].hp - (TIME.delta * TIME.FPS))
+            this.healthBars[index].hp = Math.max(0, this.healthBars[index].hp - (TIME.delta * TIME.fps))
         }
 
         //energy
         for (const index in this.energyBars) {
             if (this.energyBars[index].ep <= this.fighters[index].energy) continue;
-            this.energyBars[index].ep = Math.max(0, this.energyBars[index].ep - TIME.delta * TIME.FPS)
+            this.energyBars[index].ep = Math.max(0, this.energyBars[index].ep - TIME.delta * TIME.fps)
         }
     }
 
