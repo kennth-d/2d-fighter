@@ -9,3 +9,14 @@ export function getContext2D(selector) {
     const ctx = canvas.getContext('2d');
     return ctx;
 }//end getContext
+
+export function getActualBoxDimensions(position, direction, box) {
+    let x1 = position.x - (box[0] * direction);
+    let x2 = x1 + (box[2] * direction);
+    return {
+        x:Math.min(x1, x2),
+        y:position.y - box[1],
+        width: box[2],
+        height: box[3],
+    };
+}//end getActualBoxDimensions
