@@ -1,5 +1,6 @@
 import { getBoxes } from "../utils/getBoxes.js";
 import { OPPONENT_DIRECTION } from "../utils/const.js";
+import { PhysicsComponent } from "../components/PhysicsComponent.js";
 //class for maintaining the characters
 export class FighterBaseClass {
     constructor(x, y, playerId) {
@@ -10,10 +11,12 @@ export class FighterBaseClass {
         this.energy = 100;
         this.pos = {x: x, y: y};
         this.origin = {x: this.pos.x, y: this.pos.y};
-        this.velocity = {x: 0, y: 0};
         this.boxes = {push:[], hurt:[], hit:[]};  
         this.spriteManager;
+        this.stateManager;
+        this.physics = new PhysicsComponent(this);
         this.input;
+        this.hasHit;        
     }//end ctor
     update() {
         throw new Error("update method must be implemented.");
@@ -38,6 +41,18 @@ export class FighterBaseClass {
             this.boxes.push = getBoxes(this.name, state, "push", currentFrame);
             this.boxes.hurt = getBoxes(this.name, state, "hurt", currentFrame);
             this.boxes.hit = getBoxes(this.name, state, "hit", currentFrame);
-
-        }
+    }
+    isAttacking() {
+        return this.stateManager.activeState.getType() === "attack";
+    }
+    setHasHit(value) {
+        this.hasHit = value;
+    }
+    getHasHit() {
+        return this.hasHit;
+    }
+    applyhit(damage, hitstun, knockback) {
+        this.health = Math.max(this.health - damage, 0);
+        this.stateManager.hurtTransition(hitstun, knockback);
+    }
 }//end ctor
