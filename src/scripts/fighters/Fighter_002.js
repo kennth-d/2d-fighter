@@ -18,19 +18,17 @@ export class Fighter_002 extends FighterBaseClass {
 
     update() {
         
-        //ensure player is facing the enemy
         correctDirection(this, this.opponent);
 
-        //update origin points
         super.updateOrigin();
         
-        //update the fighter state
-        this.stateManager.activeState.update(this.stateManager, this.input);
+        //this.stateManager.activeState.update(this.stateManager, this.input);
+        this.stateManager.update(this.input);
 
-        //update the sprite
+        this.physics.update();
+
         this.spriteManager.update(this);
 
-        //update boxes
         super.updateBoxes();
 
     }//end update
