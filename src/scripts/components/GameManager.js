@@ -71,7 +71,7 @@ export class GameManager {
         window.addEventListener("keypress", (e) => {
             if (e.code === "Space") {
                 logEntities(this.scene.fighters);
-                console.log(`${TIME.fps} fps`);
+                console.log(TIME);
             }//end if
             if (e.code === "KeyV") {
                 toggleDebug(this.scene.fighters);
