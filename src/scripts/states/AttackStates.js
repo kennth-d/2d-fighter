@@ -9,11 +9,12 @@ import { Idle } from "./MoveStates.js";
  * @extends {Idle}
  */
 export class Attack extends Idle {
-    constructor(state) {
-        super(state, "attack");
-        this.damage;
-        this.hitstun;
+    constructor(state, type="attack") {
+        super(state, type);
     }//end ctor
+    exit(manager) {
+        manager.fighter.setHasHit(false);
+    }//end exit
 }//end AttackState
 
 /** more reach and damage than light attack at the cost of speed.
@@ -22,18 +23,14 @@ export class Attack extends Idle {
 export class LightAttack extends Attack {
     constructor() {
         super("LIGHT_ATTACK");
-        this.damage = 3;
-        this.hitstun = 2;
     }//end ctor
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
-        let lastFrame = manager.fighter.spriteManager.currentSprite.frames-1;
         
-        //start up
         if (currentFrame < 7) {
             return;
         }
-
+        
         //combo input
         if (input.isHeavy()) {
             manager.transition("HEAVY_ATTACK");
@@ -57,8 +54,6 @@ export class LightAttack extends Attack {
 export class HeavyAttack extends Attack {
     constructor() {
         super("HEAVY_ATTACK");
-        this.damage = 6;
-        this.hitstun = 4;
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
@@ -84,15 +79,14 @@ export class HeavyAttack extends Attack {
 export class SP_1 extends Attack {
     constructor() {
         super("SP_1");
-        this.damage = 10;
-        this.hitstun = 4;
     }//end ctor
     update(manager, input) {
-        if (!manager.fighter.animationIsComplete()) {
-            return;
-        } else {
+        //for debugging
+        let currentFrame = manager.fighter.spriteManager.currentFrame;
+        //if ((currentFrame === 4 || currentFrame === 5) && manager.fighter.name === "F002") console.log(manager.fighter.boxes.hit);
+        if (manager.fighter.animationIsComplete()) {
             manager.transition("IDLE");
-        }//end if-else
+        };
     }//end update
 }//end SP_1
 
@@ -101,9 +95,7 @@ export class SP_1 extends Attack {
  */
 export class SP_2 extends Attack {
     constructor() {
-        super("SP_2");
-        this.damage = 4;
-        this.hitstun = 2;
+        super("SP_2", "projectile");
         this.shotsFired =  0;
     }//end ctor
     enter() {
