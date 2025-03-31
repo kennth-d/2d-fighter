@@ -2,7 +2,8 @@ import {createFighter} from "../fighters/fighters.js";
 import { Stage } from "../stage/Stage.js";
 import { StatusBar } from "../overlays/StatusBar.js";
 import { Scene, PauseScene } from "./scenes.js";
-import * as collisionManager from "../utils/collision.js"
+import * as collisionManager from "../utils/collision.js";
+import { TIME } from "../utils/const.js";
 
 export class BattleScene extends Scene {
 
@@ -10,6 +11,7 @@ export class BattleScene extends Scene {
         super(game);
         this.fighters = this.getFighterEntities(this.game.fighters[0], this.game.fighters[1]);
         this.stage = new Stage();
+        this.drawOrder = [0, 1];
         this.overlays = [
             this.getStatusBar(this),
         ];
@@ -39,20 +41,20 @@ export class BattleScene extends Scene {
             return fighterEntities;
     }//end getFighterEntitiess
     update() {
+        //console.log(TIME.previous, TIME.hitStopTimer);
         this.updateFighters();
         this.stage.update();
         this.updateOverlays();
 
-
-        //resovle collision
-        collisionManager.ensureOnFLoor(this.fighters[0]);
-        collisionManager.ensureOnFLoor(this.fighters[1]);
-
-        collisionManager.resolvePlayerCollision(this.fighters);
+        collisionManager.resolvePushBoxCollision(this.fighters);
         
         collisionManager.ensureOnScreen(this.fighters[0]);
         collisionManager.ensureOnScreen(this.fighters[1]);
-        
+
+        //check for attack collision
+        //TODO: refactor updateHitBoxCollision to resolve hits in one call.
+        collisionManager.updateHitBoxCollision(this, this.fighters[0], this.fighters[1]);
+        collisionManager.updateHitBoxCollision(this, this.fighters[1], this.fighters[0]);
     }//end update
     draw() {
         this.stage.draw(this.game.ctx);
@@ -61,6 +63,10 @@ export class BattleScene extends Scene {
     }//end draw
     updateFighters() {
         for (const fighter of this.fighters) {
+            if (TIME.previous < TIME.hitStopTimer) {
+                console.log("hitStop");
+                return;
+            } 
             fighter.update();
         }
     }//end updateFighters
@@ -70,8 +76,8 @@ export class BattleScene extends Scene {
         }
     }//end updateOverlays
     drawFighters(ctx) {
-        for (const fighter of this.fighters) {
-            fighter.draw(ctx);
+        for (const num of this.drawOrder) {
+            this.fighters[num].draw(ctx);
         }
     }//end drawFighters
     drawOverlays(ctx) {
