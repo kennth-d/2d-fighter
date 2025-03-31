@@ -35,11 +35,12 @@ MENU.centerY = MENU.height/2;
  * @property { number } gravity value for gravity. 
  */
 export const PHYSICS = {
-    jumpVelocity: 350,
+    jumpVelocity: 375,
     walkFwdVelocity: 125,
     walkBwdVelocity: 75,
     floatVelocity: 85,
     gravity: 1100,
+    friction: 0.8,
 }
 /**defines boundaries of the game.
  * @typedef BOUNDARIES
@@ -77,6 +78,7 @@ export const TIME = {
     delta: 0,
     previous: 0,
     fps: 0,
+    hitStopTimer: 0,
     update: (timestamp) => {
         TIME.delta = (timestamp - TIME.previous) / 1000;
         TIME.previous = timestamp;
