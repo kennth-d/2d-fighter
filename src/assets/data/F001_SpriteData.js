@@ -108,6 +108,7 @@ export const F001_SpriteData = {
         height: 48,
         originOffset: {x: 22, y: 40},
         frames: 4,
+        delay: 4,
     },
     KNOCKBACK: {
         src: path + "knockback 48x48.png",
