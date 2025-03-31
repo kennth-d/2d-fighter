@@ -126,9 +126,6 @@ export class FighterSpriteManager {
         if (number < 0) throw new Error("Error: number must be greater than or equal to zero.");
         this.currentFrame = number;
     }//end setCurrentFrame
-    setFrameZero() {
-        this.currentFrame = 0;
-    }//end setFrameZero
     initializeSprites(spriteData) {
         characterStates.forEach(state => {
             this.sprites[state] = {
