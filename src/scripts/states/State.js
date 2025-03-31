@@ -2,7 +2,7 @@
  * Interface for a Fighter State.
  * A state represents an action a fighter can take.
  */
-export class StateInterface {
+export class State {
 
     /** Constructor for State class
      * @param {string} name should be the same as the class name 
