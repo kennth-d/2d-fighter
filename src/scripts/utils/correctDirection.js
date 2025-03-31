@@ -6,6 +6,7 @@ import { FighterBaseClass } from "../fighters/FighterBaseClass.js"
  * @param {FighterBaseClass} opponent 
  */
 export function correctDirection(fighter, opponent) {
+    if (fighter.isAttacking()) return;
     if (fighter.pos.x > opponent.pos.x) {
         fighter.direction = OPPONENT_DIRECTION.LEFT;
     } else if (fighter.pos.x < opponent.pos.x) {
