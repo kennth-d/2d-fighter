@@ -6,31 +6,24 @@ import { TIME } from "../utils/const.js";
 export class Hurt extends Idle {
     constructor() {
         super("HURT");
-        this.hitstun;
     }
-    enter(manager, hitstun, knockback) {
+    enter(manager) {
         manager.fighter.spriteManager.setCurrentFrame(0);
-        this.hitstun = hitstun;
         manager.fighter.physics.changeVelocity("x", 0);
-        //juggle
-        if (manager.fighter.physics.isAirBorne()) {
-            manager.fighter.physics.changeKnockback("y", knockback);
-        }//end if 
-        manager.fighter.physics.changeKnockback("x", knockback * manager.fighter.opponent.direction);
     }//end  enter
     update(manager, input) {
-        if (this.hitstun > TIME.delta) {
-            this.hitstun -= TIME.delta;
+        if (manager.fighter.hitstun > 0) {
+            manager.fighter.hitstun -= TIME.delta;
             return;
-            //manager.transition("IDLE");
-        } else {
-            manager.transition("IDLE");
         }
+        manager.transition("IDLE");
         
-        //TODO: add escape logic.
-        //if input.isleft transition to escapeDir
     }//end update
-    exit(manager) {
-        manager.fighter.physics.changeKnockback("x", 0);
-    }//end exit
-}
+    exit() {
+    }
+}//end Hurt
+export class KO extends Idle {
+    constructor() {
+        super("KO");
+    }
+}// end KO
