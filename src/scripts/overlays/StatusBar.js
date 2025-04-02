@@ -34,7 +34,6 @@ export class StatusBar {
     updateTime() {
         this.timeTimer += TIME.delta;
         if (this.timeTimer >= 1) {
-
             if (this.timer > 0) this.timer -= 1;
             this.timeTimer = 0;
         }
@@ -50,7 +49,10 @@ export class StatusBar {
 
         //energy
         for (const index in this.energyBars) {
-            if (this.energyBars[index].ep <= this.fighters[index].energy) continue;
+            if (this.energyBars[index].ep <= this.fighters[index].energy) {
+                this.energyBars[index].ep = this.fighters[index].energy;
+                continue;
+            } 
             this.energyBars[index].ep = Math.max(0, this.energyBars[index].ep - TIME.delta * TIME.fps)
         }
     }
