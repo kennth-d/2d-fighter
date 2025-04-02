@@ -7,6 +7,7 @@ export const CANVAS_HEIGHT = CANVAS.height;
 
 export const MAX_HEALTH = 100;
 export const MAX_ENERGY = 100;
+export const ENERGY_REGEN_POWER = 8;
 
 /**
  * Stores the high res canvas canvas.
@@ -36,9 +37,9 @@ MENU.centerY = MENU.height/2;
  */
 export const PHYSICS = {
     jumpVelocity: 375,
-    walkFwdVelocity: 125,
-    walkBwdVelocity: 75,
-    floatVelocity: 85,
+    walkFwdVelocity: 70,
+    walkBwdVelocity: 70,
+    floatVelocity: 100,
     gravity: 1100,
     friction: 0.8,
 }
