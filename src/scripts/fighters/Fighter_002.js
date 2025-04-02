@@ -1,8 +1,8 @@
 import { FighterBaseClass } from "./FighterBaseClass.js";
-import { correctDirection } from "../utils/correctDirection.js";
 import { FighterStateManager } from "../components/FighterStateManager.js";
 import { FighterSpriteManager } from "../components/SpriteManager.js";
 import { F002_SpriteData } from "../../assets/data/F002_SpriteData.js";
+import { ENERGY_REGEN_POWER, TIME } from "../utils/const.js";
 
 //Fighter_001 class
 export class Fighter_002 extends FighterBaseClass {
@@ -17,12 +17,11 @@ export class Fighter_002 extends FighterBaseClass {
     }//end ctor
 
     update() {
-        
-        correctDirection(this, this.opponent);
 
-        super.updateOrigin();
+        this.energy = Math.min(100, this.energy + TIME.delta * ENERGY_REGEN_POWER);
         
-        //this.stateManager.activeState.update(this.stateManager, this.input);
+        super.updateOrigin();
+
         this.stateManager.update(this.input);
 
         this.physics.update();
