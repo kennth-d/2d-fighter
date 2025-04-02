@@ -16,6 +16,7 @@ export class FighterStateManager {
             SP_1: new states.SP_1(),
             SP_2: new states.SP_2(),
             HURT: new states.Hurt(),
+            BLOCK: new states.Block(),
         }//end states
         this.activeState = this.states.IDLE;
         this.fighter = fighter;
@@ -32,9 +33,4 @@ export class FighterStateManager {
         this.activeState = this.states[newState];
         this.activeState.enter(this);
     }//end transition
-    hurtTransition(knockback, hitstun) {
-        this.activeState.exit(this);
-        this.activeState = this.states.HURT;
-        this.activeState.enter(this, knockback, hitstun);
-    }
 }//end FighterStateManger.
