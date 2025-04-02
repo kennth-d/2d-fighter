@@ -4,7 +4,9 @@
  * States in this File: Idle, Crouch, WalkFwd, WalkBwd, Jump, JumpBack, JumpForward
  */
 import { State } from "./State.js";
-import { TIME, PHYSICS, BOUNDARIES } from "../utils/const.js"; 
+import { PHYSICS } from "../utils/const.js"; 
+import { isInRangeOfAttack } from "../utils/isInRangeOfAttack.js";
+import { isInStartup } from "../utils/isInStartup.js";
 
 /**Root of all states, decides what state to transition to based on input.
  * @extends { StateInterface }
@@ -17,21 +19,24 @@ export class Idle extends State {
     }
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", 0);
+        manager.fighter.physics.changeVelocity("y", 0);
+        manager.fighter.physics.changeKnockback("x", 0);
+        manager.fighter.physics.changeKnockback("y", 0);
     }//end enter
     update(manager, input) {
         
+        //then check for attacks to give them priority over movement.
+        if (input.isLight(manager.fighter)) {manager.transition("LIGHT_ATTACK"); return}
+        if (input.isHeavy(manager.fighter)) {manager.transition("HEAVY_ATTACK"); return}
+        if (input.isSP_1(manager.fighter)) {manager.transition("SP_1"); return;}
+        if (input.isSP_2(manager.fighter)) {manager.transition("SP_2"); return;}
+
         //check for movement first
-        if (input.isCrouch(manager.fighter)) manager.transition("CROUCH");
         if (input.isForward(manager.fighter)) manager.transition("WALK_FWD");
         if (input.isBackward(manager.fighter)) manager.transition("WALK_BWD");
-        if (input.isJump()) manager.transition("JUMP");
+        if (input.isCrouch(manager.fighter)) {manager.transition("CROUCH")}
+        if (input.isJump() && !manager.fighter.physics.isAirborne()){ manager.transition("JUMP"); return}
         
-
-        //then check for attacks
-        if (input.isLight(manager.fighter)) manager.transition("LIGHT_ATTACK");
-        if (input.isHeavy(manager.fighter)) manager.transition("HEAVY_ATTACK");
-        if (input.isSP_1(manager.fighter)) manager.transition("SP_1");
-        if (input.isSP_2(manager.fighter)) manager.transition("SP_2");
     }//end update
     getName() {
         return this.name;
@@ -88,7 +93,14 @@ export class WalkBwd extends Idle {
            manager.fighter.physics.changeVelocity("x", -PHYSICS.walkBwdVelocity * manager.fighter.direction);
     }//end enter
     update(manager, input) {
-        if (!input.isBackward(manager.fighter)) manager.transition("IDLE");
+        if (!input.isBackward(manager.fighter)) { 
+            manager.transition("IDLE"); 
+        };
+
+        if ( isInStartup(manager.fighter.opponent) && isInRangeOfAttack(manager.fighter, manager.fighter.opponent) ) {
+            manager.transition("BLOCK");
+            return;
+        }
         super.update(manager, input);
     }//end update
     exit(manager) {
@@ -107,6 +119,7 @@ export class Jump extends Idle {
         manager.fighter.physics.changeVelocity("y", -PHYSICS.jumpVelocity);
     }//end enter
     update(manager, input) {
+
         let currentFrame = manager.fighter.spriteManager.currentFrame;
         if (input.isForward(manager.fighter)) {
             if (currentFrame === 0) {
@@ -138,8 +151,6 @@ export class JumpForward extends Jump {
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", PHYSICS.floatVelocity * manager.fighter.direction);
     }//end enter
-    update(manager, input) {
-    }//end update
 }//end JumpState
 
 /**Causes the player to jump away from its opponent.
@@ -152,6 +163,8 @@ export class JumpBack extends Jump {
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", -PHYSICS.floatVelocity * manager.fighter.direction);
     }//end enter
-    update(manager, input) {
-    }//end update
 }//end JumpState
+
+export class JumpAttack extends Jump {
+
+}
