@@ -1,6 +1,7 @@
 import { getBoxes } from "../utils/getBoxes.js";
 import { OPPONENT_DIRECTION } from "../utils/const.js";
 import { PhysicsComponent } from "../components/PhysicsComponent.js";
+import { Projectile } from "../components/Projectile.js";
 //class for maintaining the characters
 export class FighterBaseClass {
     constructor(x, y, playerId) {
@@ -12,11 +13,14 @@ export class FighterBaseClass {
         this.pos = {x: x, y: y};
         this.origin = {x: this.pos.x, y: this.pos.y};
         this.boxes = {push:[], hurt:[], hit:[]};  
-        this.spriteManager;
-        this.stateManager;
+        this.hitstun = 0;
+        this.blockstun  = 0;
         this.physics = new PhysicsComponent(this);
+        this.spriteManager;
+        this.stateManager;   
         this.input;
-        this.hasHit;        
+        this.hasHit;
+        this.projectiles = [];
     }//end ctor
     update() {
         throw new Error("update method must be implemented.");
@@ -45,14 +49,62 @@ export class FighterBaseClass {
     isAttacking() {
         return this.stateManager.activeState.getType() === "attack";
     }
+    isBlocking() {
+        return this.stateManager.activeState.getType() === "block";
+    }
     setHasHit(value) {
         this.hasHit = value;
     }
     getHasHit() {
         return this.hasHit;
     }
-    applyhit(damage, hitstun, knockback) {
-        this.health = Math.max(this.health - damage, 0);
-        this.stateManager.hurtTransition(hitstun, knockback);
+    getAttackRange() {
+        return this.stateManager.activeState.getRange();
+    }
+    hasHealth() {
+        return this.health > 0;
+    }
+    hasEnergy() {
+        return this.energy > 0;
+    }
+    applyDamage(health, energy) {
+        this.health = Math.max(0, this.health - health);
+        this.energy = Math.max(-10, this.energy - energy); //-10 adds a slight cooldown after complete depletion.
+    }
+    applyHitStun(duration) {
+        this.hitstun = duration;
+    }
+    applyBlockStun(duration) {
+        this.blockstun = duration;
+    }
+    getAttackData() {
+        return this.boxes.hurt;
+    }
+    hasBeenStruck() {
+        return (this.blockstun > 0 || this.hitstun > 0);
+    }
+    hasProjectiles() {
+        return (this.projectiles.length > 0);
+    }
+    addProjectile() {
+        if (this.projectiles.length > 2) return;
+        this.projectiles.push(
+            new Projectile(
+                this.playerId,
+                this.projectiles.length,
+                this.pos.x + (15 * this.direction),
+                this.pos.y - 27,
+                this.direction,
+            )
+        );
+    }
+    removeProjectile(id) {
+        this.projectiles.splice(id, 1);
+        for (const projectile of this.projectiles) {
+            projectile.projectileId--;
+        }
+    }
+    setCooldown(value) {
+        this.cooldown = value;
     }
 }//end ctor
