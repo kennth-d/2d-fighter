@@ -1,7 +1,7 @@
 //see boxes.js for information.
 import { idleHurtBoxes, walkHurtBoxes, jumpHurtBoxes, crouchHurtBoxes, hurtHurtBoxes } from "./F001_Boxes.js";
 
-const defaultPushBox = [7, 27, 13, 27];
+const defaultPushBox = [7, 27, 15, 27];
 
 export const F002 = {
     push: {
@@ -11,7 +11,7 @@ export const F002 = {
         WALK_BWD:     new Array(10).fill([]).map(() => {return defaultPushBox}),
         CROUCH:       [[12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20]],
         LIGHT_ATTACK: new Array(10).fill([]).map(() => {return defaultPushBox}),
-        HEAVY_ATTACK: [[7, 27, 13, 27], [2, 27, 13, 27], [-2, 27, 13, 27], [-4, 27, 13, 27], [-6, 27, 13, 27], [7, 27, 13, 27], [7, 27, 13, 27], [7, 27, 13, 27], [7, 27, 13, 27]],
+        HEAVY_ATTACK: new Array(9).fill([]).map(() => {return defaultPushBox}),
         SP_1:         new Array(10).fill([]).map(() => {return defaultPushBox}),
         SP_2:         new Array(10).fill([]).map(() => {return defaultPushBox}),
         JUMP:         new Array(6).fill([]).map(() => {return defaultPushBox}),

@@ -7,7 +7,7 @@ export const crouchHurtBoxes = [[6, 21, 20, 8], [6, 13, 11, 5], [13, 8, 20, 8]];
 export const jumpHurtBoxes = [[4, 30, 7, 8], [10, 21, 19, 10], [8, 10, 14, 10]];
 export const hurtHurtBoxes = [[2, 29, 7, 7], [8, 21, 17, 5], [6, 15, 9, 15]];
 
-const defaultPushBox = [7, 27, 13, 27];
+const defaultPushBox = [7, 27, 15, 27];
 
 export const F001 = {
     push: {
@@ -17,7 +17,7 @@ export const F001 = {
         WALK_BWD:     new Array(10).fill([]).map(() => {return defaultPushBox}),
         CROUCH:       [[12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20], [12, 19, 24, 20]],
         LIGHT_ATTACK: new Array(10).fill([]).map(() => {return defaultPushBox}),
-        HEAVY_ATTACK: [[7, 27, 13, 27], [2, 27, 13, 27], [-2, 27, 13, 27], [-4, 27, 13, 27], [-6, 27, 13, 27], [7, 27, 13, 27], [7, 27, 13, 27], [7, 27, 13, 27], [7, 27, 13, 27]],
+        HEAVY_ATTACK: new Array(9).fill([]).map(() => {return defaultPushBox}),
         SP_1:         new Array(10).fill([]).map(() => {return defaultPushBox}),
         SP_2:         new Array(10).fill([]).map(() => {return defaultPushBox}),
         JUMP:         new Array(6).fill([]).map(() => {return defaultPushBox}),
