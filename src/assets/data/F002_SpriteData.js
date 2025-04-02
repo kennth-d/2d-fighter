@@ -16,7 +16,7 @@ export const F002_SpriteData = {
         originOffset: {x: 24, y: 40},
     },
     BLOCK: {
-        src: path + "idle 48x48.png",
+        src: path + "light attack 48x48.png",
         width: 48,
         height: 48,
         frames: 1,
@@ -28,7 +28,7 @@ export const F002_SpriteData = {
         height: 48,
         frames: 8,
         originOffset: {x: 24, y: 40},
-        delay: 1.05,
+        delay: 1.5,
 
     },
     WALK_BWD: {
@@ -37,7 +37,7 @@ export const F002_SpriteData = {
         height: 48,
         frames: 8,
         originOffset: {x: 24, y: 40},
-        delay: 1.05,
+        delay: 1.5,
     },
     CROUCH: {
         src: path + "crouch 48x48.png",
