@@ -9,8 +9,9 @@ export class PhysicsComponent {
     }//end ctor
     update() {
         //apply gravity
-        if (this.isAirBorne() && this.gravityOn) {
+        if (this.isAirborne() && this.gravityOn) {
             this.velocity.y += PHYSICS.gravity * TIME.delta;
+            this.velocity.x *= 0.95; // air resistance
         } 
         
         //apply knockback
@@ -20,7 +21,7 @@ export class PhysicsComponent {
         }
         if (this.knockbackVelocity.y != 0) {
             this.entity.pos.y -= this.knockbackVelocity.y * TIME.delta;
-            this.knockbackVelocity.y *=  PHYSICS.friction;
+            this.knockbackVelocity.y *= PHYSICS.friction;
         }
 
         this.entity.pos.y = Math.min(BOUNDARIES.FLOOR, this.entity.pos.y + this.velocity.y * TIME.delta);
@@ -32,7 +33,7 @@ export class PhysicsComponent {
     changeKnockback(axis, velocity) {
         this.knockbackVelocity[axis] = velocity;
     }
-    isAirBorne() {
+    isAirborne() {
         return this.entity.pos.y < BOUNDARIES.FLOOR;
     }//end isAirBorne
 }//end PhysicsComponent
