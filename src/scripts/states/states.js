@@ -11,6 +11,7 @@
  * @exports SP_1,
  * @exports SP_2,
  * @exports Hurt
+ * @exports Block
  * @exports characterStates a list of all the states as strings.
  * 
  */ 
@@ -18,8 +19,9 @@
 import { Idle, WalkFwd, WalkBwd, Jump, JumpBack, JumpForward, Crouch } from "./MoveStates.js";
 import { LightAttack, HeavyAttack, SP_1, SP_2 } from "./AttackStates.js";
 import { Hurt } from "./HurtStates.js";
+import { Block } from "./DefendStates.js";
 
-export const characterStates = ["IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD", "SP_1", "SP_2", "HURT"];
+export const characterStates = ["IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD", "SP_1", "SP_2", "HURT", "BLOCK"];
 
 export {
     Idle,
@@ -34,4 +36,5 @@ export {
     SP_1,
     SP_2,
     Hurt,
+    Block,
 };
