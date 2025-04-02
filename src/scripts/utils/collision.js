@@ -33,17 +33,12 @@ export function resolvePushBoxCollision(players) {
         let pushAmount = xOverlap/2
 
         let boxAnewX = players[0].pos.x - pushAmount * players[0].direction;
-        let boxAminX = BOUNDARIES.LEFT;
-        let boxAmaxX = BOUNDARIES.RIGHT - boxA.width/2;
 
         let boxBnewX = players[1].pos.x - pushAmount * players[1].direction;
-        let boxBminX = BOUNDARIES.LEFT;
-        let boxBmaxX = BOUNDARIES.RIGHT - boxB.width/2;
 
-        players[0].pos.x = Math.max(boxAminX, Math.min(boxAmaxX, boxAnewX));
-        players[1].pos.x = Math.max(boxBminX, Math.min(boxBmaxX, boxBnewX));
-        ensureOnScreen(players[0]);
-        ensureOnScreen(players[1]);
+        players[0].pos.x = boxAnewX;
+        players[1].pos.x = boxBnewX;
+
 }//end resolvePlayerCollision
 
 /** Prevents Fighters from being able to move offscreen on the x-axis.
@@ -86,7 +81,8 @@ export function updateHitBoxCollision(scene, attacker, opponent) {
 
         let bodyparts = ["head", "body", "legs"]
         const hurtIndex = opponent.boxes.hurt.indexOf(box);
-        console.log(`${attacker.name} has hit ${opponent.name}'s ${bodyparts[hurtIndex]} with frame: ${frame}`);
+        // console.log(`${attacker.name} has hit ${opponent.name}'s ${bodyparts[hurtIndex]} with frame: ${frame}`);
+
         attacker.setHasHit(true);
         applyhit(opponent, attack);
         TIME.hitStopTimer = TIME.previous + (HIT_STOP * 1000);
@@ -103,3 +99,23 @@ export function updateHitBoxCollision(scene, attacker, opponent) {
         return;
      }//end for
 }//end checkHitBoxCollision
+
+/** returns a number relating to which boundary a player is at.
+ * @param {fighterBaseClass} fighter an instance of FighterBaseClass
+ * @returns {Boolean} true if fighter is at a boundary, false otherwise.
+ **/
+export function isAtBoundary(fighter) {
+    let playerWidth = fighter.boxes.push[2];
+    let xPos = fighter.pos.x - fighter.boxes.push[0];
+    
+    let result = false;
+
+    if (xPos <= BOUNDARIES.LEFT) {
+        result = true;
+    }
+    if (xPos + playerWidth >= BOUNDARIES.RIGHT) {
+       result = true;
+    }//end if-else if
+
+    return result;
+}
