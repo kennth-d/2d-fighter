@@ -22,9 +22,9 @@ export const MENU = {
     canvasElement: document.querySelector("#high-res-screen"),
     width: 1280,
     height: 720,
+    centerX: 1280/2,
+    centerY: 720/2,
 }
-MENU.centerX = MENU.width/2;
-MENU.centerY = MENU.height/2;
 
 /**
  * defines various physics values
@@ -52,8 +52,13 @@ export const PHYSICS = {
 export const BOUNDARIES = {
     LEFT: 0,
     RIGHT: CANVAS_WIDTH,
-    FLOOR: CANVAS_HEIGHT - 40
+    FLOOR: CANVAS_HEIGHT - 10
 }
+export const STAGE = {
+    WIDTH: 384,
+    HEIGHT: 225,
+}
+
 /**defines settings for the game.
  * @typedef DEFAULT_SETTINGS
  * @property { number } rounds number of rounds per match.
@@ -99,11 +104,11 @@ export const TIME = {
  */
 export const START_POSITIONS = {
     playerOne: {
-        x: (CANVAS_WIDTH / 2) - 24,
+        x: STAGE.WIDTH/2 - 24,
         y: BOUNDARIES.FLOOR,
     },
     playerTwo: {
-        x: (CANVAS_WIDTH / 2) + 24,
+        x: STAGE.WIDTH/2 + 24,
         y: BOUNDARIES.FLOOR,
     }
 }//end START_POSITIONS
