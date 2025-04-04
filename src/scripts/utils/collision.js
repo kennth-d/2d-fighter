@@ -1,4 +1,4 @@
-import { BOUNDARIES, TIME } from "./const.js";
+import { BOUNDARIES, CANVAS_WIDTH, TIME } from "./const.js";
 import { getActualBoxDimensions } from "./utils.js";
 import { applyhit } from "./hit.js";
 import { HIT_STOP } from "./attackData.js";
@@ -44,15 +44,15 @@ export function resolvePushBoxCollision(players) {
 /** Prevents Fighters from being able to move offscreen on the x-axis.
  * @param {Fighter} fighter a Fighter object. 
  **/
-export function ensureOnScreen(fighter) {
+export function ensureOnScreen(fighter, viewport) {
     let playerWidth = fighter.boxes.push[2];
     let xPos = fighter.pos.x - fighter.boxes.push[0];
     
-    if (xPos <= BOUNDARIES.LEFT) {
-        let xOverlap = BOUNDARIES.LEFT - xPos;
+    if (xPos <= viewport.pos.x) {
+        let xOverlap = viewport.pos.x - xPos;
         fighter.pos.x = fighter.pos.x + xOverlap;
-    } else if (xPos + playerWidth >= BOUNDARIES.RIGHT) {
-        let xOverlap = xPos + playerWidth - BOUNDARIES.RIGHT;
+    } else if (xPos + playerWidth >= viewport.pos.x + CANVAS_WIDTH) {
+        let xOverlap = xPos + playerWidth - (viewport.pos.x + BOUNDARIES.RIGHT);
         fighter.pos.x = fighter.pos.x - xOverlap;
     }//end if-else if
 }//end ensureOnScreen
@@ -67,11 +67,10 @@ export function ensureOnFLoor(fighter) {
         fighter.pos.y = fighter.pos.y - yOverlap;
     }//end if
 }//end ensureOnFloor
-
 export function updateHitBoxCollision(scene, attacker, opponent) {
      if (!attacker.isAttacking() || attacker.getHasHit()) return;
      let frame = attacker.spriteManager.currentFrame+1
-     let attack = attacker.stateManager.activeState.name
+     let attack = attacker.stateManager.activeState.name;
 
      const trueHitBox = getActualBoxDimensions(attacker.pos, attacker.direction, attacker.boxes.hit);
      for (const box of opponent.boxes.hurt) {
@@ -99,6 +98,36 @@ export function updateHitBoxCollision(scene, attacker, opponent) {
         return;
      }//end for
 }//end checkHitBoxCollision
+
+export function updateProjectileCollision(fighters) {
+    const p1 = fighters[0];
+    const p2 = fighters[1];
+    if (p1.hasProjectiles()) {
+        for (const projectile of p1.projectiles) {
+            for (const box of p2.boxes.hurt) {
+                let truehurtBox = getActualBoxDimensions(p2.pos, p2.direction, box);
+                let collided = rectsOverlap(projectile.box, truehurtBox);
+                if (collided)  {
+                    applyhit(p2, "SP_2");
+                    p1.removeProjectile(projectile.projectileId);
+                }//end if
+            }//end for
+        }//end for
+    }//end if
+
+    if (p2.hasProjectiles()) {
+        for (const projectile of p2.projectiles) {
+            for (const box of p1.boxes.hurt) {
+                let truehurtBox = getActualBoxDimensions(p1.pos, p1.direction, box);
+                let collided = rectsOverlap(projectile.box, truehurtBox);
+                if (collided) {
+                    applyhit(p1, "SP_2");
+                    p2.removeProjectile(projectile.projectileId);
+                }//end if
+            }//end for
+        }//end for
+    }//end if
+}//end updateProjectileCollision
 
 /** returns a number relating to which boundary a player is at.
  * @param {fighterBaseClass} fighter an instance of FighterBaseClass
