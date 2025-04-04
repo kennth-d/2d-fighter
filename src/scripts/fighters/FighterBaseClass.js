@@ -1,5 +1,5 @@
 import { getBoxes } from "../utils/getBoxes.js";
-import { OPPONENT_DIRECTION } from "../utils/const.js";
+import { OPPONENT_DIRECTION, TIME, ENERGY_REGEN_POWER } from "../utils/const.js";
 import { PhysicsComponent } from "../components/PhysicsComponent.js";
 import { Projectile } from "../components/Projectile.js";
 //class for maintaining the characters
@@ -21,12 +21,30 @@ export class FighterBaseClass {
         this.input;
         this.hasHit;
         this.projectiles = [];
+        this.energyCooldown = 0;
+        this.projectileCooldown = 0;
     }//end ctor
     update() {
-        throw new Error("update method must be implemented.");
+        if (this.energyCooldown === 0) {
+            this.energy = Math.min(100, this.energy + TIME.delta * ENERGY_REGEN_POWER);
+        }//end if
+        
+        this.projectileCooldown = Math.max(0, this.projectileCooldown - TIME.delta);
+        this.energyCooldown = Math.max(0, this.energyCooldown-TIME.delta);
+                
+        this.updateOrigin();
+        
+        this.stateManager.update(this.input);
+        
+        this.physics.update();
+        
+        this.spriteManager.update(this);
+
+        this.updateBoxes();
     }//end update
-    draw(ctx) {
-        throw new Error("Draw method must be implemented.")
+    draw(ctx, viewport) {
+        //testing usage of cameera
+        this.spriteManager.drawSprite(ctx, this, viewport);
     }//end draw
     animationIsComplete() {
         return this.spriteManager.currentFrame === this.spriteManager.getCurrentSpriteFrameCount()-1;
@@ -70,6 +88,9 @@ export class FighterBaseClass {
     applyDamage(health, energy) {
         this.health = Math.max(0, this.health - health);
         this.energy = Math.max(-10, this.energy - energy); //-10 adds a slight cooldown after complete depletion.
+        if (this.energy <= 0) {
+            this.energyCooldown = 1;
+        }//end if
     }
     applyHitStun(duration) {
         this.hitstun = duration;
@@ -93,18 +114,18 @@ export class FighterBaseClass {
                 this.playerId,
                 this.projectiles.length,
                 this.pos.x + (15 * this.direction),
-                this.pos.y - 27,
+                this.pos.y - 28,
                 this.direction,
             )
         );
+    }
+    getProjectiles() {
+        return this.projectiles;
     }
     removeProjectile(id) {
         this.projectiles.splice(id, 1);
         for (const projectile of this.projectiles) {
             projectile.projectileId--;
         }
-    }
-    setCooldown(value) {
-        this.cooldown = value;
     }
 }//end ctor
