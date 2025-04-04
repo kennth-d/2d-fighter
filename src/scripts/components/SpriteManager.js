@@ -29,7 +29,7 @@ export class FighterSpriteManager {
             this.animationtimer = TIME.previous;
         }//end if
     }//end update
-    drawSprite(ctx, fighter) {
+    drawSprite(ctx, fighter, viewport) {
         //ctx.restore();
         let width = this.currentSprite.img.width;
         let height = this.currentSprite.img.height;
@@ -43,19 +43,19 @@ export class FighterSpriteManager {
             0,                                                 //sY
             width,                                             //sWidth
             height,                                            //sHeight
-            fighter.pos.x * fighter.direction - offsetX,       //dX
-            fighter.pos.y - offsetY,                           //dY
+            (Math.floor(fighter.pos.x - viewport.pos.x) * fighter.direction) - offsetX,       //dX
+            Math.floor(fighter.pos.y - viewport.pos.y) - offsetY,                           //dY
             width,                                             //dWidth
             height,                                            //dHeight
         );
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         
         if (fighter.debug) {
-            this.draw_debug(ctx, fighter);
+            this.draw_debug(ctx, fighter, viewport);
         }//end if
     }//end draw
 
-    draw_debug(ctx, fighter) {
+    draw_debug(ctx, fighter, viewport) {
         ctx.save();
         ctx.lineWidth = 1;
 
@@ -63,11 +63,11 @@ export class FighterSpriteManager {
         ctx.beginPath();
         ctx.strokeStyle = "red";
         //vertical line 
-        ctx.moveTo(Math.floor(fighter.pos.x) + 0.5, Math.floor(fighter.pos.y-5) + 0.5);
-        ctx.lineTo(Math.floor(fighter.pos.x) + 0.5, Math.floor(fighter.pos.y+5) + 0.5);
+        ctx.moveTo(Math.floor(fighter.pos.x - viewport.pos.x) + 0.5, Math.floor(fighter.pos.y-5 - viewport.pos.y) + 0.5);
+        ctx.lineTo(Math.floor(fighter.pos.x - viewport.pos.x) + 0.5, Math.floor(fighter.pos.y+5 - viewport.pos.y) + 0.5);
         //horizontal line
-        ctx.moveTo(Math.floor(fighter.pos.x-5) + 0.5, Math.floor(fighter.pos.y) + 0.5);
-        ctx.lineTo(Math.floor(fighter.pos.x+5) + 0.5, Math.floor(fighter.pos.y) + 0.5);
+        ctx.moveTo(Math.floor(fighter.pos.x-5 - viewport.pos.x) + 0.5, Math.floor(fighter.pos.y - viewport.pos.y) + 0.5);
+        ctx.lineTo(Math.floor(fighter.pos.x+5 - viewport.pos.x) + 0.5, Math.floor(fighter.pos.y - viewport.pos.y) + 0.5);
         ctx.stroke();
 
         //pushBox [x, y, width, height]
@@ -76,6 +76,7 @@ export class FighterSpriteManager {
         //draw pushBox
         drawDebugBox(
             ctx,
+            viewport,
             [fighter.pos.x - boxX * fighter.direction, fighter.pos.y - boxY, boxWidth * fighter.direction, boxHeight],
             "#55FF55",
             );
@@ -85,6 +86,7 @@ export class FighterSpriteManager {
             const [x, y, width, height] = box;
             drawDebugBox(
                 ctx,
+                viewport,
                 [fighter.pos.x - x * fighter.direction, fighter.pos.y - y, width * fighter.direction, height],
                 "#7777FF"
             ); //end drawDebug
@@ -95,6 +97,7 @@ export class FighterSpriteManager {
             const [x, y, width, height] = fighter.boxes.hit;
             drawDebugBox(
                 ctx,
+                viewport,
                 [fighter.pos.x - x * fighter.direction, fighter.pos.y - y, width * fighter.direction, height],
                 "#FF0000"
             ); //end drawDebug

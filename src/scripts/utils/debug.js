@@ -22,25 +22,48 @@ export function logEntities(entities) {
 * @param {[x:int, y:int, width:int, height:int]} box parameters of the box to draw.
 * @param {string} color css color property.
 **/
-export function drawDebugBox(ctx, box, color) {
+export function drawDebugBox(ctx, viewport, box, color) {
+    ctx.save();
+
     if (!Array.isArray(box)) return;
+    if (color === "#FF8E2") {
+        console.log("drawing projectile debug"); 
+        console.log(box);
+    }
 
     const [x = 0, y = 0, width = 0, height = 0] = box;
     ctx.beginPath();
     ctx.strokeStyle = color + "AA";
     ctx.fillStyle = color + "44";
     ctx.fillRect(
-        Math.floor(x) + 0.5,
-        Math.floor(y) + 0.5,
+        Math.floor(x - viewport.pos.x) + 0.5,
+        Math.floor(y - viewport.pos.y) + 0.5,
         width,
         height,
     );
     
     ctx.rect(
-        Math.floor(x) + 0.5,
-        Math.floor(y) + 0.5,
+        Math.floor(x - viewport.pos.x) + 0.5,
+        Math.floor(y - viewport.pos.y) + 0.5,
         width,
         height,
     );
     ctx.stroke();
+    ctx.restore();
 }//end drawDebugBox
+
+export function drawDebugScreenSize(ctx, color, lineWidth) {
+    ctx.save()
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+
+    ctx.moveTo(0, 0);
+    ctx.lineTo(ctx.canvas.width, ctx.canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(ctx.canvas.width, 0);
+    ctx.lineTo(0, ctx.canvas.height);
+    ctx.stroke();
+    ctx.restore();
+    return;
+}//end drawDebugScreenSize
