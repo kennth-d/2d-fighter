@@ -3,26 +3,11 @@ import { BOUNDARIES } from "../utils/const.js";
 
 export class FighterStateManager {
     constructor(fighter) {
-        this.states = {
-            IDLE: new states.Idle(),
-            CROUCH: new states.Crouch(),
-            WALK_FWD: new states.WalkFwd(),
-            WALK_BWD: new states.WalkBwd(),
-            JUMP: new states.Jump(),
-            JUMP_FWD: new states.JumpForward(),
-            JUMP_BWD: new states.JumpBack(),
-            LIGHT_ATTACK: new states.LightAttack(),
-            HEAVY_ATTACK: new states.HeavyAttack(),
-            SP_1: new states.SP_1(),
-            SP_2: new states.SP_2(),
-            HURT: new states.Hurt(),
-            BLOCK: new states.Block(),
-        }//end states
-        this.activeState = this.states.IDLE;
+        this.activeState = new states.IDLE();
         this.fighter = fighter;
     }//end ctor
     update(input) {
-        if (this.activeState instanceof states.Jump && this.fighter.pos.y === BOUNDARIES.FLOOR) {
+        if (this.activeState instanceof states.JUMP && this.fighter.pos.y === BOUNDARIES.FLOOR) {
             this.fighter.physics.changeVelocity("y", 0);
             this.transition("IDLE");
         }
@@ -30,7 +15,7 @@ export class FighterStateManager {
     }//end update
     transition(newState) {
         this.activeState.exit(this);
-        this.activeState = this.states[newState];
+        this.activeState = new states[newState]();
         this.activeState.enter(this);
     }//end transition
 }//end FighterStateManger.
