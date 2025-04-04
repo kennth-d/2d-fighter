@@ -1,14 +1,14 @@
 /**
  * @module AttackStates
  * @description Contains Fighter states that relate to Fighter Attacks.
- * States in this File: LightAttack, HeavyAttack, SP_1, SP_2.
+ * States in this File: LIGHT_ATTACK, HeavyAttack, SP_1, SP_2.
  */
-import { Idle } from "./MoveStates.js";
+import { IDLE } from "./MoveStates.js";
 
 /** Base State class for an attack
  * @extends {Idle}
  */
-export class Attack extends Idle {
+export class ATTACK extends IDLE {
     constructor(state, type="attack") {
         super(state, type);
         this.range = 0;
@@ -22,9 +22,9 @@ export class Attack extends Idle {
 }//end AttackState
 
 /** more reach and damage than light attack at the cost of speed.
- * @extends {Attack}
+ * @extends {ATTACK}
  */
-export class LightAttack extends Attack {
+export class LIGHT_ATTACK extends ATTACK {
     constructor() {
         super("LIGHT_ATTACK");
         this.range = 15;
@@ -64,9 +64,9 @@ export class LightAttack extends Attack {
 }//end Light Attack
 
 /**Heavy attack, slower, medium damage, can chain into SP_1.
- * @extends {Attack}
+ * @extends {ATTACK}
  */
-export class HeavyAttack extends Attack {
+export class HEAVY_ATTACK extends ATTACK {
     constructor() {
         super("HEAVY_ATTACK");
         this.range = 25;
@@ -96,9 +96,9 @@ export class HeavyAttack extends Attack {
 }//end Heavy Attack
 
 /** Special attack high damage, must fully complete animation before exiting.
- * @extends {Attack}
+ * @extends {ATTACK}
  */
-export class SP_1 extends Attack {
+export class SP_1 extends ATTACK {
     constructor() {
         super("SP_1");
         this.range = 30;
@@ -112,25 +112,38 @@ export class SP_1 extends Attack {
 }//end SP_1
 
 /** ranged attack option, medium damage.
- * @extends {Attack}
+ * @extends {ATTACK}
  */
-export class SP_2 extends Attack {
+export class SP_2 extends ATTACK {
     constructor() {
         super("SP_2", "projectile");
+        this.shotsFired = 0;
     }//end ctor
     enter(manager) {
+        if (manager.fighter.projectileCooldown > 0) {
+            manager.transition("IDLE");
+            return;
+        }
         manager.fighter.addProjectile();
+        this.shotsFired++;
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
         if (currentFrame < 9) {
             return;
         } 
-        if (input.isSP_2()) {
+        if (this.shotsFired === 3) {
+            manager.transition("IDLE");
+        }
+        if (input.isSP_2() && this.shotsFired < 3) {
             manager.fighter.spriteManager.setCurrentFrame(2);
-            manager.transition("SP_2");
+            manager.fighter.addProjectile();
+            this.shotsFired++;
         } else {
             manager.transition("IDLE");
-        }//end if-else
+        }
     }//end update
+    exit(manager) {
+        manager.fighter.projectileCooldown = 1;
+    }//end exit
 }//end SP_2

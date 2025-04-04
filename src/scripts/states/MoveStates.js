@@ -1,7 +1,7 @@
 /**
  * @module MoveStates
  * @description Contains Fighter states that relate to moving a Fighter.
- * States in this File: Idle, Crouch, WalkFwd, WalkBwd, Jump, JumpBack, JumpForward
+ * States in this File: IDLE, Crouch, WalkFwd, WalkBwd, Jump, JumpBack, JumpForward
  */
 import { State } from "./State.js";
 import { PHYSICS } from "../utils/const.js"; 
@@ -11,7 +11,7 @@ import { isInStartup } from "../utils/isInStartup.js";
 /**Root of all states, decides what state to transition to based on input.
  * @extends { StateInterface }
  */
-export class Idle extends State {
+export class IDLE extends State {
     constructor(state="IDLE", type="move") {
         super();
         this.name = state;
@@ -28,8 +28,8 @@ export class Idle extends State {
         //then check for attacks to give them priority over movement.
         if (input.isLight(manager.fighter)) {manager.transition("LIGHT_ATTACK"); return}
         if (input.isHeavy(manager.fighter)) {manager.transition("HEAVY_ATTACK"); return}
-        if (input.isSP_1(manager.fighter)) {manager.transition("SP_1"); return;}
-        if (input.isSP_2(manager.fighter)) {manager.transition("SP_2"); return;}
+        if (input.isSP_1(manager.fighter)) {manager.transition("SP_1"); return}
+        if (input.isSP_2(manager.fighter) && manager.fighter.projectileCooldown===0) {manager.transition("SP_2"); return;}
 
         //check for movement first
         if (input.isForward(manager.fighter)) manager.transition("WALK_FWD");
@@ -44,13 +44,13 @@ export class Idle extends State {
     getType() {
         return this.type;
     }//end getType
-}//end Idle
+}//end IDLE
 
 /**Crouching state for a fighter, enables fighter to avoid SP_2 (ranged) attacks.
  * but does not allow the fighter to block.
- * @extends {Idle}
+ * @extends {IDLE}
  */
-export class Crouch extends Idle {
+export class CROUCH extends IDLE {
     constructor() {
         super("CROUCH");
     }//end ctor
@@ -64,9 +64,9 @@ export class Crouch extends Idle {
 }
 
 /** Moves the fighter toward its opponent.
- * @extends {Idle}
+ * @extends {IDLE}
  */
-export class WalkFwd extends Idle {
+export class WALK_FWD extends IDLE {
     constructor() {
         super("WALK_FWD");
     }//end ctor
@@ -83,9 +83,9 @@ export class WalkFwd extends Idle {
 }//end WalkFwd
 
 /**Moves the fighter away from its opponent.
- * @extends {Idle}
+ * @extends {IDLE}
  */
-export class WalkBwd extends Idle {
+export class WALK_BWD extends IDLE {
     constructor() {
         super("WALK_BWD");
     }//end ctor
@@ -109,9 +109,9 @@ export class WalkBwd extends Idle {
 }//end WalkFwd
 
 /**Causes the player to jump.
- *  @extends {Idle}
+ *  @extends {IDLE}
  */
-export class Jump extends Idle {
+export class JUMP extends IDLE {
     constructor(state="JUMP") {
         super(state);
     }
@@ -124,18 +124,14 @@ export class Jump extends Idle {
         if (input.isForward(manager.fighter)) {
             if (currentFrame === 0) {
                 manager.transition("JUMP_FWD");
-                return;
             }
-
             manager.fighter.physics.changeVelocity("x", PHYSICS.floatVelocity * manager.fighter.direction);
         }//end if input.isForward
     
         if (input.isBackward(manager.fighter)) {
             if (currentFrame === 0) {
                 manager.transition("JUMP_BWD");
-                return;
             }
-
             manager.fighter.physics.changeVelocity("x", -PHYSICS.floatVelocity * manager.fighter.direction);
         }//end if input.isBackward
     }//end update
@@ -144,27 +140,27 @@ export class Jump extends Idle {
 /**Causes the player to jump toward its opponent.
  *  @extends {Jump}
  */
-export class JumpForward extends Jump {
+export class JUMP_FWD extends JUMP {
     constructor() {
         super("JUMP_FWD");
     }
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", PHYSICS.floatVelocity * manager.fighter.direction);
     }//end enter
-}//end JumpState
+}//end JUMPState
 
 /**Causes the player to jump away from its opponent.
- *  @extends {Jump}
+ *  @extends {JUMP}
  */
-export class JumpBack extends Jump {
+export class JUMP_BWD extends JUMP {
     constructor(manager) {
         super("JUMP_BWD");
     }//end ctor
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", -PHYSICS.floatVelocity * manager.fighter.direction);
     }//end enter
-}//end JumpState
+}//end JUMPState
 
-export class JumpAttack extends Jump {
+export class JUMP_ATTACK extends JUMP {
 
 }

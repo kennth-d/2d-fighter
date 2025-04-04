@@ -1,9 +1,9 @@
-import { Idle } from "./MoveStates.js";
+import { IDLE } from "./MoveStates.js";
 import { TIME } from "../utils/const.js";
 /**Fighter hurt state, prevents other actions from being taken
  * while the fighter is in hitstun.
  */
-export class Hurt extends Idle {
+export class HURT extends IDLE {
     constructor() {
         super("HURT");
     }
@@ -22,7 +22,7 @@ export class Hurt extends Idle {
     exit() {
     }
 }//end Hurt
-export class KO extends Idle {
+export class KO extends IDLE {
     constructor() {
         super("KO");
     }
