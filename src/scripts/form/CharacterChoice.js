@@ -40,8 +40,8 @@ export class CharacterChoice {
         ctx.fillText(this.id, dx, dy);
     }//end drawLabel
     drawOutline(ctx, playerIdx) {
+        ctx.restore();
         ctx.save();
-
         let dx = this.rect.x - 5;
         let dy = this.rect.y - 5;
         let width = this.imgRect.width + 5;
@@ -75,7 +75,6 @@ export class CharacterChoice {
         ctx.closePath();
         ctx.stroke();
 
-        ctx.restore();
     }//end drawOutline
 
 }
