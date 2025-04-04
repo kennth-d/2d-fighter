@@ -10,10 +10,10 @@ export class Stage {
     update() {
 
     }
-    draw(ctx) {
-        this.drawFrame(ctx, "background", 0, 0);
-        this.drawFrame(ctx, "middle", 0, 15);
-        this.drawFrame(ctx, "foreground", 0, -15);
+    draw(ctx, viewport) {
+        this.drawFrame(ctx, "background", Math.floor(-100 - viewport.pos.x), -viewport.pos.y);
+        this.drawFrame(ctx, "middle", Math.floor(-20 - viewport.pos.x), 30-viewport.pos.y);
+        this.drawFrame(ctx, "foreground", Math.floor( -viewport.pos.x), -15 - viewport.pos.y);
     }
     drawFrame(ctx, key, dx, dy) {
         const {x, y, width, height} = this.frames[key];
