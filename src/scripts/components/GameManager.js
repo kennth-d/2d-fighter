@@ -1,7 +1,7 @@
 import { getContext2D } from "../utils/utils.js";
 import * as scenes from "../scenes/scenes.js";
-import { logEntities, toggleDebug } from "../utils/debug.js";
 import { TIME, DEFAULT_SETTINGS, MENU } from "../utils/const.js";
+import { toggleDebug, logEntities, drawDebugScreenSize } from "../utils/debug.js";
 
 export class GameManager {
     constructor(debug=false) {
@@ -15,7 +15,6 @@ export class GameManager {
         //high-res screen for menu scenes
         this.ctxHigh = MENU.canvasElement.getContext("2d");
         this.ctxHigh.imageSmoothingEnabled = false;
-
         this.scenes = [new scenes.MainMenuScene(this)];
 
         this.numScenes = 1;
@@ -33,6 +32,7 @@ export class GameManager {
 
         this.scene.update();
         this.scene.draw();
+        
     }//end frame
     
     start() {
@@ -69,6 +69,8 @@ export class GameManager {
     }//end addListeners
     setupDebug() {
         window.addEventListener("keypress", (e) => {
+            if (!this.debug) return;
+
             if (e.code === "Space") {
                 logEntities(this.scene.fighters);
                 console.log(TIME);
@@ -76,6 +78,12 @@ export class GameManager {
             if (e.code === "KeyV") {
                 toggleDebug(this.scene.fighters);
             }//end if
+            if (e.code === "KeyZ") {
+                drawDebugScreenSize(this.ctx, "blue", 2);
+            }
+            if (e.code === "KeyX") {
+                drawDebugScreenSize(this.ctxHigh, "yellow", 2);
+            }
         });
     }//end setupDebug
 }//end GameManager
