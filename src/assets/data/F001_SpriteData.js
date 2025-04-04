@@ -84,7 +84,7 @@ export const F001_SpriteData = {
         height: 48,
         frames: 6,
         originOffset: {x: 21, y: 40},
-        delay: 2,
+        delay: 2.25,
     },
     JUMP_FWD: {
         src: path + "jump 48x48.png",
@@ -92,7 +92,7 @@ export const F001_SpriteData = {
         height: 48,
         frames: 6,
         originOffset: {x: 21, y: 40},
-        delay: 1.5,
+        delay: 2.25,
     },
     JUMP_BWD: {
         src: path + "jump bwd 48x48.png",
