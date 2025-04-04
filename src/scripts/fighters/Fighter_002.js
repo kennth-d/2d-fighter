@@ -2,7 +2,6 @@ import { FighterBaseClass } from "./FighterBaseClass.js";
 import { FighterStateManager } from "../components/FighterStateManager.js";
 import { FighterSpriteManager } from "../components/SpriteManager.js";
 import { F002_SpriteData } from "../../assets/data/F002_SpriteData.js";
-import { ENERGY_REGEN_POWER, TIME } from "../utils/const.js";
 
 //Fighter_001 class
 export class Fighter_002 extends FighterBaseClass {
@@ -15,24 +14,5 @@ export class Fighter_002 extends FighterBaseClass {
         this.input = inputComponent;
         this.input.id = playerId;
     }//end ctor
-
-    update() {
-
-        this.energy = Math.min(100, this.energy + TIME.delta * ENERGY_REGEN_POWER);
-        
-        super.updateOrigin();
-
-        this.stateManager.update(this.input);
-
-        this.physics.update();
-
-        this.spriteManager.update(this);
-
-        super.updateBoxes();
-
-    }//end update
-    draw(ctx) {
-        this.spriteManager.drawSprite(ctx, this);
-    }//end draw
 }//end Fighter_001
 
