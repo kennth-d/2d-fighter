@@ -204,13 +204,13 @@ export class StatusBar {
         this.health = {
             background: new Image(STATUS.HEALTH.WIDTH, STATUS.HEALTH.HEIGHT),
             overlay: new Image(STATUS.HEALTH.WIDTH, STATUS.HEALTH.HEIGHT),
-            dx: 45,
+            dx: (CANVAS_WIDTH/2) - STATUS.HEALTH.WIDTH - 20,
             dy: 5,
         };
         this.energy = {
             background: new Image(STATUS.ENERGY.WIDTH, STATUS.ENERGY.HEIGHT),
             overlay: new Image(STATUS.ENERGY.WIDTH, STATUS.ENERGY.HEIGHT),
-            dx: 45,
+            dx: (CANVAS_WIDTH/2) - STATUS.ENERGY.WIDTH - 20,
             dy: 23,
         };
         this.clock = {
