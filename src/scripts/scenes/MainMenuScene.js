@@ -11,7 +11,7 @@ export class MainMenuScene extends MenuScene {
     }
     draw() {
         this.drawBackground(this.game.ctxHigh);
-        this.drawButtons(this.game.ctxHigh);
+        super.draw(this.game.ctxHigh);
     }//end draw
     drawBackground(ctx) {
         
@@ -22,7 +22,7 @@ export class MainMenuScene extends MenuScene {
             MAIN_MENU_BACKGROUND.width,
             MAIN_MENU_BACKGROUND.width,
             0,
-            -50,
+            0,
             ctx.canvas.width,
             ctx.canvas.width,
         )//end drawbg

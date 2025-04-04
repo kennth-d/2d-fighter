@@ -4,6 +4,7 @@ import { isInside } from "../utils/mouseHandler.js";
 import { getClickedObject } from "../utils/getClickedObject.js";
 import { BUTTON_CALLBACKS } from "../form/ButtonCallbacks.js";
 import { getMousePos } from "../utils/mouseHandler.js";
+import { drawDebugScreenSize} from "../utils/debug.js";
 
 export class MenuScene extends Scene {
     constructor(game) {

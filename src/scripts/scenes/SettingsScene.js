@@ -5,18 +5,19 @@ import { getClickedObject } from "../utils/getClickedObject.js";
 import { MenuScene } from "./scenes.js";
 import { MusicChoiceForm } from "../form/MusicChoiceForm.js";
 import { RangeInput } from "../form/RangeInput.js";
+import { MENU } from "../utils/const.js";
 
 export class SettingsScene extends MenuScene {
     constructor(game) {
         super(game)
         this.buttons = this.getButtons();
         this.settingsChoices = [
-            new RoundChoiceForm(497, 150),
-            new MusicChoiceForm(586, 375),
+            new RoundChoiceForm(497, MENU.centerY - 200),
+            new MusicChoiceForm(586, MENU.centerY + 25),
         ];
         this.rangeSettings = [
-            new RangeInput(540, 250, 200, 20, 100, 300, game.gameSettings.roundDuration, "ROUND_LENGTH"),
-            new RangeInput(540, 325, 200, 20, 0, 100, game.gameSettings.volume, "VOLUME"),
+            new RangeInput(540, MENU.centerY - 100, 200, 20, 100, 300, game.gameSettings.roundDuration, "ROUND_LENGTH"),
+            new RangeInput(540, MENU.centerY - 25, 200, 20, 0, 100, game.gameSettings.volume, "VOLUME"),
         ];
         this.mouseDown = 0;
     }//end ctor
@@ -75,16 +76,16 @@ export class SettingsScene extends MenuScene {
     }//end drawRanges
     getButtons() {
         let returnBtn = new Button(BUTTONS.RETURN, "RETURN");
-        returnBtn.setRectProperty("x", this.game.ctxHigh.canvas.width/2 + BUTTON_PADDING);
-        returnBtn.setRectProperty("y",  480);
+        returnBtn.setRectProperty("x", MENU.centerX + BUTTON_PADDING);
+        returnBtn.setRectProperty("y",  MENU.centerY + 125);
 
         let confirmBtn = new Button(BUTTONS.CONFIRM, "CONFIRM");
-        confirmBtn.setRectProperty("x", this.game.ctxHigh.canvas.width/2 - BUTTON_WIDTH - BUTTON_PADDING);
-        confirmBtn.setRectProperty("y",  480);
+        confirmBtn.setRectProperty("x", MENU.centerX - BUTTON_WIDTH - BUTTON_PADDING);
+        confirmBtn.setRectProperty("y",  MENU.centerY + 125);
         return [returnBtn, confirmBtn];
     }//end getButtons
     drawbg(ctx) {
-        ctx.fillStyle = "gray";
+        ctx.fillStyle = "#4e4e4e";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         ctx.fillStyle = "red";
@@ -92,7 +93,7 @@ export class SettingsScene extends MenuScene {
         let text = "Settings";
         let metrics = ctx.measureText(text);
         let dx = ctx.canvas.width/2 - metrics.width/2;
-        let dy = 100;
+        let dy = MENU.centerY - 250;
         ctx.fillText(text, dx, dy);
     }//end draw
 }//end SettingsScene

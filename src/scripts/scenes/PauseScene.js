@@ -11,7 +11,7 @@ export class PauseScene extends MenuScene {
 
     draw(){
         this.drawBackground(this.game.ctxHigh);
-        this.drawButtons(this.game.ctxHigh);
+        super.draw(this.game.ctxHigh);
     }
     drawBackground(ctx) {
         ctx.save();
