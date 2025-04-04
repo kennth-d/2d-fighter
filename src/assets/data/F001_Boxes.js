@@ -3,7 +3,7 @@
 //constant hurtbox values
 export const idleHurtBoxes = [[3, 29, 7, 10], [7, 21, 12, 8], [7, 12, 12, 12]];
 export const walkHurtBoxes = [[3, 28, 8, 7],  [5, 20, 9, 10], [7, 9, 12, 9]];
-export const crouchHurtBoxes = [[6, 21, 20, 8], [6, 13, 11, 5], [13, 8, 20, 8]];
+export const crouchHurtBoxes = [[6, 20, 20, 6], [6, 13, 11, 5], [13, 8, 20, 8]];
 export const jumpHurtBoxes = [[4, 30, 7, 8], [10, 21, 19, 10], [8, 10, 14, 10]];
 export const hurtHurtBoxes = [[2, 29, 7, 7], [8, 21, 17, 5], [6, 15, 9, 15]];
 
