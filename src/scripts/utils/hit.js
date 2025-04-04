@@ -22,9 +22,6 @@ export function applyhit(reciever, attack) {
         reciever.applyHitStun(attackData.hitstun);
         reciever.stateManager.transition("HURT");
     };
-    if (reciever.physics.isAirborne()) {
-        knockbackY = 800;
-    }
     applyKnockback(reciever, knockbackX, knockbackY);   
 };//end applyDamage
 
