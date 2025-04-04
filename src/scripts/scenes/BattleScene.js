@@ -6,19 +6,21 @@ import * as collisionManager from "../utils/collision.js";
 import { TIME } from "../utils/const.js";
 import { HitSplash } from "../overlays/HitSplash.js";
 import { correctDirection } from "../utils/correctDirection.js";
+import { Shadow } from "../components/Shadow.js";
+import { Viewport } from "../components/Viewport.js";
 
 export class BattleScene extends Scene {
 
     constructor(game) {
         super(game);
         this.fighters = this.getFighterEntities(this.game.fighters[0], this.game.fighters[1]);
+        this.viewport = new Viewport(32, 0, this.fighters);
         this.stage = new Stage();
         this.drawOrder = [0, 1];
         this.overlays = [
             this.getStatusBar(this),
         ];
-        //this.entities = [];
-
+        this.entities = [new Shadow(this.fighters[0]), new Shadow(this.fighters[1])];
         if (game.debug) {
             game.setupDebug();
         }//end if
@@ -44,30 +46,33 @@ export class BattleScene extends Scene {
             return fighterEntities;
     }//end getFighterEntitiess
     update() {
-        //console.log(TIME.previous, TIME.hitStopTimer);
-        this.updateFighters();
-        this.updateProjectiles();
         this.stage.update();
+        this.viewport.update();
+        this.updateFighters();
+        this.updateEntities();
+        this.updateProjectiles();
         this.updateOverlays();
 
         correctDirection(this.fighters[0], this.fighters[1]);
         
-        //this.updateEntities();
         collisionManager.resolvePushBoxCollision(this.fighters);
         
-        collisionManager.ensureOnScreen(this.fighters[0]);
-        collisionManager.ensureOnScreen(this.fighters[1]);
+        collisionManager.ensureOnScreen(this.fighters[0], this.viewport);
+        collisionManager.ensureOnScreen(this.fighters[1], this.viewport);
 
         //check for attack collision
-        //TODO: refactor updateHitBoxCollision to resolve hits in one call.
         collisionManager.updateHitBoxCollision(this, this.fighters[0], this.fighters[1]);
         collisionManager.updateHitBoxCollision(this, this.fighters[1], this.fighters[0]);
+
+        collisionManager.updateProjectileCollision(this.fighters);
     }//end update
     draw() {
-        this.stage.draw(this.game.ctx);
-        this.drawFighters(this.game.ctx);
-        this.drawProjectiles(this.game.ctx);
+        this.stage.draw(this.game.ctx, this.viewport);
+        this.drawEntities(this.game.ctx, this.viewport);
+        this.drawFighters(this.game.ctx, this.viewport);
+        this.drawProjectiles(this.game.ctx, this.viewport);
         this.drawOverlays(this.game.ctx);
+        //this.viewport.drawDebug(this.game.ctx);
     }//end draw
     updateFighters() {
         for (const fighter of this.fighters) {
@@ -95,14 +100,14 @@ export class BattleScene extends Scene {
             overlay.update();
         }
     }//end updateOverlays
-    // updateEntities() {
-    //     for (const entity of entities) {
-    //         entity.update();
-    //     }
-    //}//end updateEntities
-    drawFighters(ctx) {
+    updateEntities() {
+        for (const entity of this.entities) {
+            entity.update();
+        }
+    }//end updateEntities
+    drawFighters(ctx, viewport) {
         for (const num of this.drawOrder) {
-            this.fighters[num].draw(ctx);
+            this.fighters[num].draw(ctx, viewport);
         }
     }//end drawFighters
     drawOverlays(ctx) {
@@ -110,25 +115,23 @@ export class BattleScene extends Scene {
             overlay.draw(ctx);
         }//end for
     }//end drawOverlays
-    drawProjectiles(ctx) {
+    drawProjectiles(ctx, viewport) {
         for (const fighter of this.fighters) {
             if (fighter.hasProjectiles()) {
                 for (const projectile of fighter.projectiles) {
-                    projectile.draw(ctx);
+                    projectile.draw(ctx, viewport);
                 }//end for
             }//end if
         }//end for
     }//end drawProjectiles
-    // drawEntities(ctx) {
-    //     if (!this.entities.length) return;
+    drawEntities(ctx, viewport) {
+        if (!this.entities.length) return;
 
-    //     for (const entity of this.entities) {
-    //         entity.draw(ctx);
-    //     }//end draw
-    // }
+        for (const entity of this.entities) {
+            entity.draw(ctx, viewport);
+        }//end draw
+    }
     addHitSplash(x, y) {
         this.entities.push(new HitSplash(x, y));
     }
-    
-
 }
