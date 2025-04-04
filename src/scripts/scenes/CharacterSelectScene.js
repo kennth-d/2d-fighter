@@ -1,8 +1,9 @@
 import { Button } from "../form/Button.js";
-import { BUTTON_WIDTH, BUTTONS } from "../../assets/data/buttonsData.js";
+import { BUTTON_PADDING, BUTTON_WIDTH, BUTTONS } from "../../assets/data/buttonsData.js";
 import { MenuScene } from "./scenes.js";
 import { CharacterChoice } from "../form/CharacterChoice.js";
 import { getClickedObject } from "../utils/getClickedObject.js";
+import { MENU } from "../utils/const.js";
 
 
 export class CharacterSelectScene extends MenuScene {
@@ -54,24 +55,24 @@ export class CharacterSelectScene extends MenuScene {
         };
     }//end drawCharacterChoices
     drawbg(ctx) {
-        ctx.fillStyle = "gray";
+        ctx.fillStyle = "#4e4e4e";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         ctx.fillStyle = "red";
         ctx.font = "bold 28px Helvetica";
         let text = "Character Select";
         let metrics = ctx.measureText(text);
-        let dx = ctx.canvas.width/2 - metrics.width/2;
-        let dy = 100;
+        let dx = MENU.centerX - metrics.width/2;
+        let dy = MENU.centerY - 250;
         ctx.fillText(text, dx, dy);
     }//end draw
     drawLegend(ctx) {
         ctx.save();
-        let dx = 100;
-        let dy1 = 200;
-        let dy2 = 250;
-        let dy3 = 300;
-        let dy4 = 350;
+        let dx = MENU.centerX - MENU.centerX * .85;
+        let dy1 = MENU.centerY - 175;
+        let dy2 = dy1 + 50;
+        let dy3 = dy2 + 50;
+        let dy4 = dy3 + 50;
 
         //draw txt info
         ctx.font = "bold 24px Helvetica";
@@ -94,11 +95,11 @@ export class CharacterSelectScene extends MenuScene {
         ctx.restore();
     }
     setButtons() {
-        this.buttons[0].rect.x = this.game.ctxHigh.canvas.width - BUTTON_WIDTH - 50;
-        this.buttons[0].rect.y = 25;
+        this.buttons[0].rect.x = MENU.centerX + BUTTON_PADDING;
+        this.buttons[0].rect.y = MENU.centerY + 125;
 
-        this.buttons[1].rect.x = this.game.ctxHigh.canvas.width/2 - BUTTON_WIDTH/2;
-        this.buttons[1].rect.y = this.game.ctxHigh.canvas.height/2 + 100;
+        this.buttons[1].rect.x = MENU.centerX - BUTTON_WIDTH - BUTTON_PADDING;
+        this.buttons[1].rect.y = MENU.centerY + 125;
     }
     setCharRects() {
         let center = { x: this.game.ctxHigh.canvas.width/2, y: this.game.ctxHigh.canvas.height/2 };
