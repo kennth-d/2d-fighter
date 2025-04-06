@@ -10,7 +10,8 @@ export const BUTTON_CALLBACKS = {
     "HOW": (game) => {
         game.addScene(new scenes.HowToScene(game));
     },
-    "RETURN": (game) => {      
+    "RETURN": (game) => {
+        if (game.scenes.length === 1) return;      
         game.ctxHigh.clearRect(0, 0, game.ctxHigh.canvas.width, game.ctxHigh.canvas.height);
         game.removeScene();
     },
@@ -44,8 +45,12 @@ export const BUTTON_CALLBACKS = {
         game.fighters[0] = selectedFighters[0].id;
         game.fighters[1] = selectedFighters[1].id; 
         
-
         game.ctxHigh.clearRect(0, 0, game.ctxHigh.canvas.width, game.ctxHigh.canvas.height);
         game.addScene(new scenes.BattleScene(game));
-    }
+    },
+    "REMATCH": (game) => {
+        game.removeScene();
+        game.removeScene();
+        game.addScene(new scenes.BattleScene(game))
+    }//REMATCH
 }

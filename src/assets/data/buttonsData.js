@@ -38,6 +38,10 @@ export const BUTTONS = {
     BATTLE: {
         BASE:  { x: 0,   y: 528, width: BUTTON_WIDTH, height: BUTTON_HEIGHT },
         HOVER: { x: 257, y: 528, width: BUTTON_WIDTH, height: BUTTON_HEIGHT },
+    },
+    REMATCH: {
+        BASE:  { x: 0,   y: 593, width: BUTTON_WIDTH, height: BUTTON_HEIGHT },
+        HOVER: { x: 257, y: 593, width: BUTTON_WIDTH, height: BUTTON_HEIGHT },
     }
 }//end BUTTONS
 
