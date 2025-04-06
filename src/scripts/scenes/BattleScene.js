@@ -8,11 +8,16 @@ import { HitSplash } from "../overlays/HitSplash.js";
 import { correctDirection } from "../utils/correctDirection.js";
 import { Shadow } from "../components/Shadow.js";
 import { Viewport } from "../components/Viewport.js";
+import { RoundManager } from "../components/RoundManager.js";
 
 export class BattleScene extends Scene {
 
     constructor(game) {
         super(game);
+        this.clock = this.game.gameSettings.roundDuration;
+        this.rounds = new Array(this.game.gameSettings.rounds).fill(-1);
+        this.currentRound = 0;
+
         this.fighters = this.getFighterEntities(this.game.fighters[0], this.game.fighters[1]);
         this.viewport = new Viewport(32, 0, this.fighters);
         this.stage = new Stage();
@@ -21,11 +26,16 @@ export class BattleScene extends Scene {
             this.getStatusBar(this),
         ];
         this.entities = [new Shadow(this.fighters[0]), new Shadow(this.fighters[1])];
+
         if (game.debug) {
             game.setupDebug();
         }//end if
+        this.roundManager = new RoundManager(this);
+        // this.drawFirstFrame();
+        this.roundManager.startNewRound();
     }//end ctor
     handlePauseEvent() {
+        //if (this.roundManger.roundState.name != "InProgress") return;
         let scene = new PauseScene(this.game);
         this.game.scenes.push(scene);
         this.game.numScenes++;
@@ -46,6 +56,16 @@ export class BattleScene extends Scene {
             return fighterEntities;
     }//end getFighterEntitiess
     update() {
+        this.updateFrame();
+        this.roundManager.update(TIME.delta);
+    }
+    draw() {
+        this.drawFrame();
+        this.roundManager.draw();
+        
+    }
+    updateFrame() {
+      
         this.stage.update();
         this.viewport.update();
         this.updateFighters();
@@ -66,13 +86,12 @@ export class BattleScene extends Scene {
 
         collisionManager.updateProjectileCollision(this.fighters);
     }//end update
-    draw() {
+    drawFrame() {
         this.stage.draw(this.game.ctx, this.viewport);
         this.drawEntities(this.game.ctx, this.viewport);
         this.drawFighters(this.game.ctx, this.viewport);
-        this.drawProjectiles(this.game.ctx, this.viewport);
         this.drawOverlays(this.game.ctx);
-        //this.viewport.drawDebug(this.game.ctx);
+        this.drawProjectiles(this.game.ctx, this.viewport);
     }//end draw
     updateFighters() {
         for (const fighter of this.fighters) {
@@ -134,4 +153,15 @@ export class BattleScene extends Scene {
     addHitSplash(x, y) {
         this.entities.push(new HitSplash(x, y));
     }
+    startNewRound() {
+        this.clock = this.game.gameSettings.roundDuration;
+        this.fighters = this.getFighterEntities(this.game.fighters[0], this.game.fighters[1]);
+        this.viewport = new Viewport(32, 0, this.fighters);
+        this.stage = new Stage();
+        this.entities = [new Shadow(this.fighters[0]), new Shadow(this.fighters[1])];
+        this.overlays = [
+            this.getStatusBar(this),
+        ];
+        this.roundManager.startNewRound();
+    }//end startNewRound
 }
