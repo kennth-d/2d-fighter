@@ -1,8 +1,13 @@
 export const ROUND_STATUS = {
-    img   : document.querySelector('img[alt="roundText"]'),
-    KO    : { x: 2,   y: 179, width: 129, height: 83, orign: { x: 66, y: 262 } },
-    FIGHT : { x: 2,   y: 93,  width: 199, height: 83, orign: { x: 101, y: 176} },
-    3     : { x: 2,   y: 4,   width: 56,  height: 83, orign: { x: 27, y: 83  } },
-    2     : { x: 64,  y: 4,   width: 56,  height: 83, orign: { x: 91, y: 83  } },
-    1     : { x: 125, y: 5,   width: 36,  height: 83, orign: { x: 143, y: 83 } },
+    img     : document.querySelector('img[alt="round-text"]'),
+    img2    : document.querySelector('img[alt="game-over"]'),
+    KO      : { x: 4,   y: 116, width: 172, height: 108 },
+    TIMESUP : { x: 186, y: 117, width: 411, height: 132 },
+    3       : { x: 3,   y: 5,   width: 76,  height: 108 },
+    2       : { x: 84,  y: 4,   width: 75,  height: 107 },
+    1       : { x: 172, y: 5,   width: 48,  height: 106 },
+    0       : { x: 226, y: 2,   width: 266, height: 108 }, //Fight
+    P1WIN   : { x: 0,   y: 2,   width: 267, height: 81, },
+    P2WIN   : { x: 0,   y: 88,  width: 285, height: 81, },
+    DRAW    : { x: 0,   y: 172, width: 192, height: 81, },
 };
