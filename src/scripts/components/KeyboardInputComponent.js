@@ -11,14 +11,14 @@ export class KeyboardInputComponent {
         this.handleKeyUp = (event) => {
             this.heldKeys.delete(event.code);
         }
-        this.registerListeners();
+        //this.enable();
     }//end ctor
 
-    registerListeners() {
+    enable() {
         window.addEventListener("keydown", this.handleKeyDown);
         window.addEventListener("keyup", this.handleKeyUp);
     }//end registerListeners
-    removeListeners() {
+    disable() {
         window.removeEventListener("keydown", this.handleKeyDown);
         window.removeEventListener("keydown", this.handleKeyUp);
     }//end removeListeners
