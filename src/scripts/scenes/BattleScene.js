@@ -31,16 +31,15 @@ export class BattleScene extends Scene {
             game.setupDebug();
         }//end if
         this.roundManager = new RoundManager(this);
-        // this.drawFirstFrame();
         this.roundManager.startNewRound();
     }//end ctor
-    handlePauseEvent() {
-        //if (this.roundManger.roundState.name != "InProgress") return;
+    handleEscapeKey() {
+        if (this.roundManager.roundState.name != "InProgress") return;
         let scene = new PauseScene(this.game);
         this.game.scenes.push(scene);
         this.game.numScenes++;
         this.game.scene = this.game.scenes[this.game.numScenes-1];
-    }//end handlePauseEvent
+    }//end handleEscapeKey
     getStatusBar(scene) {
         return new StatusBar(scene);
     }//end getStatusBar

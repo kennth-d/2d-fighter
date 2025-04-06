@@ -1,3 +1,4 @@
+import { BUTTON_CALLBACKS } from "../form/ButtonCallbacks.js";
 //base Scene class
 export class Scene {
     constructor(game) {
@@ -22,7 +23,7 @@ export class Scene {
     handleMouseMove() {
         return;
     }
-    handlePauseEvent() {
-        return;
+    handleEscapeKey() {
+        BUTTON_CALLBACKS.RETURN(this.game);
     }
 }//end scene
