@@ -6,15 +6,18 @@ import { toggleDebug, logEntities, drawDebugScreenSize } from "../utils/debug.js
 export class GameManager {
     constructor(debug=false) {
         this.gameSettings = DEFAULT_SETTINGS;
-        this.fighters = [];
         this.debug=debug;
+
+        //global game state
+        this.fighters = [];
 
         //low-res screen for battle scenes
         this.ctx = getContext2D('#low-res-screen');
         this.ctx.imageSmoothingEnabled = false;
         //high-res screen for menu scenes
         this.ctxHigh = MENU.canvasElement.getContext("2d");
-        this.ctxHigh.imageSmoothingEnabled = false;
+        this.ctxHigh.imageSmoothingEnabled = true;
+
         this.scenes = [new scenes.MainMenuScene(this)];
 
         this.numScenes = 1;
@@ -86,4 +89,15 @@ export class GameManager {
             }
         });
     }//end setupDebug
+    removeScene() {
+        const removed = this.scenes.pop();
+        this.numScenes -= 1;
+        this.scene = this.scenes[this.numScenes - 1];
+        return removed;
+    }//end removeScene
+    addScene(scene) {
+        this.scenes.push(scene);
+        this.numScenes += 1;
+        this.scene = this.scenes[this.numScenes - 1];
+    }//end addScene
 }//end GameManager
