@@ -7,17 +7,12 @@ export class StatusBar {
     constructor(scene) {
         this.scene = scene;
 
-        //player health/energy
         this.fighters = scene.fighters;
         this.healthBars = [{hp: MAX_HEALTH, timer: 0}, {hp: MAX_HEALTH, timer: 0}];
         this.energyBars = [{ep: MAX_ENERGY, timer: 0}, {ep: MAX_ENERGY, timer: 0}];
 
-        //round clock and counter
         this.timer = this.scene.game.gameSettings.roundDuration;
-        this.timeTimer = 0;
-        this.rounds = new Array(this.scene.game.gameSettings.rounds);
-
-        //Store image data
+        //image data
         this.health;
         this.energy;
         this.clock;
@@ -27,17 +22,13 @@ export class StatusBar {
     }//end ctor
     
     update() {
+    
         this.updateTime();
         this.updateBars();
     }//end updateTime
 
     updateTime() {
-        this.timeTimer += TIME.delta;
-        if (this.timeTimer >= 1) {
-            if (this.timer > 0) this.timer -= 1;
-            this.timeTimer = 0;
-        }
-        if (this.timer === 0) this.reset();
+        this.timer = Math.round(this.scene.clock);
     }//end updateTime
 
     updateBars() {
@@ -88,7 +79,7 @@ export class StatusBar {
         if (direction < 0) {
             dX = CANVAS_WIDTH - element.dx;
         }
-
+        
         //draw background
         ctx.drawImage(
             element.background,
@@ -151,10 +142,10 @@ export class StatusBar {
         let height = this.round.background.height;
         let dX = this.round.dx;
         let dY = this.round.dy;
-
-        for (let i = 0; i < this.rounds.length; i++) {
+        
+        for (let i = 0; i < this.scene.rounds.length; i++) {
             //draw round winner
-            if (this.rounds[i] === 1) {
+            if (this.scene.rounds[i] === 0) {
                 //win
                 ctx.drawImage(
                     this.round.win,
@@ -163,7 +154,7 @@ export class StatusBar {
                     dX + (i * width), dY,
                     width, height
                 );
-            } else if (this.rounds[i] === -1) {
+            } else if (this.scene.rounds[i] === 1) {
                 //lose
                 ctx.drawImage(
                     this.round.lose,
@@ -222,7 +213,7 @@ export class StatusBar {
             background: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             win: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
             lose: new Image(STATUS.ROUND.WIDTH, STATUS.ROUND.HEIGHT),
-            dx: CANVAS_WIDTH/2 - (this.rounds.length * STATUS.ROUND.WIDTH)/2,
+            dx: CANVAS_WIDTH/2 - (this.scene.rounds.length * STATUS.ROUND.WIDTH)/2,
             dy: 30,
         };
 
