@@ -1,7 +1,6 @@
 import { RoundState } from "./RoundState.js";
 import { drawGameOver, drawTransparencyMask} from "../../utils/drawRoundStatus.js";
-import { BUTTON_CALLBACKS } from "../../form/ButtonCallbacks.js";
-
+import { GameOverScene } from "../../scenes/scenes.js";
 
 export class RoundsComplete extends RoundState {
     constructor(manager) {
@@ -28,8 +27,7 @@ export class RoundsComplete extends RoundState {
         this.timer -= dt;
         if (this.timer > 0) return;
 
-        //TEMPORARY, replace with GameOver Menu Screen.
-        BUTTON_CALLBACKS["MAIN"](this.manager.scene.game);
+        this.manager.scene.game.addScene(new GameOverScene(this.manager.scene.game));
     }//end update
     draw() {
         const ctx = this.manager.scene.game.ctxHigh;
