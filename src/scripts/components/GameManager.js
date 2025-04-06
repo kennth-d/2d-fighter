@@ -62,7 +62,7 @@ export class GameManager {
         window.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
                 event.preventDefault();
-                this.scene.handlePauseEvent();
+                this.scene.handleEscapeKey();
             }
             if (event.code == "AltLeft") {
                 event.preventDefault();
