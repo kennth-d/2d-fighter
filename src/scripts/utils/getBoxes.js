@@ -9,7 +9,6 @@ import * as boxes from "../../assets/data/boxData.js";
  * @returns [x, y, w, h] for push and hit boxes. [[x, y, w, h],[x, y, w, h],[x, y, w, h]] for hurt boxes.
  */
 export function getBoxes(fighter, state, boxType, frame) {
-    //console.log(fighter, frame, ":  ", boxes[fighter][boxType][state][frame]);
     return boxes[fighter][boxType][state][frame];
 }//end getBoxes
 
