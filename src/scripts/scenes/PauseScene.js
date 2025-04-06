@@ -21,18 +21,18 @@ export class PauseScene extends MenuScene {
         ctx.restore();
     }
     getButtons() {
-            let buttonList = [
-                new Button(BUTTONS.RESUME, "RESUME"),
-                new Button(BUTTONS.HOW, "HOW"),
-                new Button(BUTTONS.MAIN, "MAIN"),
-            ];
+        let buttonList = [
+            new Button(BUTTONS.RESUME, "RESUME"),
+            new Button(BUTTONS.HOW, "HOW"),
+            new Button(BUTTONS.MAIN, "MAIN"),
+        ];
 
-            for (let i = 0; i < buttonList.length; i++) {
-                let dX = MENU.centerX - BUTTON_WIDTH/2;
-                let dY = MENU.centerY - BUTTON_HEIGHT + (BUTTON_HEIGHT * i) + (BUTTON_PADDING * i);
-                buttonList[i].rect.x = dX;
-                buttonList[i].rect.y = dY;
-            }
-            return buttonList;
-        }//end getButtons
-}
+        for (let i = 0; i < buttonList.length; i++) {
+            let dX = MENU.centerX - BUTTON_WIDTH/2;
+            let dY = MENU.centerY - BUTTON_HEIGHT + (BUTTON_HEIGHT * i) + (BUTTON_PADDING * i);
+            buttonList[i].rect.x = dX;
+            buttonList[i].rect.y = dY;
+        }
+        return buttonList;
+    }//end getButtons
+}//end PauseScene
