@@ -19,9 +19,7 @@ export class IDLE extends State {
     }
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", 0);
-        manager.fighter.physics.changeVelocity("y", 0);
         manager.fighter.physics.changeKnockback("x", 0);
-        manager.fighter.physics.changeKnockback("y", 0);
     }//end enter
     update(manager, input) {
         
