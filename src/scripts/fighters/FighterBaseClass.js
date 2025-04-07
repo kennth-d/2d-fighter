@@ -25,6 +25,7 @@ export class FighterBaseClass {
         this.projectileCooldown = 0;
     }//end ctor
     update() {
+        if (this.health <= 0) this.stateManager.transition("KO");
         if (this.energyCooldown === 0) {
             this.energy = Math.min(100, this.energy + TIME.delta * ENERGY_REGEN_POWER);
         }//end if
@@ -38,6 +39,7 @@ export class FighterBaseClass {
         
         this.physics.update();
         
+        if (this.stateManager.activeState.name === "KO" && this.animationIsComplete()) return;
         this.spriteManager.update(this);
 
         this.updateBoxes();
