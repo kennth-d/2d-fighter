@@ -12,15 +12,7 @@ export class GameOverScene extends MenuScene {
         return;
     }
     draw(){
-        this.drawBackground(this.game.ctxHigh);
         super.draw(this.game.ctxHigh);
-    }
-    drawBackground(ctx) {
-        ctx.save();
-        ctx.fillStyle = "black";
-        ctx.globalAlpha = 0.005;
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.restore();
     }
     getButtons() {
         let buttonList = [
