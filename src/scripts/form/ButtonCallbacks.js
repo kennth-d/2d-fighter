@@ -28,11 +28,20 @@ export const BUTTON_CALLBACKS = {
 
         game.gameSettings.roundDuration = scene.rangeSettings[0].getValue();
         game.gameSettings.volume = scene.rangeSettings[1].getValue();
+
+        const sounds = document.querySelectorAll("audio.attack-sounds");
+        for (const sound of sounds) {
+            sound.volume = .5 * (game.gameSettings.volume/100);
+        }//end for
+
+        game.bgm.volume = .05 * (game.gameSettings.volume/100);
     },
     "MAIN": (game) => {
         game.scenes = game.scenes.slice(0, 1);
         game.numScenes = 1;
         game.scene = game.scenes[game.numScenes-1];
+        game.bgm.pause();
+        game.bgm.currentTime = 0;
     },
     "BATTLE": (game) => {
         const scene = game.removeScene();
