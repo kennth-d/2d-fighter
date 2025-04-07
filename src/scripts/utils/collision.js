@@ -1,4 +1,4 @@
-import { BOUNDARIES, CANVAS_WIDTH, TIME } from "./const.js";
+import { BOUNDARIES, TIME } from "./const.js";
 import { getActualBoxDimensions } from "./utils.js";
 import { applyhit } from "./hit.js";
 import { HIT_STOP } from "./attackData.js";
@@ -51,7 +51,7 @@ export function ensureOnScreen(fighter, viewport) {
     if (xPos <= viewport.pos.x) {
         let xOverlap = viewport.pos.x - xPos;
         fighter.pos.x = fighter.pos.x + xOverlap;
-    } else if (xPos + playerWidth >= viewport.pos.x + CANVAS_WIDTH) {
+    } else if (xPos + playerWidth >= viewport.pos.x + BOUNDARIES.RIGHT) {
         let xOverlap = xPos + playerWidth - (viewport.pos.x + BOUNDARIES.RIGHT);
         fighter.pos.x = fighter.pos.x - xOverlap;
     }//end if-else if
@@ -69,7 +69,6 @@ export function ensureOnFLoor(fighter) {
 }//end ensureOnFloor
 export function updateHitBoxCollision(scene, attacker, opponent) {
      if (!attacker.isAttacking() || attacker.getHasHit()) return;
-     let frame = attacker.spriteManager.currentFrame+1
      let attack = attacker.stateManager.activeState.name;
 
      const trueHitBox = getActualBoxDimensions(attacker.pos, attacker.direction, attacker.boxes.hit);
@@ -78,12 +77,8 @@ export function updateHitBoxCollision(scene, attacker, opponent) {
     
         if (!rectsOverlap(trueHitBox, trueOpponentHurtBox)) continue;
 
-        let bodyparts = ["head", "body", "legs"]
-        const hurtIndex = opponent.boxes.hurt.indexOf(box);
-        // console.log(`${attacker.name} has hit ${opponent.name}'s ${bodyparts[hurtIndex]} with frame: ${frame}`);
-
         attacker.setHasHit(true);
-        applyhit(opponent, attack);
+        applyhit(opponent, attack, scene.viewport);
         TIME.hitStopTimer = TIME.previous + (HIT_STOP * 1000);
         scene.drawOrder = [opponent.playerId, attacker.playerId];
 
@@ -93,58 +88,54 @@ export function updateHitBoxCollision(scene, attacker, opponent) {
         }
         hitLocation.x -= 4 - Math.random() * 8;
         hitLocation.y -= 4 - Math.random() * 8;
-        //TODO generate hit sprite
-        //attacker.generateHitSprite(hitLocation);
+        const hitType = opponent.isBlocking() ? "block" : "hit";
+        
+        scene.addHitSplash(hitLocation.x, hitLocation.y, hitType);
         return;
      }//end for
 }//end checkHitBoxCollision
 
-export function updateProjectileCollision(fighters) {
+export function updateProjectileCollision(scene, fighters) {
+
+    const checkProjectiles = (attacker, target) => {
+        for (const projectile of attacker.projectiles) {
+            if (projectile.hasHit()) continue;
+
+            for (const box of target.boxes.hurt) {
+                const hurtBox = getActualBoxDimensions(target.pos, target.direction, box);
+                if (rectsOverlap(projectile.box, hurtBox)) {
+                    projectile.setHasHit();
+                    scene.addHitSplash(projectile.box.x, projectile.box.y, "hit");
+                    attacker.removeProjectile(projectile.projectileId);
+                    applyhit(target, "SP_2", scene.viewport);
+                    break;
+                };//end if
+            };//end inner-for
+        };//end outer-for
+    };//end checkProjectiles
+
     const p1 = fighters[0];
     const p2 = fighters[1];
-    if (p1.hasProjectiles()) {
-        for (const projectile of p1.projectiles) {
-            for (const box of p2.boxes.hurt) {
-                let truehurtBox = getActualBoxDimensions(p2.pos, p2.direction, box);
-                let collided = rectsOverlap(projectile.box, truehurtBox);
-                if (collided)  {
-                    applyhit(p2, "SP_2");
-                    p1.removeProjectile(projectile.projectileId);
-                }//end if
-            }//end for
-        }//end for
-    }//end if
 
-    if (p2.hasProjectiles()) {
-        for (const projectile of p2.projectiles) {
-            for (const box of p1.boxes.hurt) {
-                let truehurtBox = getActualBoxDimensions(p1.pos, p1.direction, box);
-                let collided = rectsOverlap(projectile.box, truehurtBox);
-                if (collided) {
-                    applyhit(p1, "SP_2");
-                    p2.removeProjectile(projectile.projectileId);
-                }//end if
-            }//end for
-        }//end for
-    }//end if
+    if (p1.hasProjectiles()) checkProjectiles(p1, p2);
+    if (p2.hasProjectiles()) checkProjectiles(p2, p1);
 }//end updateProjectileCollision
 
 /** returns a number relating to which boundary a player is at.
  * @param {fighterBaseClass} fighter an instance of FighterBaseClass
  * @returns {Boolean} true if fighter is at a boundary, false otherwise.
  **/
-export function isAtBoundary(fighter) {
+export function isAtBoundary(fighter, viewport) {
     let playerWidth = fighter.boxes.push[2];
     let xPos = fighter.pos.x - fighter.boxes.push[0];
     
     let result = false;
 
-    if (xPos <= BOUNDARIES.LEFT) {
+    if (xPos <= viewport.pos.x) {
         result = true;
     }
-    if (xPos + playerWidth >= BOUNDARIES.RIGHT) {
-       result = true;
-    }//end if-else if
-
+    if (xPos + playerWidth >= viewport.pos.x + BOUNDARIES.RIGHT) {
+        result = true;
+    }
     return result;
 }
