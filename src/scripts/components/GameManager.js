@@ -6,8 +6,10 @@ import { toggleDebug, logEntities, drawDebugScreenSize } from "../utils/debug.js
 export class GameManager {
     constructor(debug=false) {
         this.gameSettings = DEFAULT_SETTINGS;
-        this.debug=debug;
+        this.gameSettings.initVolume();
 
+        this.debug=debug;
+        this.bgm = document.querySelector("audio#battle-bgm");
         //global game state
         this.fighters = [];
 
@@ -32,10 +34,9 @@ export class GameManager {
         window.requestAnimationFrame(this.frame.bind(this));
 
         TIME.update(timestamp);
-
+        
         this.scene.update();
         this.scene.draw();
-        
     }//end frame
     
     start() {
@@ -76,7 +77,6 @@ export class GameManager {
 
             if (e.code === "Space") {
                 logEntities(this.scene.fighters);
-                console.log(TIME);
             }//end if
             if (e.code === "KeyV") {
                 toggleDebug(this.scene.fighters);
