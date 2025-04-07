@@ -118,10 +118,11 @@ export const F001_SpriteData = {
         originOffset: {x: 24, y: 40},
     },
     KO: {
-        src: path + "death 48x48.png",
-        width: 64,
-        height: 64,
+        src: path + "ko 48x48.png",
+        width: 48,
+        height: 48,
         frames: 10,
-        originOffset: {x: 24, y: 40},
+        delay: 2,
+        originOffset: {x: 32, y: 40},
     },
 }//end F_001 
