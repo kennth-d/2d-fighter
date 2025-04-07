@@ -8,9 +8,10 @@
     <script type="module" defer src="../test/test.js"></script>
 </head>
 <body>
-    <!-- <canvas id="low-res-screen" width="384px" height="216"></canvas> -->
+
     <canvas id="low-res-screen" width="320px" height="180"></canvas>
     <canvas id="high-res-screen" width="1280" height="720"></canvas>
+
     <img src="../src/assets/images/status/round-text.png" alt="round-text">
     <img src="../src/assets/images/status/game-over.png" alt="game-over">
     <img src="../src/assets/images/stages/city/stage-city.png" alt="stage">
@@ -22,7 +23,30 @@
     <img src="../src/assets/images/choices/character-choices.png" alt="character-choices">
     <img src="../src/assets/images/decals/block-decal 256x256.png" alt="on-block">
     <img src="../src/assets/images/decals/hit-decal 256x256.png" alt="on-hit">
+    <img src="../src/assets/images/decals/block-decal 64x64.png" alt="on-block64">
+    <img src="../src/assets/images/decals/hit-decal 64x64.png" alt="on-hit64">
     <img src="../src/assets/images/projectiles/projectiles 8x16.png" alt="projectiles">
     <img src="../src/assets/images/decals/shadow 6 x 24.png" alt="shadow">
+
+    <audio id="battle-bgm" src="../src/assets/sounds/Menace.ogg" preload="auto" loop></audio>
+
+    <audio src="../src/assets/sounds/light-swing.mp3" id="light-swing" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/heavy-swing.mp3" id="heavy-swing" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/sp-1-swing.mp3" id="sp-1-swing" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/sp-2-swing.wav" id="sp-2-swing" class="attack-sounds" preload="auto"></audio>
+
+    <audio src="../src/assets/sounds/light-hit.mp3" id="light-hit" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/heavy-hit.wav" id="heavy-hit" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/sp-1-hit.wav" id="sp-1-hit" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/sp-2-hit.wav" id="sp-2-hit" class="attack-sounds" preload="auto"></audio>
+    <audio src="../src/assets/sounds/block.wav" id="block" class="attack-sounds" preload="auto"></audio>
+
 </body>
+<script>
+    const audioTags = document.querySelectorAll("audio");
+    for (const tag of audioTags) {
+        tag.volume = 0.5
+        if (tag.id === "battle-bgm") tag.volume = 0.25;
+    };
+</script>
 </html>
