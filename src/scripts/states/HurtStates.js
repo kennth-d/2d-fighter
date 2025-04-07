@@ -13,7 +13,7 @@ export class HURT extends IDLE {
     }//end  enter
     update(manager, input) {
         if (manager.fighter.hitstun > 0) {
-            manager.fighter.hitstun -= TIME.delta;
+            manager.fighter.hitstun = Math.max(0, manager.fighter.hitstun - TIME.delta);
             return;
         }
         manager.transition("IDLE");
