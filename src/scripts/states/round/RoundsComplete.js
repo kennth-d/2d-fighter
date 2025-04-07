@@ -9,14 +9,12 @@ export class RoundsComplete extends RoundState {
         this.timer = 2;
     }//end ctor
     enter() {
-        console.log(this.manager.scene.rounds);
         const winCounts = this.manager.scene.rounds.reduce((win, cur) => {
             win[cur] = (win[cur] || 0) + 1;
             return win;
         }, {});
         const p1 = winCounts["0"] || 0;
         const p2 = winCounts["1"] || 0;
-        console.log(p1, p2);
         if (p1 === p2) {
             this.winner = "DRAW";
         } else {
