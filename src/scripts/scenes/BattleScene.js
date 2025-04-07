@@ -26,12 +26,14 @@ export class BattleScene extends Scene {
             this.getStatusBar(this),
         ];
         this.entities = [new Shadow(this.fighters[0]), new Shadow(this.fighters[1])];
+        this.hitSplashes = [];
 
         if (game.debug) {
             game.setupDebug();
         }//end if
         this.roundManager = new RoundManager(this);
         this.roundManager.startNewRound();
+        if (this.game.gameSettings.music === "ON") this.game.bgm.play();
     }//end ctor
     handleEscapeKey() {
         if (this.roundManager.roundState.name != "InProgress") return;
@@ -71,8 +73,9 @@ export class BattleScene extends Scene {
         this.updateEntities();
         this.updateProjectiles();
         this.updateOverlays();
+        this.updateHitSplash();
 
-        correctDirection(this.fighters[0], this.fighters[1]);
+        correctDirection(this.fighters[0], this.fighters[1], this.viewport);
         
         collisionManager.resolvePushBoxCollision(this.fighters);
         
@@ -83,14 +86,16 @@ export class BattleScene extends Scene {
         collisionManager.updateHitBoxCollision(this, this.fighters[0], this.fighters[1]);
         collisionManager.updateHitBoxCollision(this, this.fighters[1], this.fighters[0]);
 
-        collisionManager.updateProjectileCollision(this.fighters);
+        collisionManager.updateProjectileCollision(this, this.fighters);
     }//end update
     drawFrame() {
         this.stage.draw(this.game.ctx, this.viewport);
+        
         this.drawEntities(this.game.ctx, this.viewport);
         this.drawFighters(this.game.ctx, this.viewport);
         this.drawOverlays(this.game.ctx);
         this.drawProjectiles(this.game.ctx, this.viewport);
+        this.drawHitSplash(this.game.ctxHigh, this.viewport);
     }//end draw
     updateFighters() {
         for (const fighter of this.fighters) {
@@ -123,6 +128,11 @@ export class BattleScene extends Scene {
             entity.update();
         }
     }//end updateEntities
+    updateHitSplash() {
+        for (const splash of this.hitSplashes) {
+            splash.update();
+        }
+    }
     drawFighters(ctx, viewport) {
         for (const num of this.drawOrder) {
             this.fighters[num].draw(ctx, viewport);
@@ -143,15 +153,22 @@ export class BattleScene extends Scene {
         }//end for
     }//end drawProjectiles
     drawEntities(ctx, viewport) {
-        if (!this.entities.length) return;
-
         for (const entity of this.entities) {
             entity.draw(ctx, viewport);
         }//end draw
     }
-    addHitSplash(x, y) {
-        this.entities.push(new HitSplash(x, y));
-    }
+    drawHitSplash(ctx, viewport) {
+        for (const splash of this.hitSplashes) {
+            splash.draw(ctx, viewport);
+        }//end for
+    }//end drawHitSplash
+    addHitSplash(x, y, type) {
+        this.hitSplashes.push(new HitSplash(x, y, type, this.removeHitSplash.bind(this)));
+    }//end add HitSPlash
+    removeHitSplash(hitSplashEntity) {
+        this.hitSplashes = this.hitSplashes.filter((entity) => entity != hitSplashEntity);
+        this.game.ctxHigh.clearRect(0, 0, this.game.ctxHigh.canvas.width, this.game.ctxHigh.canvas.height);
+    }//end remove HitSplash
     startNewRound() {
         this.clock = this.game.gameSettings.roundDuration;
         this.fighters = this.getFighterEntities(this.game.fighters[0], this.game.fighters[1]);
