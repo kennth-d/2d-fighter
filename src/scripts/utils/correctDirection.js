@@ -6,8 +6,8 @@ import { isAtBoundary } from "./collision.js";
  * @param {FighterBaseClass} fighter 
  * @param {FighterBaseClass} opponent 
  */
-export function correctDirection(p1, p2) {
-    if (isAtBoundary(p1) || isAtBoundary(p2)) {
+export function correctDirection(p1, p2, viewport) {
+    if (isAtBoundary(p1, viewport) || isAtBoundary(p2, viewport)) {
         return;
     }
 
