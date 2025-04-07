@@ -71,7 +71,13 @@ export const DEFAULT_SETTINGS = {
     roundDuration: 200,
     volume: 50,
     music: "ON",
-}
+    initVolume: () => {
+        const audioTags = document.querySelectorAll("audio");
+        for (const tag of audioTags) {
+            tag.volume = (tag.volume * .5);
+        };
+    },
+};
 
 /**defines properties for managing time and a method for updating time.
  * @typedef TIME 
