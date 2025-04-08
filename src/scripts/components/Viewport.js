@@ -1,4 +1,5 @@
-import { BOUNDARIES, CANVAS_WIDTH, TIME, STAGE, CANVAS, CANVAS_HEIGHT } from "../utils/const.js";
+import { BOUNDARIES, CANVAS_WIDTH, STAGE, CANVAS_HEIGHT } from "../utils/const.js";
+import { lerp } from "../utils/linearInterpolation.js";
 export class Viewport {
     constructor(x, y, fighters) {
         this.fighters = fighters;
@@ -21,8 +22,8 @@ export class Viewport {
         targetViewportX = Math.max(0, Math.min(targetViewportX, STAGE.WIDTH - CANVAS_WIDTH));
 
         //linear interpolation for smoothing.
-        this.pos.x = Math.floor(this.lerp(this.pos.x, targetViewportX, 0.05)); 
-        this.pos.y = Math.floor(this.lerp(this.pos.y, targetViewportY, 0.6));
+        this.pos.x = Math.floor(lerp(this.pos.x, targetViewportX, 0.05)); 
+        this.pos.y = Math.floor(lerp(this.pos.y, targetViewportY, 0.6));
 
     }//end update
     drawDebug(ctx) {
@@ -39,7 +40,4 @@ export class Viewport {
         ctx.stroke();
         ctx.restore();
     }
-    lerp(a, b, t) {
-        return a + (b - a) * t;
-    }//end interpolate
 }//end Viewport class
