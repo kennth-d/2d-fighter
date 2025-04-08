@@ -4,6 +4,7 @@ import { BOUNDARIES } from "../utils/const.js";
 export class FighterStateManager {
     constructor(fighter) {
         this.activeState = new states.IDLE();
+        this.lastState = this.activeState;
         this.fighter = fighter;
     }//end ctor
     update(input) {
@@ -14,6 +15,10 @@ export class FighterStateManager {
         this.activeState.update(this, input);
     }//end update
     transition(newState) {
+        if (newState === this.activeState.name) return;
+        
+        this.lastState = this.activeState;
+        
         this.activeState.exit(this);
         this.activeState = new states[newState]();
         this.activeState.enter(this);
