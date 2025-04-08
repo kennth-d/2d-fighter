@@ -27,7 +27,7 @@ export function applyhit(reciever, attack) {
         knockbackX *= .5;
         reciever.applyBlockStun(attackData.hitstun * .5);
     } else {
-        playSound(attacks.SOUNDS[attack].hit);
+        playSound(attacks.SOUNDS[attack].hit, 0.1);
         reciever.applyDamage(damage, 0);
         reciever.applyHitStun(attackData.hitstun);
         reciever.stateManager.transition("HURT");
@@ -41,7 +41,7 @@ function applyAerialHit(reciever, attack) {
     let damage = attackData.dmg;
     let knockbackX = attackData.knockback*2;
     let knockbackY = -150;
-    playSound(attacks.SOUNDS[attack].hit);
+    playSound(attacks.SOUNDS[attack].hit, 0.1);
 
     reciever.applyDamage(damage, 0);
     reciever.applyHitStun(attackData.hitstun);
