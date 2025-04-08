@@ -14,16 +14,24 @@
  * @exports HURT,
  * @exports BLOCK,
  * @exports KO,
+ * @exports KNOCKBACK,
+ * @exports FALLING,
+ * @exports JUMP_ATTACK
  * @exports characterStates a list of all the states as strings.
  * 
  */ 
 
-import { IDLE, WALK_FWD, WALK_BWD, JUMP, JUMP_BWD, JUMP_FWD, CROUCH } from "./MoveStates.js";
-import { LIGHT_ATTACK, HEAVY_ATTACK, SP_1, SP_2 } from "./AttackStates.js";
-import { HURT, KO } from "./HurtStates.js";
+import { IDLE, WALK_FWD, WALK_BWD, JUMP, JUMP_BWD, JUMP_FWD, CROUCH, FALLING } from "./MoveStates.js";
+import { LIGHT_ATTACK, HEAVY_ATTACK, SP_1, SP_2, JUMP_ATTACK } from "./AttackStates.js";
+import { HURT, KO, KNOCKBACK } from "./HurtStates.js";
 import { BLOCK } from "./DefendStates.js";
 
-export const characterStates = ["IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD", "SP_1", "SP_2", "HURT", "KO", "BLOCK"];
+export const characterStates = [
+    "IDLE", "CROUCH", "WALK_FWD", "WALK_BWD", "JUMP", 
+    "LIGHT_ATTACK", "HEAVY_ATTACK", "JUMP_FWD", "JUMP_BWD", 
+    "SP_1", "SP_2", "HURT", "KO", "BLOCK",
+    "JUMP_ATTACK", "KNOCKBACK", "FALLING",
+];
 
 export {
     IDLE,
@@ -40,4 +48,7 @@ export {
     HURT,
     BLOCK,
     KO,
+    FALLING,
+    KNOCKBACK,
+    JUMP_ATTACK,
 };
