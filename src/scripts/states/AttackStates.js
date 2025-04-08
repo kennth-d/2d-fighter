@@ -3,7 +3,7 @@
  * @description Contains Fighter states that relate to Fighter Attacks.
  * States in this File: LIGHT_ATTACK, HeavyAttack, SP_1, SP_2.
  */
-import { IDLE } from "./MoveStates.js";
+import { IDLE, JUMP } from "./MoveStates.js";
 
 /** Base State class for an attack
  * @extends {Idle}
@@ -147,3 +147,17 @@ export class SP_2 extends ATTACK {
         manager.fighter.projectileCooldown = 1;
     }//end exit
 }//end SP_2
+
+export class JUMP_ATTACK extends JUMP {
+    constructor() {
+        super("JUMP_ATTACK");
+        this.type = "attack";
+        this.range = 15;
+    }//end if
+    enter() {};
+    update() {
+    };//end update
+    exit(manager) {
+        manager.fighter.setHasHit(false);
+    };
+}//end JUMP_ATTACK
