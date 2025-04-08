@@ -4,26 +4,33 @@ import { TIME } from "../utils/const.js";
  * while the fighter is in hitstun.
  */
 export class HURT extends IDLE {
-    constructor() {
-        super("HURT");
+
+    constructor(state="HURT") {
+        super(state);
     }
     enter(manager) {
+        this.combo++
         manager.fighter.spriteManager.setCurrentFrame(0);
         manager.fighter.physics.changeVelocity("x", 0);
-    }//end  enter
+    };//end  enter
     update(manager, input) {
+
         if (manager.fighter.hitstun > 0) {
             manager.fighter.hitstun = Math.max(0, manager.fighter.hitstun - TIME.delta);
             return;
-        }
+        };
         manager.transition("IDLE");
         
-    }//end update
-    exit() {
-    }
-}//end Hurt
+    };//end update
+};//end Hurt
 export class KO extends IDLE {
     constructor() {
         super("KO");
-    }
-}// end KO
+    };//end ctor
+};// end KO
+
+export class KNOCKBACK extends HURT { 
+    constructor() {
+        super("KNOCKBACK");
+    }//end ctor
+}//end if
