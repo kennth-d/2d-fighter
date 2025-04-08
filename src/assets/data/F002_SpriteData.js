@@ -84,7 +84,7 @@ export const F002_SpriteData = {
         height: 48,
         frames: 6,
         originOffset: {x: 21, y: 40},
-        delay: 2.25,
+        delay: 1,
     },
     JUMP_FWD: {
         src: path + "jump 48x48.png",
@@ -92,7 +92,7 @@ export const F002_SpriteData = {
         height: 48,
         frames: 6,
         originOffset: {x: 21, y: 40},
-        delay: 2.25,
+        delay: 1,
     },
     JUMP_BWD: {
         src: path + "jump bwd 48x48.png",
@@ -100,22 +100,7 @@ export const F002_SpriteData = {
         height: 48,
         frames: 6,
         originOffset: {x: 27, y: 40},
-        delay: 2,
-    },
-    JUMP_ATTACK: {
-        src: path + "jump attack 64x64.png",
-        width: 64,
-        height: 64,
-        frames: 6,
-        originOffset: {x:32, y: 48},
-        delay: 2,
-    },
-    FALLING: {
-        srs: path + "falling 48x48.png",
-        width: 48,
-        height: 48,
-        frames: 1,
-        originOffset: {x: 24, y: 40},
+        delay: 1,
     },
     HURT: {
         src: path + "hurt 48x48.png",
@@ -130,6 +115,7 @@ export const F002_SpriteData = {
         width: 48,
         height: 48,
         frames: 7,
+        delay: 2.25,
         originOffset: {x: 24, y: 40},
     },
     KO: {
@@ -139,5 +125,20 @@ export const F002_SpriteData = {
         frames: 10,
         delay: 2,
         originOffset: {x: 32, y: 40},
+    },
+    FALLING: {
+        src: path + "falling 48x48.png",
+        width: 48,
+        height: 48,
+        frames: 1,
+        originOffset: {x: 24, y: 40},
+    },
+    JUMP_ATTACK: {
+        src: path + "jump attack 48x48.png",
+        width: 48,
+        height: 48,
+        frames: 6,
+        delay: 1.5,
+        originOffset: {x: 24, y: 40},
     },
 }//end F_001 

@@ -1,5 +1,5 @@
 //see boxes.js for information.
-import { idleHurtBoxes, walkHurtBoxes, jumpHurtBoxes, crouchHurtBoxes, hurtHurtBoxes } from "./F001_Boxes.js";
+import { idleHurtBoxes, walkHurtBoxes, jumpHurtBoxes, crouchHurtBoxes, hurtHurtBoxes, jumpAttackHurtBoxes } from "./F001_Boxes.js";
 
 const defaultPushBox = [7, 27, 15, 27];
 
@@ -21,10 +21,13 @@ export const F002 = {
         HURT:         new Array(4).fill([]).map(() => {return defaultPushBox}),
         KNOCKBACK:    new Array(10).fill([]).map(() => {return defaultPushBox}),
         KO:           [[8, 11, 15, 28], [8, 11, 15, 28], [8, 11, 15, 28], [8, 11, 15, 28], [8, 11, 15, 28], [8, 11, 15, 28], [8, 21, 26, 18], [8, 35, 28, 4], [8, 35, 28, 4], [8, 35, 28, 4]],
+        FALLING:      new Array(1).fill([]).map(() => {return defaultPushBox}),
+        JUMP_ATTACK:  new Array(8).fill([]).map(() => {return defaultPushBox}),
     },
     hit: {
         IDLE:         new Array(10).fill([]).map(() => {[]}),
         BLOCK:        new Array(1).fill([]).map(() => {[]}),
+        FALLING:      new Array(1).fill([]).map(() => {[]}),
         WALK_FWD:     new Array(10).fill([]).map(() => {[]}),
         WALK_BWD:     new Array(10).fill([]).map(() => {[]}),
         CROUCH:       new Array(10).fill([]).map(() => {[]}),
@@ -43,17 +46,19 @@ export const F002 = {
         HEAVY_ATTACK: [[], [], [-7, 20, 25, 5], [], [], [], [], [], []],
         SP_1: [[], [], [], [], [-7, 17, 35, 5], [-7, 17, 35, 5], [], [], [], []],
         sp_2:         new Array(10).fill([]).map(() => {[]}),
+        JUMP_ATTACK:   [[],[],[],[5, 18, 17, 5],[5, 18, 17, 5],[5, 18, 17, 5],[],[]],
     },
     hurt: {
         IDLE:         new Array(10).fill([]).map(() => {return idleHurtBoxes}), 
-        BLOCK:        new Array(1).fill([]).map(()  => {return idleHurtBoxes}), 
+        BLOCK:        new Array(1).fill([]).map(()  => {return idleHurtBoxes}),
+        FALLING:      new Array(1).fill([]).map(()  => {return idleHurtBoxes}), 
         WALK_FWD:     new Array(10).fill([]).map(() => {return walkHurtBoxes}),
         WALK_BWD:     new Array(10).fill([]).map(() => {return walkHurtBoxes}),
         CROUCH:       new Array(10).fill([]).map(() => {return crouchHurtBoxes}),
         JUMP:         new Array(6).fill([]).map(()  => {return jumpHurtBoxes}),
         JUMP_FWD:     new Array(6).fill([]).map(()  => {return jumpHurtBoxes}),
         HURT:         new Array(4).fill([]).map(()  => {return hurtHurtBoxes}),
-        KNOCKBACK:    new Array(7).fill([]),  //invulnerable
+        KNOCKBACK:    new Array(7).fill([]).map(() => {return crouchHurtBoxes}),  //invulnerable
         KO:           new Array(10).fill([]), //invulnerable
         LIGHT_ATTACK: [
             [[4, 29, 7, 7], [7, 20, 14, 5], [7, 14, 12, 14]],
@@ -100,6 +105,7 @@ export const F002 = {
             [[20, 26, 12, 12], [7, 21, 11, 9], [-5, 23, 8, 9]],
             [[6, 29, 7, 7], [20, 11, 14, 11], [7, 10, 5, 4]]
         ],
+        JUMP_ATTACK: new Array(8).fill([]).map(() => {return jumpAttackHurtBoxes})
     },
 };
 
