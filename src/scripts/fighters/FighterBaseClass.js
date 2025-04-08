@@ -25,7 +25,7 @@ export class FighterBaseClass {
         this.projectileCooldown = 0;
     }//end ctor
     update() {
-        if (this.health <= 0) this.stateManager.transition("KO");
+        if (this.health <= 0 && !this.physics.isAirborne()) this.stateManager.transition("KO");
         if (this.energyCooldown === 0) {
             this.energy = Math.min(100, this.energy + TIME.delta * ENERGY_REGEN_POWER);
         }//end if
