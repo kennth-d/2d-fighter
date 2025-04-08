@@ -1,3 +1,5 @@
+import { SOUNDS } from "../utils/attackData.js";
+import {playSound} from "../utils/playSound.js";
 /**
  * @module AttackStates
  * @description Contains Fighter states that relate to Fighter Attacks.
@@ -32,6 +34,7 @@ export class LIGHT_ATTACK extends ATTACK {
     }//end ctor
     enter(manager) {
         this.strikeCount++;
+        playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1, 2.5);
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
@@ -39,7 +42,6 @@ export class LIGHT_ATTACK extends ATTACK {
         if (currentFrame < 6) {
             return;
         }
-        
         //combo input
         if (input.isHeavy()) {
             manager.transition("HEAVY_ATTACK");
@@ -51,6 +53,7 @@ export class LIGHT_ATTACK extends ATTACK {
             manager.fighter.setHasHit(false);
             manager.fighter.spriteManager.currentFrame = 3;
             this.strikeCount++;
+            playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1, 2.5);
         }
 
         if (manager.fighter.animationIsComplete()) {
@@ -70,6 +73,9 @@ export class HEAVY_ATTACK extends ATTACK {
     constructor() {
         super("HEAVY_ATTACK");
         this.range = 25;
+    }
+    enter() {
+        playSound(SOUNDS.HEAVY_ATTACK.swing, 0.1);
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
@@ -103,6 +109,9 @@ export class SP_1 extends ATTACK {
         super("SP_1");
         this.range = 30;
     }//end ctor
+    enter() {
+        playSound(SOUNDS.SP_1.swing, 0.05);
+    }
     update(manager, input) {
 
         if (manager.fighter.animationIsComplete()) {
@@ -126,6 +135,7 @@ export class SP_2 extends ATTACK {
         }
         manager.fighter.addProjectile();
         this.shotsFired++;
+        playSound(SOUNDS.SP_2.swing, 0.05);
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
@@ -139,6 +149,7 @@ export class SP_2 extends ATTACK {
             manager.fighter.spriteManager.setCurrentFrame(2);
             manager.fighter.addProjectile();
             this.shotsFired++;
+            playSound(SOUNDS.SP_2.swing, 0.05);
         } else {
             manager.transition("IDLE");
         }
@@ -154,7 +165,9 @@ export class JUMP_ATTACK extends JUMP {
         this.type = "attack";
         this.range = 15;
     }//end if
-    enter() {};
+    enter() {
+        playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1);
+    };
     update() {
     };//end update
     exit(manager) {
