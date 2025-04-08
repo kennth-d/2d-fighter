@@ -10,9 +10,6 @@ export class BLOCK extends IDLE {
     constructor() {
         super("BLOCK", "block");
     }
-    enter(manager) {
-        manager.fighter.physics.changeVelocity("x", 0);
-    }
     update(manager, input) {
         if (isInStartup(manager.fighter.opponent) && isInRangeOfAttack(manager.fighter, manager.fighter.opponent)) {
             return;
@@ -22,9 +19,5 @@ export class BLOCK extends IDLE {
             return;
         }
         manager.transition("IDLE");
-    }
-    exit(manager) {
-        manager.fighter.physics.changeKnockback("x", 0);
-        manager.fighter.physics.changeKnockback("y", 0);
     }
 }//end block
