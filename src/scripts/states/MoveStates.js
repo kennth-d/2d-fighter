@@ -7,6 +7,7 @@ import { State } from "./State.js";
 import { PHYSICS } from "../utils/const.js"; 
 import { isInRangeOfAttack } from "../utils/isInRangeOfAttack.js";
 import { isInStartup } from "../utils/isInStartup.js";
+import { moveToward } from "../utils/moveToward.js";
 
 /**Root of all states, decides what state to transition to based on input.
  * @extends { StateInterface }
@@ -19,7 +20,7 @@ export class IDLE extends State {
     }
     enter(manager) {
         manager.fighter.physics.changeVelocity("x", 0);
-        manager.fighter.physics.changeKnockback("x", 0);
+        manager.fighter.physics.applyKnockback(0, 0);
     }//end enter
     update(manager, input) {
         
@@ -29,9 +30,9 @@ export class IDLE extends State {
         if (input.isSP_1(manager.fighter)) {manager.transition("SP_1"); return}
         if (input.isSP_2(manager.fighter) && manager.fighter.projectileCooldown===0) {manager.transition("SP_2"); return;}
 
-        //check for movement first
         if (input.isForward(manager.fighter)) manager.transition("WALK_FWD");
         if (input.isBackward(manager.fighter)) manager.transition("WALK_BWD");
+             
         if (input.isCrouch(manager.fighter)) {manager.transition("CROUCH")}
         if (input.isJump() && !manager.fighter.physics.isAirborne()){ manager.transition("JUMP"); return}
         
@@ -69,10 +70,20 @@ export class WALK_FWD extends IDLE {
         super("WALK_FWD");
     }//end ctor
     enter(manager) {
-        manager.fighter.physics.changeVelocity("x", PHYSICS.walkFwdVelocity * manager.fighter.direction);
     }//end enter
     update(manager,input) {
-        if (!input.isForward(manager.fighter)) manager.transition("IDLE");
+        const fighter = manager.fighter;
+
+        if (!input.isForward(fighter)) { 
+            manager.transition("IDLE");
+            return; 
+        };
+        const targetVelocity = fighter.direction * PHYSICS.maxWalkspeed;
+        const currentVelocity = fighter.physics.velocity.x;
+
+        const newVelocity = moveToward(currentVelocity, targetVelocity, PHYSICS.walkspeed);
+        fighter.physics.changeVelocity("x", newVelocity);
+
         super.update(manager, input);
     }//end update
     exit(manager) {
@@ -88,12 +99,19 @@ export class WALK_BWD extends IDLE {
         super("WALK_BWD");
     }//end ctor
     enter(manager) {
-           manager.fighter.physics.changeVelocity("x", -PHYSICS.walkBwdVelocity * manager.fighter.direction);
     }//end enter
     update(manager, input) {
-        if (!input.isBackward(manager.fighter)) { 
-            manager.transition("IDLE"); 
+        const fighter = manager.fighter;
+
+        if (!input.isBackward(fighter)) { 
+            manager.transition("IDLE");
+            return; 
         };
+        const targetVelocity = fighter.direction * -PHYSICS.maxWalkspeed;
+        const currentVelocity = fighter.physics.velocity.x;
+
+        const newVelocity = moveToward(currentVelocity, targetVelocity, PHYSICS.walkspeed);
+        fighter.physics.changeVelocity("x", newVelocity);
 
         if ( isInStartup(manager.fighter.opponent) && isInRangeOfAttack(manager.fighter, manager.fighter.opponent) ) {
             manager.transition("BLOCK");
@@ -117,48 +135,83 @@ export class JUMP extends IDLE {
         manager.fighter.physics.changeVelocity("y", -PHYSICS.jumpVelocity);
     }//end enter
     update(manager, input) {
+        const fighter = manager.fighter
+        if (fighter.animationIsComplete() && fighter.physics.isAirborne()) {
+            manager.transition("FALLING");
+        }
+        
+        if (
+            input.isForward(fighter) && 
+            manager.lastState.name != "JUMP_FWD" && 
+            manager.activeState.name != "FALLING"
+        ) {
+            manager.transition("JUMP_FWD");
+        } else if (
+            input.isBackward(fighter) && 
+            manager.lastState.name != "JUMP_BWD" && 
+            manager.activeState.name != "FALLING"
+        ) {
+            manager.transition("JUMP_BWD");
+        }//end if-elif
 
-        let currentFrame = manager.fighter.spriteManager.currentFrame;
-        if (input.isForward(manager.fighter)) {
-            if (currentFrame === 0) {
-                manager.transition("JUMP_FWD");
-            }
-            manager.fighter.physics.changeVelocity("x", PHYSICS.floatVelocity * manager.fighter.direction);
-        }//end if input.isForward
-    
-        if (input.isBackward(manager.fighter)) {
-            if (currentFrame === 0) {
-                manager.transition("JUMP_BWD");
-            }
-            manager.fighter.physics.changeVelocity("x", -PHYSICS.floatVelocity * manager.fighter.direction);
-        }//end if input.isBackward
+
+        var targetVelocity; 
+        var currentVelocity;
+        var newVelocity;
+        
+        if (input.isForward(fighter)) {
+            targetVelocity = fighter.direction * PHYSICS.maxFloatSpeed;
+            currentVelocity = fighter.physics.velocity.x;
+            newVelocity = moveToward(currentVelocity, targetVelocity, PHYSICS.airAcceleration);
+            fighter.physics.changeVelocity("x", newVelocity);
+        } else if (input.isBackward(fighter)) {
+            targetVelocity = fighter.direction * -PHYSICS.maxFloatSpeed;
+            currentVelocity = fighter.physics.velocity.x;
+            newVelocity = moveToward(currentVelocity, targetVelocity, PHYSICS.airAcceleration);
+            fighter.physics.changeVelocity("x", newVelocity);
+        };//end if-elif 
+
+        if (input.isLight(fighter)) {
+            manager.transition("JUMP_ATTACK");
+        };
     }//end update
 }//end JumpState
 
 /**Causes the player to jump toward its opponent.
- *  @extends {Jump}
+ *  @extends {JUMP}
  */
 export class JUMP_FWD extends JUMP {
     constructor() {
         super("JUMP_FWD");
     }
     enter(manager) {
-        manager.fighter.physics.changeVelocity("x", PHYSICS.floatVelocity * manager.fighter.direction);
     }//end enter
+    update(manager, input) {
+        super.update(manager, input)
+    }//end update
 }//end JUMPState
 
 /**Causes the player to jump away from its opponent.
  *  @extends {JUMP}
  */
 export class JUMP_BWD extends JUMP {
-    constructor(manager) {
+    constructor() {
         super("JUMP_BWD");
+    };//end ctor
+    enter() {
+    };//end enter
+    update(manager, input) {
+        super.update(manager, input)
+    }//end update
+    
+};//end JUMP_BWD
+
+export class FALLING extends JUMP {
+    constructor() {
+        super("FALLING");
     }//end ctor
-    enter(manager) {
-        manager.fighter.physics.changeVelocity("x", -PHYSICS.floatVelocity * manager.fighter.direction);
-    }//end enter
-}//end JUMPState
-
-export class JUMP_ATTACK extends JUMP {
-
-}
+    enter() {}
+    update(manager, input) { 
+        super.update(manager, input);
+    };//end update
+};//end FALLING
