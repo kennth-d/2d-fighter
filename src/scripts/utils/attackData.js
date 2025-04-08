@@ -1,23 +1,28 @@
 const LIGHT_ATTACK = {
     dmg: 5,
     hitstun: .5,
-    knockback: 150,
+    knockback: 75,
 };
 const HEAVY_ATTACK = {
     dmg: 10,
     hitstun: .7,
-    knockback: 200,
+    knockback: 125,
 };
 const SP_1 = {
     dmg: 15,
     hitstun: .7,
-    knockback: 500,
+    knockback: 200,
 };
 const SP_2 = {
     dmg: 7,
     hitstun: .3,
-    knockback: 100,
+    knockback: 25,
 };
+const JUMP_ATTACK = {
+    dmg: 10,
+    hitstun: .7,
+    knockback: 100,
+}
 
 const SOUNDS = {
     LIGHT_ATTACK: {
@@ -39,6 +44,10 @@ const SOUNDS = {
     BLOCK: {
         hit: document.querySelector("audio#block"),
     },
+    JUMP_ATTACK: {
+        swing: document.querySelector("audio#heavy-swing"),
+        hit: document.querySelector("audio#heavy-hit"),
+    },
 };
 const HIT_STOP = .15;
-export { LIGHT_ATTACK, HEAVY_ATTACK, SP_1, SP_2, HIT_STOP, SOUNDS };
+export { LIGHT_ATTACK, HEAVY_ATTACK, SP_1, SP_2, HIT_STOP, JUMP_ATTACK, SOUNDS };
