@@ -36,12 +36,14 @@ export const MENU = {
  * @property { number } gravity value for gravity. 
  */
 export const PHYSICS = {
-    jumpVelocity: 375,
-    walkFwdVelocity: 70,
-    walkBwdVelocity: 70,
-    floatVelocity: 100,
-    gravity: 1100,
+    jumpVelocity: 400,
+    walkspeed: 10,
+    maxWalkspeed: 70,
+    airAcceleration: 10,
+    maxFloatSpeed: 75,
+    gravity: 700,
     friction: 0.8,
+    airResistance: 0.99,
 }
 /**defines boundaries of the game.
  * @typedef BOUNDARIES
@@ -70,7 +72,7 @@ export const DEFAULT_SETTINGS = {
     rounds: 3,  
     roundDuration: 200,
     volume: 50,
-    music: "ON",
+    music: "OFF",
     initVolume: () => {
         const audioTags = document.querySelectorAll("audio");
         for (const tag of audioTags) {
