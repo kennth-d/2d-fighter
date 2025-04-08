@@ -10,7 +10,7 @@ const HEAVY_ATTACK = {
 };
 const SP_1 = {
     dmg: 15,
-    hitstun: .7,
+    hitstun: .5,
     knockback: 200,
 };
 const SP_2 = {
