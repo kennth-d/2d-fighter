@@ -1,4 +1,4 @@
-import * as states from "../states/states.js";
+import * as states from "../states/fighterStates.js";
 import { BOUNDARIES } from "../utils/const.js";
 
 export class FighterStateManager {
