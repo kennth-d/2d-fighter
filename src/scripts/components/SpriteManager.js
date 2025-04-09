@@ -1,4 +1,4 @@
-import { characterStates } from "../states/states.js";
+import { fighterStates } from "../states/fighterStates.js";
 import { CANVAS_WIDTH, TIME } from "../utils/const.js";
 import { drawDebugBox } from "../utils/debug.js";
 
@@ -130,7 +130,7 @@ export class FighterSpriteManager {
         this.currentFrame = number;
     }//end setCurrentFrame
     initializeSprites(spriteData) {
-        characterStates.forEach(state => {
+        fighterStates.forEach(state => {
             this.sprites[state] = {
                 name: state,
                 img: new Image(spriteData[state].width, spriteData[state].height),
