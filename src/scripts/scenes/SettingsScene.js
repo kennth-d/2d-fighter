@@ -16,7 +16,7 @@ export class SettingsScene extends MenuScene {
             new MusicChoiceForm(586, MENU.centerY + 25),
         ];
         this.rangeSettings = [
-            new RangeInput(540, MENU.centerY - 100, 200, 20, 100, 300, game.gameSettings.roundDuration, "ROUND_LENGTH"),
+            new RangeInput(540, MENU.centerY - 100, 200, 20, 30, 180, game.gameSettings.roundDuration, "ROUND_LENGTH"),
             new RangeInput(540, MENU.centerY - 25, 200, 20, 0, 100, game.gameSettings.volume, "VOLUME"),
         ];
         this.mouseDown = 0;
