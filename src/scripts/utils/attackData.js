@@ -6,7 +6,7 @@ const LIGHT_ATTACK = {
 const HEAVY_ATTACK = {
     dmg: 10,
     hitstun: .7,
-    knockback: 125,
+    knockback: 200,
 };
 const SP_1 = {
     dmg: 15,
@@ -21,7 +21,7 @@ const SP_2 = {
 const JUMP_ATTACK = {
     dmg: 10,
     hitstun: .7,
-    knockback: 100,
+    knockback: 150,
 }
 
 const SOUNDS = {
