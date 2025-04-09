@@ -70,7 +70,7 @@ export const STAGE = {
  */
 export const DEFAULT_SETTINGS = {
     rounds: 3,  
-    roundDuration: 200,
+    roundDuration: 90,
     volume: 50,
     music: "OFF",
     initVolume: () => {
