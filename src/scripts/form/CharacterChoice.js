@@ -31,6 +31,7 @@ export class CharacterChoice {
         )//end drawImg
     }//endDrawImg
     drawLabel(ctx) {
+        
         let textMetrics = ctx.measureText(this.id);
         let dx = this.rect.x + (this.rect.width/2) - (textMetrics.width/2);
         
@@ -38,9 +39,10 @@ export class CharacterChoice {
         ctx.fillStyle = "black";
         ctx.font = "bold 18px Helvetica";
         ctx.fillText(this.id, dx, dy);
+        ctx.restore();
     }//end drawLabel
     drawOutline(ctx, playerIdx) {
-        ctx.restore();
+        
         ctx.save();
         let dx = this.rect.x - 5;
         let dy = this.rect.y - 5;
@@ -74,7 +76,7 @@ export class CharacterChoice {
         //close the rect
         ctx.closePath();
         ctx.stroke();
-
+        ctx.restore();
     }//end drawOutline
 
 }
