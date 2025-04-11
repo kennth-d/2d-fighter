@@ -12,7 +12,6 @@ export class CharacterSelectScene extends MenuScene {
         this.buttons = [new Button(BUTTONS.RETURN, "RETURN"), new Button(BUTTONS.BATTLE, "BATTLE")];
         this.characterChoices = [new CharacterChoice("F001"), new CharacterChoice("F002")];
         this.selectedCharacters = [];
-
         //set button position
         this.setButtons();
         
@@ -48,8 +47,8 @@ export class CharacterSelectScene extends MenuScene {
     drawCharacterChoices(ctx) {
         for (let i = 0; i < this.characterChoices.length; i++) {
             this.characterChoices[i].draw(ctx);
-            let selection = this.selectedCharacters.at(i);
-            if (selection) {
+            const selection = this.selectedCharacters.at(i);
+            if (selection != undefined) {
                 selection.drawOutline(ctx, i);
             }//end if
         };
@@ -121,7 +120,8 @@ export class CharacterSelectScene extends MenuScene {
         this.selectedCharacters.push(char);
     }
     removeSelectedCharacter(idx) {
+        if (idx === 0 && this.selectedCharacters[1] != undefined && this.selectedCharacters[0] != this.selectedCharacters[1]) return;
         if (idx === 0) this.selectedCharacters.shift();
         if (idx === 1) this.selectedCharacters.pop();
     }
-}
+}//end CharacterSelectScene
