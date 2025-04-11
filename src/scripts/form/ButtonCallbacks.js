@@ -44,13 +44,14 @@ export const BUTTON_CALLBACKS = {
         game.bgm.currentTime = 0;
     },
     "BATTLE": (game) => {
-        const scene = game.removeScene();
-
+        const scene = game.scene;
         let selectedFighters = scene.selectedCharacters;
         if (selectedFighters.length < 2) {
             alert ("PLease select two characters.");
             return;
         }//end if
+        game.removeScene();
+
         game.fighters[0] = selectedFighters[0].id;
         game.fighters[1] = selectedFighters[1].id; 
         
