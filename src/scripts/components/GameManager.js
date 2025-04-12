@@ -1,7 +1,7 @@
 import { getContext2D } from "../utils/utils.js";
 import * as scenes from "../scenes/scenes.js";
 import { TIME, DEFAULT_SETTINGS, MENU } from "../utils/const.js";
-import { toggleDebug, logEntities, drawDebugScreenSize } from "../utils/debug.js";
+import { toggleDebug, logEntities } from "../utils/debug.js";
 
 export class GameManager {
     constructor(debug=false) {
@@ -83,9 +83,6 @@ export class GameManager {
             }//end if
             if (e.code === "KeyZ") {
                 drawDebugScreenSize(this.ctx, "blue", 2);
-            }
-            if (e.code === "KeyX") {
-                drawDebugScreenSize(this.ctxHigh, "yellow", 2);
             }
         });
     }//end setupDebug
