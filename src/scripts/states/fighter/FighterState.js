@@ -31,12 +31,12 @@ export class FighterState {
      * @returns {string} name of the state
      */
     getName() {
-        throw new Error("getName is not implemented.");
+        return this.name;
     }//end getName
     /**
      * @returns {string} the type of state.
      */
     getType() {
-        throw new Error("getType is not implemented.");
+        return this.type;
     }//end getType
 }//end class State
