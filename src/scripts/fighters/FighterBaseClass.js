@@ -2,6 +2,7 @@ import { getBoxes } from "../utils/getBoxes.js";
 import { OPPONENT_DIRECTION, TIME, ENERGY_REGEN_POWER } from "../utils/const.js";
 import { PhysicsComponent } from "../components/PhysicsComponent.js";
 import { Projectile } from "../components/Projectile.js";
+import { ATTACK } from "../states/fighter/AttackStates.js";
 //class for maintaining the characters
 export class FighterBaseClass {
     constructor(x, y, playerId) {
@@ -23,6 +24,7 @@ export class FighterBaseClass {
         this.projectiles = [];
         this.energyCooldown = 0;
         this.projectileCooldown = 0;
+        this.ai = undefined;
     }//end ctor
     update() {
         if (this.health <= 0 && !this.physics.isAirborne()) this.stateManager.transition("KO");
@@ -35,6 +37,7 @@ export class FighterBaseClass {
                 
         this.updateOrigin();
         
+        if (this.ai) this.ai.update(this.input);
         this.stateManager.update(this.input);
         
         this.physics.update();
@@ -79,7 +82,12 @@ export class FighterBaseClass {
         return this.hasHit;
     }
     getAttackRange() {
-        return this.stateManager.activeState.getRange();
+        if (this.stateManager.activeState instanceof ATTACK) {
+            return this.stateManager.activeState.getRange();
+        } else {
+            return 0;
+        }
+       
     }
     hasHealth() {
         return this.health > 0;
