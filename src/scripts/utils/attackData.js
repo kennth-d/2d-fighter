@@ -2,26 +2,31 @@ const LIGHT_ATTACK = {
     dmg: 5,
     hitstun: .5,
     knockback: 75,
+    range: 25
 };
 const HEAVY_ATTACK = {
     dmg: 10,
     hitstun: .7,
     knockback: 200,
+    range: 25,
 };
 const SP_1 = {
     dmg: 15,
     hitstun: .5,
     knockback: 200,
+    range: 30,
 };
 const SP_2 = {
     dmg: 7,
     hitstun: .3,
     knockback: 25,
+    range: 1000,
 };
 const JUMP_ATTACK = {
     dmg: 10,
     hitstun: .7,
     knockback: 150,
+    range: 24,
 }
 
 const SOUNDS = {
