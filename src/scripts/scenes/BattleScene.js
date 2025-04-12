@@ -1,4 +1,4 @@
-import {createFighter} from "../fighters/fighters.js";
+import {createAIFighter, createFighter} from "../fighters/fighters.js";
 import { Stage } from "../stage/Stage.js";
 import { StatusBar } from "../overlays/StatusBar.js";
 import { Scene, PauseScene } from "./scenes.js";
@@ -9,6 +9,7 @@ import { correctDirection } from "../utils/correctDirection.js";
 import { Shadow } from "../components/Shadow.js";
 import { Viewport } from "../components/Viewport.js";
 import { RoundManager } from "../components/RoundManager.js";
+import { debugAI } from "../utils/debug.js";
 
 export class BattleScene extends Scene {
 
@@ -48,7 +49,8 @@ export class BattleScene extends Scene {
     getFighterEntities(p1, p2) {
         const fighterEntities = [
                 createFighter(0, p1, 0),
-                createFighter(1, p2, 0),
+                // old: createFighter(1, p2, 0),
+                createAIFighter(1, p2),
             ];
 
             fighterEntities[0].opponent = fighterEntities[1];
@@ -63,7 +65,6 @@ export class BattleScene extends Scene {
     draw() {
         this.drawFrame();
         this.roundManager.draw();
-        
     }
     updateFrame() {
       
@@ -96,6 +97,7 @@ export class BattleScene extends Scene {
         this.drawOverlays(this.game.ctx);
         this.drawProjectiles(this.game.ctx, this.viewport);
         this.drawHitSplash(this.game.ctxHigh, this.viewport);
+        debugAI(this.game.ctx, this.fighters[1]);
     }//end draw
     updateFighters() {
         for (const fighter of this.fighters) {
