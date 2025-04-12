@@ -1,5 +1,16 @@
+import { FighterBaseClass } from "../fighters/FighterBaseClass.js";
+
+/**
+ * @param {FighterBaseClass} fighter - the victim.
+ * @param {FighterBaseClass} attacker - the attacker
+ * @returns {Boolean} - true if fighter is in range of an attack, false otherwise
+ */
 export function isInRangeOfAttack(fighter, attacker) {
-    let isInRange;
+    if (!fighter) throw new Error("fighter is  undefind");
+    if (!attacker) throw new Error("attacker is undefined");
+    
+    let isInRange = false;
+    if (!attacker.isAttacking()) return;
 
     let attackX = attacker.pos.x + attacker.getAttackRange() * attacker.direction;
 
