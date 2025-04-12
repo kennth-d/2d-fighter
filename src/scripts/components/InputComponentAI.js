@@ -1,12 +1,11 @@
-import { AiStateManager } from "./AIStateManager";
+export const VALID_INPUTS = new Set(["forward", "backward", "jump", "idle", "crouch", "light", "heavy", "sp1", "sp2"]);
 
-const VALID_INPUTS = new Set(["forward", "backward", "jump", "idle", "crouch", "light", "heavy", "sp1", "sp2"]);
-
-class InputComponentAI {
-    constructor(fighter) {
-        this.fighter = fighter;
-        this.stateManager = new AiStateManager(this, fighter);
+export class InputComponentAI {
+    constructor() {
         this.inputs = {};
+        this.lastInput = undefined;
+        this.disabled = true;
+        this.id;
         
         for (const input of VALID_INPUTS) {
             this.inputs[input] = false;
@@ -19,11 +18,29 @@ class InputComponentAI {
      * @throws {Error} if key is not a valid input.
      */
     setInput(key, value) {
-        if (!VALID_INPUTS.has(key)) throw new Error("attempted to set an invalid input, input: ", newInput);
-        if (!value) throw new Error("attempted to set a key without a value.");
+        if (this.isDisabled()) return;
+        if (!VALID_INPUTS.has(key)) return;
 
         this.inputs[key] = value;
+        this.lastInput = key;
     }//end setInput
+    enable() {
+        this.disabled = false;
+    }
+    disable() {
+        this.disabled = true;
+        for (const input of VALID_INPUTS) {
+            this.inputs[input] = false;
+        }//end for
+    }
+    clear() {
+        for (const input in this.inputs) {
+            this.inputs[input] = false;
+        }//end for
+    }
+    isDisabled() {
+        return this.disabled;
+    }
     isForward() {
         return this.inputs.forward;
     }
@@ -49,5 +66,3 @@ class InputComponentAI {
         return this.inputs.sp2;
     }
 }//end InputComponentAI
-
-let ai = new InputComponentAI("PUPPY");
