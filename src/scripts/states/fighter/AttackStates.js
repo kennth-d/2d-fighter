@@ -8,7 +8,7 @@ import {playSound} from "../../utils/playSound.js";
 import { IDLE, JUMP } from "./MoveStates.js";
 
 /** Base State class for an attack
- * @extends {Idle}
+ * @extends {IDLE}
  */
 export class ATTACK extends IDLE {
     constructor(state, type="attack") {
@@ -29,7 +29,7 @@ export class ATTACK extends IDLE {
 export class LIGHT_ATTACK extends ATTACK {
     constructor() {
         super("LIGHT_ATTACK");
-        this.range = 15;
+        this.range = 24;
         this.strikeCount = 0;
     }//end ctor
     enter(manager) {
@@ -163,7 +163,7 @@ export class JUMP_ATTACK extends JUMP {
     constructor() {
         super("JUMP_ATTACK");
         this.type = "attack";
-        this.range = 15;
+        this.range = 24;
     }//end if
     enter() {
         playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1);
