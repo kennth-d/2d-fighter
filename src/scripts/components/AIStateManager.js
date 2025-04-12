@@ -1,52 +1,35 @@
 import { AiState } from "../states/ai/AiState.js";
 import * as aiStates from "../states/AIStates.js";
+import { MAX_HEALTH } from "../utils/const.js";
 
+const MAX_HEALTH_FACTOR = 0.3;
 export class AiStateManager {
-    constructor(inputComponent, fighter) {
+    constructor(fighter) {
         this.fighter = fighter;
-        this.input = inputComponent;
-        this.stateStack = [new aiStates.OBSERVE()];
-        this.lastState = this.activeState;
-        this.maxStack = 10;
-        this.stateTime = 0;
+        this.state = new aiStates.OBSERVE();
+        this.lastState = this.state;
+        this.nextAction;
+        this.lastAttack = undefined;
+        this.healthFactor = 1 - this.fighter.health / MAX_HEALTH;
+        this.blockChance = .75;
     }//end ctor
-    update(dt) {
-        this.stateStack[this.stateStack-1].update(dt);
+    update() {
+        if (this.fighter.input.isDisabled()) return;
+        this.healthFactor = Math.max(0.2, 1 - (this.fighter.health / MAX_HEALTH));
+
+        this.state.update(this);
     }//end update
-    /**
+    /**Changes currentState to newState and calls newState.enter()
      * @param {AiState} newState desired ai state to enter.
-     * @param {Boolean} pop If set to true, pops a state off of the stack, pushes a
-     * new state onto the stack and enters that state. If set to flase will not pop the last state.
-     */
-    transition(newState, pop = true) {
+     * */
+    transition(newState) {
         let validState = aiStates[newState];
         if (!validState) throw new Error("desired state is not an AI state: ", newState);
+        if (this.state.name === newState) return;
 
-        if (pop) this.popState();
-
-        this.pushState(new validState());
-        validState.enter();
+        this.state.exit(this);
+        this.lastState = this.state;
+        this.state = new aiStates[newState]();
+        this.state.enter(this);
     }//end transition
-    /**
-     * pushes a new state onto the stateStack
-     * @param {AiState} newState desired ai state to push.
-     * @throws {Error} if state stack exceeds maximum.
-     */
-    pushState(newState) {
-        if (this.states.length > this.maxStates){
-            throw new Error("State stack exceeded Maximum, lastState: ", this.lastState, this.stateStack);
-        };
-        this.stateStack.push(new aiStates[newState]())
-    }//end pushState
-    /**
-     * pops a state off the stack
-     * @throws {Error} Error if stateStack is empty.
-     */
-    popState() {
-        if (this.states.length === 0) {
-            throw new Error("State stack is empty, last state: ", this.lastState);
-        };//end if
-
-        this.stateStack.pop();
-    }//end popState
 }//end FighterStateManger.
