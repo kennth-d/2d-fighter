@@ -6,6 +6,9 @@ import * as boxes from "../../assets/data/boxData.js"
  * @returns { Boolean } true if fighter is in startup false otherwise
  */
 export function isInStartup(fighter) {
+    if(!fighter) {
+        throw new Error("fighter is undefined");
+    }
     if (!fighter.isAttacking()) return;
     let attack = fighter.stateManager.activeState.name;
     let hitboxes = boxes[fighter.name].hit[attack];
