@@ -1,5 +1,7 @@
 import { AiState } from "./AiState.js";
-import { getDistance, getHealthFactor, getNextAction} from "../../utils/AiUtils.js";
+import { getAction } from "../../utils/AiUtils.js";
+
+const actions = new Set(["OBSERVE", "ENGAGE", "ANTI_AIR", "CROUCHAI", "DEFEND", "JUMP", "JUMP_F", "JUMP_B", "RETREAT"]);
 
 /**
  * OBSERVE state
@@ -12,33 +14,14 @@ export class OBSERVE extends AiState {
     }//end ctor
     enter(manager) {
         manager.fighter.input.clear();
-    }
-    update(manager) {
-        const hf = getHealthFactor(manager.fighter, -.1, .5) * 100;
-        manager.nextAction = getNextAction(manager.fighter);
-        const distance = getDistance(manager.fighter.pos.x, manager.fighter.opponent.pos.x);
-        if (distance > 50 + hf && !manager.nextAction) manager.transition("APPROACH");
-        
-        if (manager.nextAction === "defend") manager.transition("DEFEND");
+    }//end update
+    update(manager, context) {
+        const action = getAction(context);
 
-        if (manager.nextAction === "attack") manager.transition("ENGAGE");
+        manager.transition(action);
 
-        if (manager.nextAction === "jump") {
-            const jump = (Math.random() > 0.999);
-            if (jump) manager.transition("JUMP");
-            return;
-        }
-        if (manager.nextAction === "anti-air") {
-            manager.transition("ANTI_AIR");
-            return;
-        } 
-        
-        if (manager.nextAction === "crouch") {
-            manager.transition("CROUCHAI");
-            return;
-        } 
-    }
+    }//end update
     exit(manager) {
-        super.exit();
-    }
+        manager.fighter.input.clear();
+    }//end update
 }//end OBVSERVE
