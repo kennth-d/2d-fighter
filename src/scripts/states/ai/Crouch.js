@@ -1,4 +1,5 @@
 import { AiState } from "./AiState.js";
+import {isIncoming} from "../../utils/AiUtils.js";
 
 /**
  * JumpIn state
@@ -8,15 +9,23 @@ import { AiState } from "./AiState.js";
 export class CROUCHAI extends AiState {
     constructor(stateName="CROUCHAI") {
         super(stateName);
+        this.timer = .5;
     }//end ctor
     enter(manager) {
-        const dodge = Math.random() > 0.4 - (manager.healthFactor);
-        if (dodge) manager.fighter.input.setInput("crouch", true);
+        manager.fighter.input.setInput("crouch", true);
     }
-    update(manager) {
-        const opp = manager.fighter.opponent;
-        const state = opp.stateManager.getState();
-        if (state.name != "SP_2") manager.transition("OBSERVE");
+    update(manager, context) {
+        const opponent = context.opponent;
+        if(opponent.state.getName() === "SP_2") {
+            for (const proj of opponent.projectiles)  {
+                if (isIncoming(proj)) {
+                    return;
+                } 
+            }
+        } else {
+            manager.transition("OBSERVE");
+        }
+       
     }
     exit(manager) {
         manager.fighter.input.setInput("crouch", false);
