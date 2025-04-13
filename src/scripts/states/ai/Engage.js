@@ -1,8 +1,6 @@
 import { AiState } from "./AiState.js";
-import { getOpponentDistance, getAttack } from "../../utils/AiUtils.js";
+import { getDistance, getAttack, getWeightedRandom } from "../../utils/AiUtils.js";
 import { TIME } from "../../utils/const.js";
-import { HURT } from "../fighter/HurtStates.js"
-import { BLOCK } from "../fighter/DefendStates.js";
 
 export const attackToInput = {
     "LIGHT_ATTACK": "light",
@@ -12,10 +10,14 @@ export const attackToInput = {
     "JUMP_ATTACK": "light",
 }
 export const nextAttack = {
-    "undefined" : "light",
-    "LIGHT_ATTACK" : "heavy",
-    "HEAVY_ATTACK" : "sp1",
+    null: "LIGHT_ATTACK",
+    "undefiend": "LIGHT_ATTACK",
+    "LIGHT_ATTACK" : "HEAVY_ATTACK",
+    "HEAVY_ATTACK" : "SP_1",
+    "SP_1": "SP_2",
+    "SP_2": "SP_2",
 }
+
 /**
  * ENGAGE state
  * in this state the ai will attempt to
@@ -27,25 +29,27 @@ export class ENGAGE extends AiState {
         this.attack;
     }//end ctor
     enter(manager, attack) {
-        const range = getOpponentDistance(manager.fighter);
+        const distance = getDistance(manager.fighter.pos.x, manager.fighter.opponent.pos.x);
+        this.attack = getAttack(distance);
 
-        if(attack != undefined) {
-            this.attack = attack;
-        } else {
-            this.attack = getAttack(range);
-        }//end if-else
+        if (attack) this.attack = attack;
+        
+        if (manager.fighter.physics.isAirborne()) this.attack = "LIGHT_ATTACK";
+        if (this.attack === "SP_2" && distance < 25) this.attack = "LIGHT_ATTACK";
         manager.fighter.input.setInput(attackToInput[this.attack], true);
-    }
-    update(manager) {
-        const opp = manager.fighter.opponent;
-        const oppState = opp.stateManager.getState();
-        const oppStateType = opp.stateManager.getState();
+    }//end enter
+    update(manager, context) {
+        const {self, opponent, distance} = context;
 
-        const attackSuccessful = (oppState instanceof BLOCK || oppStateType instanceof HURT);
-        const next = nextAttack[this.attack];
-
-        if (attackSuccessful) this.enter(manager, next);
-        if (manager.fighter.animationIsComplete()) manager.transition("OBSERVE");
+        //setup attack chain.
+        const attackSuccessful = (opponent.isBlocking || opponent.isHurt);
+        let next = nextAttack[manager.lastAttack];
+           
+        if (attackSuccessful) {
+            this.enter(manager, next)
+        } else {
+            manager.transition("OBSERVE");
+        }//end if-else
     }
     exit(manager) {
         manager.fighter.input.setInput(attackToInput[this.attack], false);
@@ -56,16 +60,17 @@ export class ENGAGE extends AiState {
 export class ANTI_AIR extends ENGAGE {
     constructor(stateName="ANTI_AIR") {
         super(stateName);
-        this.attack = "light";
         this.timer = 0.1;
     }
     enter(manager) {
         manager.fighter.input.setInput("forward", true);
         manager.fighter.input.setInput("jump", true);
+        
     }
-    update(manager) {
+    update(manager, context) {
         this.timer -= TIME.delta;
-        if (this.timer <= 0.005) manager.fighter.input.setInput("light", true);
+
+        if (this.timer < 0.005) manager.fighter.input.setInput("light", true);
 
         if (this.timer <= 0) manager.transition("OBSERVE");
     }//end update
@@ -74,3 +79,22 @@ export class ANTI_AIR extends ENGAGE {
         manager.fighter.input.setInput("jump", false);
     }//end exit
 }//end ANTI_AIR
+
+export class SHOOT extends ENGAGE {
+    constructor(stateName="SHOOT") {
+        super(stateName);
+        this.attack = "SP_2";
+    }
+    enter(manager) {
+        manager.fighter.input.setInput(attackToInput[this.attack], true);
+    }//end enter
+    update(manager, context) {
+        const {self, opponent, distance } = context;
+
+        if (self.projectileCooldown > 0) manager.transition("OBSERVE");
+    }//end update
+    exit(manager) {
+        manager.fighter.input.setInput(attackToInput[this.attack], false);
+        manager.lastAttack = "SP_2";
+    }
+}
