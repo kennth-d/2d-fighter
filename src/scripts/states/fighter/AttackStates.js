@@ -107,7 +107,7 @@ export class HEAVY_ATTACK extends ATTACK {
 export class SP_1 extends ATTACK {
     constructor() {
         super("SP_1");
-        this.range = 30;
+        this.range = 40;
     }//end ctor
     enter() {
         playSound(SOUNDS.SP_1.swing, 0.05);
