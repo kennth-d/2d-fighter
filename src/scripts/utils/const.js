@@ -7,7 +7,7 @@ export const CANVAS_HEIGHT = CANVAS.height;
 
 export const MAX_HEALTH = 100;
 export const MAX_ENERGY = 100;
-export const ENERGY_REGEN_POWER = 8;
+export const ENERGY_REGEN_POWER = 12;
 
 /**
  * Stores the high res canvas canvas.
