@@ -14,7 +14,7 @@ const SP_1 = {
     dmg: 15,
     hitstun: .5,
     knockback: 200,
-    range: 30,
+    range: 40,
 };
 const SP_2 = {
     dmg: 7,
