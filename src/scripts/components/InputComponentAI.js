@@ -29,9 +29,7 @@ export class InputComponentAI {
     }
     disable() {
         this.disabled = true;
-        for (const input of VALID_INPUTS) {
-            this.inputs[input] = false;
-        }//end for
+        this.clear();
     }
     clear() {
         for (const input in this.inputs) {
