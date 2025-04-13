@@ -213,8 +213,8 @@ export function getAction(context) {
     //anti-air
     if (opponent.isAirborne && !self.isAirborne) {
         if (distance < 50) {
-            decisions.push({action: "DEFEND", weight: 40});
-            decisions.push({action: "ANTI_AIR", weight: 45});
+            decisions.push({action: "RETREAT", weight: 80});
+            decisions.push({action: "ANTI_AIR", weight: 10});
         } else {
             decisions.push({action: "ENGAGE", weight: 50});
             decisions.push({action: "APPROACH", weight: 50});

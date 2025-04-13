@@ -23,7 +23,7 @@ export class RETREAT extends AiState {
         if (threat) manager.transition("DEFEND");
         if (rangedThreat) manager.transition("CROUCHAI");
 
-        if (context.distance > 50) {
+        if (context.distance > 45) {
             const action = getWeightedRandom([{action:"APPROACH", weight:70}, {action:"ENGAGE", weight:30}]);
             manager.transition(action);
         } 
