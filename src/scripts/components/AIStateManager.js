@@ -1,6 +1,6 @@
 import { AiState } from "../states/ai/AiState.js";
 import * as aiStates from "../states/AIStates.js";
-import { MAX_HEALTH } from "../utils/const.js";
+import { getDistance, getFighterStatus } from "../utils/AiUtils.js";
 
 const MAX_HEALTH_FACTOR = 0.3;
 export class AiStateManager {
@@ -8,17 +8,22 @@ export class AiStateManager {
         this.fighter = fighter;
         this.state = new aiStates.OBSERVE();
         this.lastState = this.state;
-        this.nextAction;
+        this.nextAction; //for debugging
         this.lastAttack = undefined;
-        this.healthFactor = 1 - this.fighter.health / MAX_HEALTH;
         this.blockChance = .75;
     }//end ctor
     update() {
         if (this.fighter.input.isDisabled()) return;
-        this.healthFactor = Math.max(0.2, 1 - (this.fighter.health / MAX_HEALTH));
 
-        this.state.update(this);
+        const context = {
+            self: getFighterStatus(this.fighter),
+            opponent: getFighterStatus(this.fighter.opponent),
+            distance: getDistance(this.fighter.pos.x, this.fighter.opponent.pos.x),
+        };
+
+        this.state.update(this, context);
     }//end update
+
     /**Changes currentState to newState and calls newState.enter()
      * @param {AiState} newState desired ai state to enter.
      * */
@@ -32,4 +37,4 @@ export class AiStateManager {
         this.state = new aiStates[newState]();
         this.state.enter(this);
     }//end transition
-}//end FighterStateManger.
+}//end FighterStateManger
