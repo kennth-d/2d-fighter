@@ -1,6 +1,7 @@
-import { getDistance } from "../../utils/AiUtils.js";
-import { isInStartup } from "../../utils/isInStartup.js";
-import { SP_2 } from "../fighter/AttackStates.js";
+
+import { getAction } from "../../utils/AiUtils.js";
+import { TIME } from "../../utils/const.js";
+
 import { AiState } from "./AiState.js";
 
 /**
@@ -11,22 +12,32 @@ import { AiState } from "./AiState.js";
 export class APPROACH extends AiState {
     constructor(stateName="APPROACH") {
         super(stateName);
+        this.timer = .5;
+
     }//end ctor
     enter(manager) {
         manager.fighter.input.setInput("forward", true);
     }
-    update(manager) {
-        const distance = getDistance(manager.fighter.pos.x, manager.fighter.opponent.pos.x);
-        if (distance < 26) manager.transition("OBSERVE");
-        const oppState = manager.fighter.opponent.stateManager.getState();
-        if (oppState instanceof SP_2) manager.transition("CROUCHAI");
-        if (isInStartup(manager.fighter.opponent))  {
-            if (distance < 40) {
-                manager.transition("DEFEND");
-            } else {
-                manager.transition("ENGAGE");
-            }//end if-else
-        }//end if
+    update(manager, context) {
+        const opponent = context.opponent;
+        this.timer -= TIME.delta;
+        const threat = opponent.isAttacking;
+        const rangedThreat = opponent.state.getName() === "SP_2";
+
+        if (rangedThreat)  {
+            manager.transition("CROUCHAI");
+            return;
+        }
+        if (threat) {
+            manager.transition("DEFEND");
+            return;
+        } 
+        
+        if (context.distance < 26)  {
+            manager.transition("OBSERVE");
+            return;
+        }
+
     }
     exit(manager) {
         manager.fighter.input.setInput("forward", false);
