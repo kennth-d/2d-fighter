@@ -9,7 +9,7 @@ export function isInStartup(fighter) {
     if(!fighter) {
         throw new Error("fighter is undefined");
     }
-    if (!fighter.isAttacking()) return;
+    if (!fighter.isAttacking()) return false;
     let attack = fighter.stateManager.activeState.name;
     let hitboxes = boxes[fighter.name].hit[attack];
     let idx = hitboxes.findIndex(arr => Array.isArray(arr) && arr.length > 0);
