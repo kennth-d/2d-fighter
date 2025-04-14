@@ -1,15 +1,11 @@
-
-import { getAction } from "../../utils/AiUtils.js";
-import { TIME } from "../../utils/const.js";
-
-import { AiState } from "./AiState.js";
+import { OBSERVE } from "./Observe.js";
 
 /**
  * APPROACH state
  * in this state the ai will attempt to
  * attack the opponent.
  */
-export class APPROACH extends AiState {
+export class APPROACH extends OBSERVE {
     constructor(stateName="APPROACH") {
         super(stateName);
         this.timer = .5;
@@ -17,28 +13,10 @@ export class APPROACH extends AiState {
     }//end ctor
     enter(manager) {
         manager.fighter.input.setInput("forward", true);
-    }
+    }//end enter
     update(manager, context) {
-        const opponent = context.opponent;
-        this.timer -= TIME.delta;
-        const threat = opponent.isAttacking;
-        const rangedThreat = opponent.state.getName() === "SP_2";
-
-        if (rangedThreat)  {
-            manager.transition("CROUCHAI");
-            return;
-        }
-        if (threat) {
-            manager.transition("DEFEND");
-            return;
-        } 
-        
-        if (context.distance < 26)  {
-            manager.transition("OBSERVE");
-            return;
-        }
-
-    }
+        super.update(manager, context);
+    }//end update
     exit(manager) {
         manager.fighter.input.setInput("forward", false);
     }
