@@ -117,8 +117,8 @@ export function isIncoming(f, p) {
         if (distance < 60) isThreat = true;
         
         //projectile is behind fighter
-        if (f.isFacingLeft && p.pos.x < f.posX + 5) isThreat = false;
-        if (f.isFacingRight && p.pos.x > f.posX - 5) isThreat = false;
+        if (f.isFacingLeft && p.pos.x < f.posX) isThreat = false;
+        if (f.isFacingRight && p.pos.x > f.posX) isThreat = false;
     }//end if
 
     return isThreat;
