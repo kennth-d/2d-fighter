@@ -14,7 +14,7 @@ export class Fighter_001 extends FighterBaseClass {
         this.spriteManager = new FighterSpriteManager(F001_SpriteData);
         this.input = inputComponent;
         this.input.id = playerId;
-        if (ai) this.ai = new AiStatemanager(this);
+        if (ai) this.ai = new AiStateManager(this);
     }//end ctor
 }//end Fighter_001
 
