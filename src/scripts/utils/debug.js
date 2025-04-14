@@ -72,11 +72,9 @@ export function debugAI(ctx, fighter) {
     ctx.save()
     ctx.font = "12px";
     const curState = "cur: " + fighter.ai.state.name;
-    const next = "next: " + fighter.ai.nextAction;
     const last = "last:" + fighter.ai.lastAttack;
     ctx.fillStyle = "white";
-    ctx.fillText(curState, ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 45);
-    ctx.fillText(next, ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 30);
-    ctx.fillText(last, ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 15)
+    ctx.fillText(curState, ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
+    ctx.fillText(last, ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 10)
     ctx.restore();
 }
