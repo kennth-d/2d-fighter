@@ -72,7 +72,7 @@ export const DEFAULT_SETTINGS = {
     rounds: 3,  
     roundDuration: 90,
     volume: 50,
-    music: "OFF",
+    music: "ON",
     initVolume: () => {
         const audioTags = document.querySelectorAll("audio");
         for (const tag of audioTags) {
