@@ -1,14 +1,13 @@
 import { AiState } from "../states/ai/AiState.js";
 import * as aiStates from "../states/AIStates.js";
-import { getDistance, getFighterStatus } from "../utils/AiUtils.js";
+import { getDistance} from "../utils/AiUtils.js";
+import { getFighterStatus } from "../states/ai/ai-callbacks/getFighterStatus.js";
 
-const MAX_HEALTH_FACTOR = 0.3;
 export class AiStateManager {
     constructor(fighter) {
         this.fighter = fighter;
         this.state = new aiStates.OBSERVE();
         this.lastState = this.state;
-        this.nextAction; //for debugging
         this.lastAttack = undefined;
         this.blockChance = .75;
     }//end ctor
