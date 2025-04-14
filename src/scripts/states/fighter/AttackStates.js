@@ -34,7 +34,7 @@ export class LIGHT_ATTACK extends ATTACK {
     }//end ctor
     enter(manager) {
         this.strikeCount++;
-        playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1, 2.5);
+        playSound(SOUNDS.LIGHT_ATTACK.swing, 0, 2.5);
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
@@ -53,7 +53,7 @@ export class LIGHT_ATTACK extends ATTACK {
             manager.fighter.setHasHit(false);
             manager.fighter.spriteManager.currentFrame = 3;
             this.strikeCount++;
-            playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1, 2.5);
+            playSound(SOUNDS.LIGHT_ATTACK.swing, 0, 2.5);
         }
 
         if (manager.fighter.animationIsComplete()) {
@@ -75,7 +75,7 @@ export class HEAVY_ATTACK extends ATTACK {
         this.range = 25;
     }
     enter() {
-        playSound(SOUNDS.HEAVY_ATTACK.swing, 0.1);
+        playSound(SOUNDS.HEAVY_ATTACK.swing);
     }
     update(manager, input) {
         let currentFrame = manager.fighter.spriteManager.currentFrame;
@@ -110,7 +110,7 @@ export class SP_1 extends ATTACK {
         this.range = 40;
     }//end ctor
     enter() {
-        playSound(SOUNDS.SP_1.swing, 0.05);
+        playSound(SOUNDS.SP_1.swing);
     }
     update(manager, input) {
 
@@ -149,7 +149,7 @@ export class SP_2 extends ATTACK {
             manager.fighter.spriteManager.setCurrentFrame(2);
             manager.fighter.addProjectile();
             this.shotsFired++;
-            playSound(SOUNDS.SP_2.swing, 0.05);
+            playSound(SOUNDS.SP_2.swing);
         } else {
             manager.transition("IDLE");
         }
@@ -166,7 +166,7 @@ export class JUMP_ATTACK extends JUMP {
         this.range = 24;
     }//end if
     enter() {
-        playSound(SOUNDS.LIGHT_ATTACK.swing, 0.1);
+        playSound(SOUNDS.LIGHT_ATTACK.swing);
     };
     update() {
     };//end update
