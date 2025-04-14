@@ -97,7 +97,6 @@ export class BattleScene extends Scene {
         this.drawOverlays(this.game.ctx);
         this.drawProjectiles(this.game.ctx, this.viewport);
         this.drawHitSplash(this.game.ctxHigh, this.viewport);
-        debugAI(this.game.ctx, this.fighters[1]);
     }//end draw
     updateFighters() {
         for (const fighter of this.fighters) {
