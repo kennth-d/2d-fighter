@@ -9,7 +9,6 @@ export class AiStateManager {
         this.state = new aiStates.OBSERVE();
         this.lastState = this.state;
         this.lastAttack = undefined;
-        this.blockChance = .75;
     }//end ctor
     update() {
         if (this.fighter.input.isDisabled()) return;
