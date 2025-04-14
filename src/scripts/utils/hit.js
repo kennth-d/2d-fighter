@@ -1,16 +1,17 @@
 import { FighterBaseClass } from "../fighters/FighterBaseClass.js";
 import * as attacks from "./attackData.js";
 import { playSound } from "./playSound.js";
+import {isAtBoundary} from "./collision.js";
 
 /**Applies damage to health if fighter is not blocking or is out of energy,
  * or to energy if the fighter is blocking. chains into applyKnockback().
  * @param { FighterBaseClass } reciever Fighter recieving the attack.
  * @param { String } attack name of the Fighter attack state.
  */
-export function applyhit(reciever, attack) {
+export function applyhit(reciever, attack, viewport) {
 
     if (reciever.physics.isAirborne()) {
-        applyAerialHit(reciever, attack);
+        applyAerialHit(reciever, attack, viewport);
         return;
     };
 
@@ -22,7 +23,7 @@ export function applyhit(reciever, attack) {
     if (reciever.isBlocking() && reciever.hasEnergy()) {
         
         playSound(attacks.SOUNDS["BLOCK"].hit);
-        reciever.applyDamage(0, damage * 2);
+        reciever.applyDamage(0, damage * 2.5);
         knockbackX *= .5;
         reciever.applyBlockStun(attackData.hitstun * .5);
     } else {
@@ -32,7 +33,7 @@ export function applyhit(reciever, attack) {
         reciever.stateManager.transition("HURT");
     };
     
-    applyKnockback(reciever, knockbackX, knockbackY);   
+    applyKnockback(reciever, knockbackX, knockbackY, viewport);   
 };//end applyDamage
 
 /**
@@ -40,7 +41,7 @@ export function applyhit(reciever, attack) {
  * @param {FighterBaseClass} reciever fighter entity recieving the attack
  * @param {String} attack name of the attack state
  */
-function applyAerialHit(reciever, attack) {
+function applyAerialHit(reciever, attack, viewport) {
     let attackData = attacks[attack];
     let damage = attackData.dmg;
     let knockbackX = attackData.knockback*2;
@@ -50,7 +51,7 @@ function applyAerialHit(reciever, attack) {
     reciever.applyDamage(damage, 0);
     reciever.applyHitStun(attackData.hitstun);
     reciever.stateManager.transition("KNOCKBACK");
-    applyKnockback(reciever, knockbackX, knockbackY);
+    applyKnockback(reciever, knockbackX, knockbackY, viewport);
 }//end ApplyArialHit
 
 /**Applies knockback velocity to a Fighter's physics component. If 
@@ -60,6 +61,12 @@ function applyAerialHit(reciever, attack) {
  * @param {Number} strengthX strength of the knockback on the x-axis
  * @param {Number} strengthY strength of the knockback on the y-axis
  */
-function applyKnockback(reciever, strengthX, strengthY) {
-     reciever.physics.applyKnockback(strengthX * reciever.opponent.direction, strengthY);
+function applyKnockback(reciever, strengthX, strengthY, viewport) {
+
+    if (isAtBoundary(reciever, viewport)) {
+        reciever.opponent.physics.applyKnockback(strengthX * reciever.direction, 0);
+    } else {
+        reciever.physics.applyKnockback(strengthX * reciever.opponent.direction, strengthY);
+    }
+     
 };//end applyKnockback
