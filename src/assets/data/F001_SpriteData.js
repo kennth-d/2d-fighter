@@ -67,7 +67,7 @@ export const F001_SpriteData = {
         height: 64,
         frames: 10,
         originOffset: {x: 37, y: 40},
-        delay: 1.5,
+        delay: 1.35,
     },
     SP_2: {
         src: path + "special 2 48x48.png",
