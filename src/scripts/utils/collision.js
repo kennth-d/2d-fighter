@@ -78,7 +78,7 @@ export function updateHitBoxCollision(scene, attacker, opponent) {
         if (!rectsOverlap(trueHitBox, trueOpponentHurtBox)) continue;
 
         attacker.setHasHit(true);
-        applyhit(opponent, attack);
+        applyhit(opponent, attack, scene.viewport);
         TIME.hitStopTimer = TIME.previous + (HIT_STOP * 1000);
         scene.drawOrder = [opponent.playerId, attacker.playerId];
 
@@ -107,7 +107,7 @@ export function updateProjectileCollision(scene, fighters) {
                     projectile.setHasHit();
                     scene.addHitSplash(projectile.box.x, projectile.box.y, "hit");
                     attacker.removeProjectile(projectile.projectileId);
-                    applyhit(target, "SP_2");
+                    applyhit(target, "SP_2", scene.viewport);
                     break;
                 };//end if
             };//end inner-for
