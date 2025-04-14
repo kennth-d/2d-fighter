@@ -1,6 +1,6 @@
-import { AiState } from "./AiState.js";
-import { getDistance, getAttack, getWeightedRandom } from "../../utils/AiUtils.js";
+import { getDistance, getAttack } from "../../utils/AiUtils.js";
 import { TIME } from "../../utils/const.js";
+import { OBSERVE } from "./Observe.js";
 
 export const attackToInput = {
     "LIGHT_ATTACK": "light",
@@ -10,12 +10,11 @@ export const attackToInput = {
     "JUMP_ATTACK": "light",
 }
 export const nextAttack = {
-    null: "LIGHT_ATTACK",
     "undefiend": "LIGHT_ATTACK",
     "LIGHT_ATTACK" : "HEAVY_ATTACK",
     "HEAVY_ATTACK" : "SP_1",
     "SP_1": "SP_2",
-    "SP_2": "SP_2",
+    "SP_2": undefined,
 }
 
 /**
@@ -23,33 +22,24 @@ export const nextAttack = {
  * in this state the ai will attempt to
  * attack the opponent.
  */
-export class ENGAGE extends AiState {
+export class ENGAGE extends OBSERVE {
     constructor(stateName="ENGAGE") {
         super(stateName);
         this.attack;
+        this.next;
     }//end ctor
-    enter(manager, attack) {
+    enter(manager, nextAttack = undefined) {
         const distance = getDistance(manager.fighter.pos.x, manager.fighter.opponent.pos.x);
-        this.attack = getAttack(distance);
-
-        if (attack) this.attack = attack;
-        
+        this.attack = getAttack(distance, manager.lastAttack);
         if (manager.fighter.physics.isAirborne()) this.attack = "LIGHT_ATTACK";
-        if (this.attack === "SP_2" && distance < 25) this.attack = "LIGHT_ATTACK";
+
+        if (nextAttack) this.attack = nextAttack;
+
         manager.fighter.input.setInput(attackToInput[this.attack], true);
     }//end enter
     update(manager, context) {
-        const {self, opponent, distance} = context;
 
-        //setup attack chain.
-        const attackSuccessful = (opponent.isBlocking || opponent.isHurt);
-        let next = nextAttack[manager.lastAttack];
-           
-        if (attackSuccessful) {
-            this.enter(manager, next)
-        } else {
-            manager.transition("OBSERVE");
-        }//end if-else
+        super.update(manager, context);
     }
     exit(manager) {
         manager.fighter.input.setInput(attackToInput[this.attack], false);

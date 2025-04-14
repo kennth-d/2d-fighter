@@ -1,12 +1,10 @@
 import { AiState } from "./AiState.js";
-import { getAction } from "../../utils/AiUtils.js";
-
-const actions = new Set(["OBSERVE", "ENGAGE", "ANTI_AIR", "CROUCHAI", "DEFEND", "JUMP", "JUMP_F", "JUMP_B", "RETREAT"]);
+import { getAction } from "./ai-callbacks/getAction.js";
 
 /**
  * OBSERVE state
  * in this state the ai will attempt to get information
- * about the opponent and produce intent.
+ * about the opponent and produce an action.
  */
 export class OBSERVE extends AiState {
     constructor(stateName="OBSERVE") {
@@ -19,7 +17,6 @@ export class OBSERVE extends AiState {
         const action = getAction(context);
 
         manager.transition(action);
-
     }//end update
     exit(manager) {
         manager.fighter.input.clear();

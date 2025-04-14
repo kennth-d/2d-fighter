@@ -1,12 +1,11 @@
-import { AiState } from "./AiState.js";
-import { getAction } from "../../utils/AiUtils.js";
+import { OBSERVE } from "./Observe.js";
 
 /**
  * DEFEND state
  * in this state the ai will attempt to
  * defend against the opponents attack.
  */
-export class DEFEND extends AiState {
+export class DEFEND extends OBSERVE {
     constructor(stateName="DEFEND") {
         super(stateName);
     }//end ctor
@@ -14,12 +13,7 @@ export class DEFEND extends AiState {
         manager.fighter.input.setInput("backward", true);
     }
     update(manager, context) {
-        const {self, opponent, distance} = context;
-
-        if (!opponent.isAttacking || distance > 48) {
-            const action = getAction(context);
-            manager.transition(action);
-        } 
+        super.update(manager, context);
     }
     exit(manager) {
         manager.fighter.input.setInput("backward", false);

@@ -1,13 +1,14 @@
-import { AiState } from "./AiState.js";
-import { APPROACH } from "./Approach.js";
-import { getAction } from "../../utils/AiUtils.js";
+import { OBSERVE } from "./Observe.js";
+import {APPROACH} from "./Approach.js";
+import {RETREAT} from "./Retreat.js";
+import {DEFEND} from "./Defend.js";
 
 /**
  * Jump state
  * the ai will jump
  * attack the opponent.
  */
-export class JUMP extends AiState {
+export class JUMP extends OBSERVE {
     constructor(stateName="JUMP") {
         super(stateName);
         this.timer = 0.15;
@@ -19,9 +20,7 @@ export class JUMP extends AiState {
 
     };
     update(manager, context) {
-
-        const action = getAction(context);
-        manager.transition(action);
+        super.update(manager, context);
     };
     exit(manager) {
         manager.fighter.input.setInput("jump", false);
