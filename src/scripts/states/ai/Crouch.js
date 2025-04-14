@@ -9,13 +9,14 @@ import {isIncoming} from "../../utils/AiUtils.js";
 export class CROUCHAI extends OBSERVE {
     constructor(stateName="CROUCHAI") {
         super(stateName);
-        this.timer = .5;
     }//end ctor
     enter(manager) {
         manager.fighter.input.setInput("crouch", true);
     }
     update(manager, context) {
-       super.update(manager, context);
+        if (context.opponent.state.name != "SP_2") {
+            super.update(manager, context);
+        }
     }
     exit(manager) {
         manager.fighter.input.setInput("crouch", false);
