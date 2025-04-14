@@ -43,9 +43,10 @@ export const situationHandlers = {
     ANTI_AIR: ({ self, opponent, distance }) => {
         const decisions = [];
 
-        if (opponent.isAttacking) decisions.push({action: "DEFEND", weight: 80});
+        decisions.push({action: "ANTI_AIR", weight: 10});
+        decisions.push({action: "DEFEND", weight: 50});
+        
         if (distance > 40) decisions.push({action: "APPROACH", weight: 50});
-        decisions.push({ action: "ANTI_AIR", weight: 10 });
 
         return decisions;
     },
