@@ -15,17 +15,6 @@ export class CROUCHAI extends OBSERVE {
         manager.fighter.input.setInput("crouch", true);
     }
     update(manager, context) {
-        // const opponent = context.opponent;
-        // if(opponent.state.getName() === "SP_2") {
-        //     for (const proj of opponent.projectiles)  {
-        //         if (isIncoming(proj)) {
-        //             return;
-        //         } 
-        //     }
-        // } else {
-        //     super.update(manager, context);
-        //     return;
-        // }//end if-else
        super.update(manager, context);
     }
     exit(manager) {
